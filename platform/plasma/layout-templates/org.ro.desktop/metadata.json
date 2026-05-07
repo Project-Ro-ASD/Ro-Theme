@@ -1,0 +1,12 @@
+{
+  "KPackageStructure": "Plasma/LayoutTemplate",
+  "KPlugin": {
+    "Id": "org.ro.desktop",
+    "Name": "Ro Desktop Layout",
+    "Description": "Ro glass top bar and centered slim dock layout",
+    "Icon": "preferences-desktop",
+    "Version": "1.0.0",
+    "License": "GPL-3.0-or-later"
+  },
+  "X-Plasma-Shell": "plasmashell"
+}

@@ -1,0 +1,11 @@
+{
+  "KPlugin": {
+    "Id": "RoDark",
+    "Name": "Ro Dark",
+    "Description": "Ro Desktop dark Plasma style",
+    "License": "GPL-3.0-or-later",
+    "Version": "1.0.0"
+  },
+  "KPackageStructure": "Plasma/Theme",
+  "X-Plasma-API": "5.0"
+}

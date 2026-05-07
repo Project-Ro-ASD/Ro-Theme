@@ -1,0 +1,33 @@
+# RPM ve yerel build çıktıları.
+# Bunlar kaynak değil; GitHub Actions ve tools/dev/build-rpm.sh her buildde yeniden üretir.
+/build/
+/rpmbuild/
+*.rpm
+*.src.rpm
+*.tar.gz
+
+# Python/araç cache dosyaları.
+# Validate ve üretim scriptleri bunları kaynak olarak kullanmaz.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Geçici debug, patch ve editör yedekleri.
+# İnceleme sırasında oluşabilir; repoya girerse release arşivini kirletir.
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+
+# Yerel araç ve editör metadatası.
+# Codex/ajan state'i ve kişisel IDE ayarları makinaya özeldir.
+/.agents/
+/.codex/
+.vscode/
+.idea/
+.DS_Store

@@ -1,0 +1,19 @@
+{
+  "name": "Ro Light",
+  "palette": ["#E5E1DA", "#FBF9F1", "#AAD7D9", "#92C7CF"],
+  "bg": "#FBF9F1",
+  "bgAlt": "#E5E1DA",
+  "surface": "#FBF9F1",
+  "surfaceAlt": "#E5E1DA",
+  "glass": "rgba(251,249,241,0.76)",
+  "text": "#2F5960",
+  "textSecondary": "#5D8187",
+  "accent": "#92C7CF",
+  "border": "#AAD7D9",
+  "link": "#2F5960",
+  "visited": "#5D8187",
+  "negative": "#2F5960",
+  "neutral": "#5D8187",
+  "positive": "#2F5960",
+  "selectionText": "#2F5960"
+}

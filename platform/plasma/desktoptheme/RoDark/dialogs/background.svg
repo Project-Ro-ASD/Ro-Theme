@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Ro glass surface. Generated from core/tokens by scripts/generate-theme.sh. -->
+  <!-- Plasma bu SVG'yi 9 parçaya böler; köşe stroke'ları popup üzerinde küçük L izleri bırakabildiği için yüzey stroke'suzdur. -->
+  <g id="center">
+    <rect x="8" y="8" width="32" height="32" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="top">
+    <rect x="8" y="0" width="32" height="8" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="bottom">
+    <rect x="8" y="40" width="32" height="8" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="left">
+    <rect x="0" y="8" width="8" height="32" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="right">
+    <rect x="40" y="8" width="8" height="32" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="topleft">
+    <rect x="0" y="0" width="8" height="8" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="topright">
+    <rect x="40" y="0" width="8" height="8" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="bottomleft">
+    <rect x="0" y="40" width="8" height="8" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <g id="bottomright">
+    <rect x="40" y="40" width="8" height="8" fill="#5C5470" fill-opacity="0.58"/>
+  </g>
+  <rect id="hint-stretch-borders" x="0" y="0" width="1" height="1" fill="#000000" fill-opacity="0"/>
+</svg>

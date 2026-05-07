@@ -1,0 +1,20 @@
+{
+  "KPlugin": {
+    "Id": "ro-smooth-motion",
+    "Name": "Ro Smooth Motion",
+    "Description": "Subtle Hyprland-inspired window motion for Ro Desktop",
+    "Category": "Appearance",
+    "Icon": "preferences-system-windows-effect",
+    "Version": "1.0.0",
+    "License": "GPL-3.0-or-later",
+    "Authors": [
+      {
+        "Name": "Project Ro-ASD"
+      }
+    ]
+  },
+  "KPackageStructure": "KWin/Effect",
+  "X-Plasma-API": "javascript",
+  "X-Plasma-MainScript": "code/main.js",
+  "X-KDE-Ordering": 60
+}

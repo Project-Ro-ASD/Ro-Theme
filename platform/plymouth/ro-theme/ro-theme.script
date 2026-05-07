@@ -1,0 +1,50 @@
+// Bu dosya Ro Plymouth açılış animasyonunu yönetir.
+// Tema script modülünde çalışır; BGRT modülü sistemde olmadığı için firmware logosu garanti edilmez.
+// Amaç: Tam ekranı kaplamayan küçük loading animasyonunu ekranın alt-orta bölümünde oynatmaktır.
+
+// Tam ekran wallpaper çizilmez; yalnızca küçük loading sprite kullanılır.
+// Firmware logosunun korunması sistemin BGRT/Plymouth davranışına bağlıdır.
+
+// Animasyon toplam 86 kareden oluşur.
+// Dosya isimleri frame_0001.png ile frame_0086.png arasındadır.
+frame_count = 86;
+current_frame = 0;
+frames = [];
+
+for (i = 1; i <= frame_count; i++) {
+    number = "" + i;
+
+    if (i < 10) {
+        number = "000" + i;
+    } else if (i < 100) {
+        number = "00" + i;
+    } else if (i < 1000) {
+        number = "0" + i;
+    }
+
+    frames[i - 1] = Image("frames/animation/frame_" + number + ".png");
+}
+
+// İlk kareden sprite oluşturulur.
+sprite = Sprite(frames[0]);
+
+// Animasyon yatayda ortalanır.
+sprite.SetX(Window.GetWidth() / 2 - frames[0].GetWidth() / 2);
+
+// Animasyon ekranın alt-orta bölümüne alınır.
+// Değeri yukarı almak için 0.60, aşağı almak için 0.72 deneyebilirsin.
+sprite.SetY(Window.GetHeight() * 0.66);
+
+sprite.SetZ(100);
+
+fun refresh_callback() {
+    current_frame++;
+
+    if (current_frame >= frame_count) {
+        current_frame = 0;
+    }
+
+    sprite.SetImage(frames[current_frame]);
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);

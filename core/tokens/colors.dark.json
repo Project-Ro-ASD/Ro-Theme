@@ -1,0 +1,19 @@
+{
+  "name": "Ro Dark",
+  "palette": ["#FAF0E6", "#B9B4C7", "#5C5470", "#352F44"],
+  "bg": "#352F44",
+  "bgAlt": "#5C5470",
+  "surface": "#5C5470",
+  "surfaceAlt": "#5C5470",
+  "glass": "rgba(92,84,112,0.58)",
+  "text": "#FAF0E6",
+  "textSecondary": "#B9B4C7",
+  "accent": "#B9B4C7",
+  "border": "#B9B4C7",
+  "link": "#FAF0E6",
+  "visited": "#B9B4C7",
+  "negative": "#FAF0E6",
+  "neutral": "#B9B4C7",
+  "positive": "#B9B4C7",
+  "selectionText": "#352F44"
+}

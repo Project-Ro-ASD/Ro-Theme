@@ -1,0 +1,48 @@
+:root,
+[data-ro-theme="light"] {
+  --ro-bg: #FBF9F1;
+  --ro-bg-alt: #E5E1DA;
+  --ro-surface: #FBF9F1;
+  --ro-surface-alt: #E5E1DA;
+  --ro-glass: rgba(251,249,241,0.76);
+  --ro-text: #2F5960;
+  --ro-text-secondary: #5D8187;
+  --ro-accent: #92C7CF;
+  --ro-border: #AAD7D9;
+  --ro-radius-sm: 8px;
+  --ro-radius-md: 12px;
+  --ro-radius-lg: 18px;
+  --ro-radius-xl: 24px;
+  --ro-radius-panel: 18px;
+  --ro-radius-dock: 22px;
+  --ro-space-xs: 4px;
+  --ro-space-sm: 8px;
+  --ro-space-md: 12px;
+  --ro-space-lg: 16px;
+  --ro-space-xl: 24px;
+  --ro-panel-height: 32px;
+  --ro-dock-height: 48px;
+  --ro-dock-icon-size: 28px;
+  --ro-opacity-glass: 0.68;
+  --ro-opacity-glass-strong: 0.82;
+  --ro-opacity-hover: 0.88;
+  --ro-opacity-disabled: 0.42;
+  --ro-motion-window-open: 185ms;
+  --ro-motion-window-close: 155ms;
+  --ro-motion-window-minimize: 170ms;
+  --ro-motion-curve: OutCubic;
+  --ro-motion-scale-from: 0.975;
+  --ro-motion-slide: 18px;
+}
+
+[data-ro-theme="dark"] {
+  --ro-bg: #352F44;
+  --ro-bg-alt: #5C5470;
+  --ro-surface: #5C5470;
+  --ro-surface-alt: #5C5470;
+  --ro-glass: rgba(92,84,112,0.58);
+  --ro-text: #FAF0E6;
+  --ro-text-secondary: #B9B4C7;
+  --ro-accent: #B9B4C7;
+  --ro-border: #B9B4C7;
+}

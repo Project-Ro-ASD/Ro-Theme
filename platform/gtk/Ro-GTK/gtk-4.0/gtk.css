@@ -1,0 +1,64 @@
+/* Generated from core/tokens by scripts/generate-theme.sh. */
+@define-color ro_bg #352F44;
+@define-color ro_bg_alt #5C5470;
+@define-color ro_surface #5C5470;
+@define-color ro_surface_alt #5C5470;
+@define-color ro_text #FAF0E6;
+@define-color ro_text_secondary #B9B4C7;
+@define-color ro_accent #B9B4C7;
+@define-color ro_border #B9B4C7;
+
+* {
+  border-radius: 10px;
+}
+
+window,
+dialog,
+popover {
+  background: @ro_bg;
+  color: @ro_text;
+}
+
+headerbar,
+.titlebar {
+  background: @ro_surface;
+  color: @ro_text;
+  border-bottom: 1px solid @ro_border;
+}
+
+button {
+  background: @ro_surface_alt;
+  color: @ro_text;
+  border: 1px solid @ro_border;
+  padding: 7px 12px;
+}
+
+button:hover {
+  border-color: @ro_accent;
+}
+
+button:checked,
+button:active {
+  background: @ro_accent;
+  color: @ro_bg;
+}
+
+entry,
+textview,
+spinbutton {
+  background: @ro_surface;
+  color: @ro_text;
+  border: 1px solid @ro_border;
+}
+
+entry:focus,
+textview:focus {
+  border-color: @ro_accent;
+}
+
+selection,
+.view:selected,
+row:selected {
+  background: @ro_accent;
+  color: @ro_bg;
+}

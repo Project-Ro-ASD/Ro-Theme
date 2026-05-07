@@ -1,0 +1,12 @@
+{
+  "KPlugin": {
+    "Id": "org.ro.dark",
+    "Name": "Ro Dark",
+    "Description": "Ro Desktop dark global theme",
+    "Icon": "preferences-desktop-theme-global",
+    "Version": "1.0.0",
+    "License": "GPL-3.0-or-later",
+    "Authors": [{ "Name": "Project Ro-ASD" }]
+  },
+  "KPackageStructure": "Plasma/LookAndFeel"
+}

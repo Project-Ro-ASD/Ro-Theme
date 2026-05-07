@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Ro Theme
+Description=Ro boot theme with firmware logo and small loading animation
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ro-theme
+ScriptFile=/usr/share/plymouth/themes/ro-theme/ro-theme.script
