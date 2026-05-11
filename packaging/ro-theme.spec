@@ -180,6 +180,75 @@ ro_theme_try() {
   return 0
 }
 
+ro_theme_write_system_defaults() {
+  mkdir -p /etc/sddm.conf.d /etc/xdg/autostart
+
+  cat > /etc/sddm.conf.d/10-ro-theme.conf <<'EOF_RO_THEME_SDDM'
+[Theme]
+Current=Ro
+EOF_RO_THEME_SDDM
+
+  cat > /etc/xdg/kdeglobals <<'EOF_RO_THEME_KDEGLOBALS'
+[KDE]
+LookAndFeelPackage=org.ro.dark
+widgetStyle=Breeze
+
+[General]
+ColorScheme=RoDark
+EOF_RO_THEME_KDEGLOBALS
+
+  cat > /etc/xdg/plasmarc <<'EOF_RO_THEME_PLASMARC'
+[Theme]
+name=RoDark
+EOF_RO_THEME_PLASMARC
+
+  cat > /etc/xdg/ksplashrc <<'EOF_RO_THEME_KSPLASH'
+[KSplash]
+Engine=KSplashQML
+Theme=org.ro.dark
+EOF_RO_THEME_KSPLASH
+
+  cat > /etc/xdg/kscreenlockerrc <<'EOF_RO_THEME_LOCKER'
+[Greeter]
+WallpaperPlugin=org.kde.image
+
+[Greeter][Wallpaper][org.kde.image][General]
+Image=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
+PreviewImage=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
+Blur=false
+EOF_RO_THEME_LOCKER
+
+  cat > /etc/xdg/kwinrc <<'EOF_RO_THEME_KWIN'
+[org.kde.kdecoration2]
+library=org.kde.breeze
+theme=Breeze
+
+[Plugins]
+ro-smooth-motionEnabled=false
+kwin4_effect_scaleEnabled=false
+kwin4_effect_glideEnabled=false
+kwin4_effect_squashEnabled=false
+kwin4_effect_magiclampEnabled=false
+magiclampEnabled=false
+kwin4_effect_windowapertureEnabled=false
+kwin4_effect_frozenappEnabled=false
+EOF_RO_THEME_KWIN
+
+  cat > /etc/xdg/autostart/ro-theme-dark-defaults.desktop <<'EOF_RO_THEME_AUTOSTART'
+[Desktop Entry]
+Type=Application
+Name=Ro Theme Dark Defaults
+Comment=Apply Ro Dark defaults once for the current user
+Exec=/usr/libexec/ro-theme/apply-dark-defaults --current-user
+OnlyShowIn=KDE;
+X-KDE-autostart-after=panel
+X-GNOME-Autostart-enabled=true
+NoDisplay=true
+EOF_RO_THEME_AUTOSTART
+}
+
+ro_theme_write_system_defaults || ro_theme_warn "system defaults could not be written"
+
 if [ -x /usr/libexec/ro-theme/apply-dark-defaults ]; then
   ro_theme_try "apply dark defaults" /usr/libexec/ro-theme/apply-dark-defaults --all-users --force || true
 fi

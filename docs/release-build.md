@@ -64,7 +64,7 @@ manuel başlatmak gerekirse `Build RPM` workflow'u `workflow_dispatch` ile de
 Workflow içinde temel sıra:
 
 ```bash
-dnf install -y rpm-build python3 bash
+dnf install -y rpm-build python3 bash dracut grubby plymouth plymouth-plugin-script
 ./tools/dev/build-rpm.sh
 ```
 

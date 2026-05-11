@@ -36,7 +36,7 @@ tar -czf "$SOURCE_DIR/$NAME-$VERSION.tar.gz" -C "$STAGE_ROOT" "$NAME-$VERSION"
 echo "Source tarball ready: $SOURCE_DIR/$NAME-$VERSION.tar.gz"
 
 if ! command -v rpmbuild >/dev/null 2>&1; then
-  echo "rpmbuild command not found. Fedora/RHEL için: sudo dnf install -y rpm-build" >&2
+  echo "rpmbuild command not found. Fedora/RHEL için: sudo dnf install -y rpm-build dracut grubby plymouth plymouth-plugin-script" >&2
   echo "After installing rpm-build, rerun: ./tools/dev/build-rpm.sh" >&2
   exit 2
 fi

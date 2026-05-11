@@ -36,7 +36,9 @@ jobs:
                 bash \
                 coreutils \
                 diffutils \
+                dracut \
                 findutils \
+                grubby \
                 gzip \
                 grep \
                 kf6-kconfig \
@@ -45,6 +47,8 @@ jobs:
                 plasma-desktop \
                 plasma-workspace \
                 plasma-workspace-libs \
+                plymouth \
+                plymouth-plugin-script \
                 python3 \
                 rpm \
                 rpm-build \
