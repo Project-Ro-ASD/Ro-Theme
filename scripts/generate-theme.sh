@@ -167,10 +167,20 @@ def color_scheme(theme_id, tokens, dark_mode):
     inactive_blend = mix_hex(border, bg, 0.72)
     header_bg = mix_hex(surface_alt, bg, 0.72)
     header_alt = mix_hex(surface, bg, 0.82)
-    complementary_bg = surface
-    complementary_alt = surface_alt
-    complementary_text = text
-    complementary_secondary = text_secondary
+    # KDE lock screen WallpaperFader uses the Complementary background to decide
+    # whether to brighten or dim the wallpaper behind the password prompt. Ro Light
+    # keeps normal app surfaces light, but uses a dark complementary surface so the
+    # lock screen stays readable without washing out the wallpaper.
+    if dark_mode:
+        complementary_bg = surface
+        complementary_alt = surface_alt
+        complementary_text = text
+        complementary_secondary = text_secondary
+    else:
+        complementary_bg = text
+        complementary_alt = text_secondary
+        complementary_text = bg
+        complementary_secondary = border
 
     def group(name, normal_bg, alternate_bg, normal_fg, inactive_fg, include_active=True):
         active_line = f'ForegroundActive={rgb(accent)}\n' if include_active else ''

@@ -165,6 +165,7 @@ if [[ -f "$LOCK_WALL" ]]; then
   write_config_or_warn "Lock screen wallpaper plugin" --file kscreenlockerrc --group Greeter --key WallpaperPlugin org.kde.image
   write_config_or_warn "Lock screen login wallpaper image" --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key Image "$LOCK_WALL_URI"
   write_config_or_warn "Lock screen login wallpaper preview" --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key PreviewImage "$LOCK_WALL_URI"
+  write_config_or_warn "Lock screen wallpaper fill blur" --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key Blur false
 else
   warn "lock screen login wallpaper not found: $LOCK_WALL"
 fi

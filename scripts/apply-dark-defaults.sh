@@ -83,6 +83,7 @@ write_with_kwriteconfig() {
   run_as_user "$user" "$helper" --file kscreenlockerrc --group Greeter --key WallpaperPlugin org.kde.image || return 1
   run_as_user "$user" "$helper" --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key Image "$LOCK_WALL_URI" || return 1
   run_as_user "$user" "$helper" --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key PreviewImage "$LOCK_WALL_URI" || return 1
+  run_as_user "$user" "$helper" --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key Blur false || return 1
   run_as_user "$user" "$helper" --file kwinrc --group org.kde.kdecoration2 --key library org.kde.breeze || return 1
   run_as_user "$user" "$helper" --file kwinrc --group org.kde.kdecoration2 --key theme Breeze || return 1
   run_as_user "$user" "$helper" --file kwinrc --group Plugins --key ro-smooth-motionEnabled false || return 1
@@ -131,6 +132,7 @@ write_raw_fallback() {
     echo "[Greeter][Wallpaper][org.kde.image][General]"
     echo "Image=$LOCK_WALL_URI"
     echo "PreviewImage=$LOCK_WALL_URI"
+    echo "Blur=false"
   } > "$home/.config/kscreenlockerrc"
 
   {

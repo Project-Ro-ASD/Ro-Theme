@@ -357,28 +357,38 @@ Rectangle {
                 spacing: 8
 
                 Rectangle {
-                    width: 62
-                    height: 62
-                    radius: 20
+                    width: 74
+                    height: 74
+                    radius: width / 2
                     color: root.roField
                     border.color: root.roSoftAccent
                     border.width: 1
                     clip: true
                     anchors.horizontalCenter: parent.horizontalCenter
 
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        radius: width / 2
+                        color: "#00000000"
+                        border.color: root.roAccent
+                        border.width: 1
+                        opacity: 0.42
+                    }
+
                     Image {
                         id: userAvatarImage
                         anchors.fill: parent
-                        anchors.margins: 2
+                        anchors.margins: 6
                         source: root.selectedUserAvatar
-                        fillMode: Image.PreserveAspectCrop
+                        fillMode: Image.PreserveAspectFit
                         smooth: true
                     }
 
                     Image {
                         anchors.centerIn: parent
-                        width: 42
-                        height: 42
+                        width: 52
+                        height: 52
                         source: Qt.resolvedUrl("assets/roasd-logo.png")
                         fillMode: Image.PreserveAspectFit
                         smooth: true

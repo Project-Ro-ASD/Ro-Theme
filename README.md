@@ -4,7 +4,7 @@ Fedora KDE Plasma için hazırlanmış Ro masaüstü tema paketi. Proje; global 
 Plasma style, color scheme, wallpaper bağlantıları, SDDM login teması, Plymouth
 boot teması, GTK stili ve RPM paketleme dosyalarını tek kaynak ağacında tutar.
 
-İlk paket sürümü: `1.0.0`
+Güncel paket sürümü: `1.0.1`
 
 ## Ne İçerir?
 
@@ -61,18 +61,19 @@ sudo dnf install -y rpm-build
 Kurulum:
 
 ```bash
-sudo dnf install ./build/rpmbuild/RPMS/noarch/ro-theme-1.0.0-1*.noarch.rpm
+sudo dnf install ./build/rpmbuild/RPMS/noarch/ro-theme-1.0.1-1*.noarch.rpm
 ro-theme-diagnose --system
 ```
 
 GitHub Actions ile build alırken esas dosya `packaging/ro-theme.spec` dosyasıdır.
-Ama RPM build yalnızca spec'ten ibaret değildir: workflow'un `ro-theme-1.0.0.tar.gz`
+Ama RPM build yalnızca spec'ten ibaret değildir: workflow'un `ro-theme-1.0.1.tar.gz`
 kaynak arşivini hazırlaması ve spec'in `%build/%check` adımlarında çağırdığı
 `scripts/generate-theme.sh` ile `scripts/validate.sh` dosyalarını kaynak arşive
 koyması gerekir. Bu repo bu yüzden scriptleri tutar; `build-rpm.sh` sadece yerel
 makinede aynı işi kolaylaştıran `tools/dev/build-rpm.sh` yardımcısıdır.
 
 Sürüm artırma, tag atma ve GitHub build akışı için: `docs/release-build.md`.
+Günlük bakım ve pratik proje notları için: `docs/project-notes.md`.
 
 ## Notlar
 

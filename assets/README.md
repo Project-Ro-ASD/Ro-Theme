@@ -13,3 +13,4 @@ beklediği dosya düzeniyle çalışır.
 SDDM teması dark/light wallpaper seçmez. Giriş ekranı tek ve sabit Ro Auth
 paletiyle çalışır; kaynak görsel olarak `platform/sddm/themes/Ro/assets/login.jpg`
 kullanılır.
+Yeni wallpaper varyantı ekleme akışı için: `WALLPAPER_GUIDE.md`.

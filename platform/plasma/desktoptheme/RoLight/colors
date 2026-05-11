@@ -108,10 +108,10 @@ DecorationFocus=146,199,207
 DecorationHover=215,232,229
 
 [Colors:Complementary]
-BackgroundNormal=251,249,241
-BackgroundAlternate=229,225,218
-ForegroundNormal=47,89,96
-ForegroundInactive=93,129,135
+BackgroundNormal=47,89,96
+BackgroundAlternate=93,129,135
+ForegroundNormal=251,249,241
+ForegroundInactive=170,215,217
 ForegroundActive=146,199,207
 ForegroundLink=47,89,96
 ForegroundVisited=93,129,135

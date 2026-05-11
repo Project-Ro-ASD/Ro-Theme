@@ -248,6 +248,8 @@ check_not_contains platform/plasma/color-schemes/RoLight.colors "Wallpaper" "RoL
 check_not_contains platform/plasma/color-schemes/RoDark.colors "Wallpaper" "RoDark color scheme wallpaper-free"
 check_not_contains platform/plasma/color-schemes/RoLight.colors "Image=" "RoLight color scheme image-free"
 check_not_contains platform/plasma/color-schemes/RoDark.colors "Image=" "RoDark color scheme image-free"
+check_contains platform/plasma/color-schemes/RoLight.colors "[Colors:Complementary]" "RoLight complementary group"
+check_contains platform/plasma/color-schemes/RoLight.colors "BackgroundNormal=47,89,96" "RoLight complementary lockscreen dim surface"
 
 section "Plasma Desktop Themes"
 check_dir platform/plasma/desktoptheme/RoLight
@@ -256,8 +258,8 @@ check_json platform/plasma/desktoptheme/RoLight/metadata.json
 check_json platform/plasma/desktoptheme/RoDark/metadata.json
 check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"Id": "RoLight"' "RoLight desktoptheme id"
 check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"Id": "RoDark"' "RoDark desktoptheme id"
-check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"Version": "1.0.0"' "RoLight desktoptheme version"
-check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"Version": "1.0.0"' "RoDark desktoptheme version"
+check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"Version": "1.0.1"' "RoLight desktoptheme version"
+check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"Version": "1.0.1"' "RoDark desktoptheme version"
 check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"License": "GPL-3.0-or-later"' "RoLight desktoptheme license"
 check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"License": "GPL-3.0-or-later"' "RoDark desktoptheme license"
 check_file platform/plasma/desktoptheme/RoLight/colors
@@ -357,6 +359,8 @@ check_contains packaging/ro-theme.spec "%defattr(-,root,root,-)" "RPM root file 
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace" "RPM Plasma dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-desktop" "RPM Plasma desktop dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace-libs" "RPM Plasma applet plugin dependency"
+check_contains packaging/ro-theme.spec "Requires:       plymouth-plugin-script" "RPM Plymouth script plugin dependency"
+check_contains packaging/ro-theme.spec "Requires(post): dracut" "RPM dracut post dependency"
 check_contains packaging/ro-theme.spec "Requires:       kf6-kconfig" "RPM KDE config dependency"
 check_contains packaging/ro-theme.spec "Requires:       kf6-kservice" "RPM KDE service cache dependency"
 check_contains packaging/ro-theme.spec "%dir %{_datadir}/ro-theme" "RPM owns Ro data directory"
@@ -364,6 +368,7 @@ check_contains packaging/ro-theme.spec "%dir %{_libexecdir}/ro-theme" "RPM owns 
 check_contains packaging/ro-theme.spec "ro-theme-diagnose" "RPM diagnose command"
 check_contains packaging/ro-theme.spec "kscreenlockerrc" "RPM lock screen wallpaper default"
 check_contains packaging/ro-theme.spec "contents/lockscreen/assets/login.jpg" "RPM lock screen login wallpaper default"
+check_contains packaging/ro-theme.spec "Blur=false" "RPM lock screen wallpaper blur disabled"
 check_contains packaging/ro-theme.spec "library=org.kde.breeze" "RPM Breeze decoration default"
 check_contains packaging/ro-theme.spec "ro-smooth-motionEnabled=false" "RPM safe KWin effect default"
 check_contains packaging/ro-theme.spec "--group KDE --key ColorScheme --delete" "RPM removes stale KDE ColorScheme fallback"

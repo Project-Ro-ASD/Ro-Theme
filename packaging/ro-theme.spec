@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 License:        GPL-3.0-or-later
@@ -23,12 +23,16 @@ Requires(post): bash
 Requires(post): coreutils
 Requires(post): kf6-kconfig
 Requires(post): util-linux
+Requires(post): plymouth
+Requires(post): plymouth-plugin-script
+Requires(post): dracut
+Requires(post): grubby
 Requires(postun): bash
 Recommends:     sddm
-Recommends:     plymouth
-Recommends:     plymouth-scripts
-Recommends:     dracut
-Recommends:     grubby
+Requires:       plymouth
+Requires:       plymouth-plugin-script
+Requires:       dracut
+Requires:       grubby
 
 %description
 Ro Desktop için KDE Plasma global theme, Plasma style, color scheme,
@@ -123,6 +127,7 @@ WallpaperPlugin=org.kde.image
 [Greeter][Wallpaper][org.kde.image][General]
 Image=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
 PreviewImage=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
+Blur=false
 EOF
 
 cat > %{buildroot}%{_sysconfdir}/xdg/kwinrc <<'EOF'
@@ -262,6 +267,10 @@ exit 0
 %config %{_sysconfdir}/xdg/autostart/ro-theme-dark-defaults.desktop
 
 %changelog
+* Mon May 11 2026 Project Ro-ASD <ro-theme@example.invalid> - 1.0.1-1
+- Update v2 wallpaper assets and SDDM login logo treatment.
+- Improve lock screen wallpaper dimming and Plymouth RPM activation dependencies.
+- Add project and wallpaper maintenance notes.
 * Tue May 05 2026 Project Ro-ASD <ro-theme@example.invalid> - 1.0.0-1
 - Align Ro global theme colors and Plasma style with generated token outputs.
 - Add validation, diagnostics, RPM build and RPM test helpers with clear error output.
