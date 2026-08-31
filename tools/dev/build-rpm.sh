@@ -42,7 +42,7 @@ if ! command -v rpmbuild >/dev/null 2>&1; then
 fi
 
 echo "Building RPM..."
-rpmbuild --define "_topdir $TOPDIR" -ba "$SPEC_FILE"
+rpmbuild --define "_topdir $TOPDIR" --define "_tmppath ${TMPDIR:-/tmp}" -ba "$SPEC_FILE"
 
 RPM_PATH="$(find "$TOPDIR/RPMS" -type f -name "$NAME-$VERSION-*.rpm" -printf '%T@ %p\n' | sort -n | tail -n 1 | sed 's/^[^ ]* //')"
 

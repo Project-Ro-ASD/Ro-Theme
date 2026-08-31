@@ -185,8 +185,10 @@ if [[ "$MODE" = "local" ]]; then
   check_absent "$HOME/.local/share/plasma/look-and-feel/org.ro.global" "Old Ro compatibility global theme"
 
   section "System Preview Files"
-  check_system_preview_file /usr/share/sddm/themes/Ro/Main.qml
-  check_same_file_if_present "$SOURCE_ROOT/platform/sddm/themes/Ro/Main.qml" /usr/share/sddm/themes/Ro/Main.qml "System SDDM preview"
+  check_system_preview_file /usr/share/ro-theme/wallpapers/login.jpg
+  check_same_file_if_present "$SOURCE_ROOT/assets/wallpapers/loginv2.jpg" /usr/share/ro-theme/wallpapers/login.jpg "Plasma Login Manager wallpaper preview"
+  check_system_preview_file /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
+  check_same_file_if_present "$SOURCE_ROOT/platform/plasmalogin/20-ro-theme.conf" /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf "Plasma Login Manager config preview"
   check_system_preview_file /usr/share/plymouth/themes/ro-theme/ro-theme.plymouth
 else
   section "System RPM Files"
@@ -209,7 +211,8 @@ else
   check_file /usr/share/kwin/effects/ro-smooth-motion/metadata.json
   check_file /usr/share/ro-theme/wallpapers/dark.jpg
   check_file /usr/share/ro-theme/wallpapers/light.jpg
-  check_file /usr/share/sddm/themes/Ro/Main.qml
+  check_file /usr/share/ro-theme/wallpapers/login.jpg
+  check_file /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
   check_file /usr/share/plymouth/themes/ro-theme/ro-theme.plymouth
   check_file /usr/bin/ro-theme-diagnose
   check_absent /usr/share/plasma/desktoptheme/Ro "Old Ro compatibility desktoptheme"
@@ -317,13 +320,13 @@ if [[ -n "$decoration_library" && "$decoration_library" != "org.kde.breeze" ]]; 
 fi
 
 section "System Config"
-if [[ -f /etc/sddm.conf.d/10-ro-theme.conf ]]; then
-  ok "/etc/sddm.conf.d/10-ro-theme.conf"
-  sed -n '1,20p' /etc/sddm.conf.d/10-ro-theme.conf
+if [[ -f /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf ]]; then
+  ok "/usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf"
+  sed -n '1,20p' /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
 elif [[ "$MODE" = "local" ]]; then
-  warn "missing system preview config: /etc/sddm.conf.d/10-ro-theme.conf"
+  warn "missing system preview config: /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf"
 else
-  fail "missing: /etc/sddm.conf.d/10-ro-theme.conf"
+  fail "missing: /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf"
 fi
 
 if command -v rpm >/dev/null 2>&1; then

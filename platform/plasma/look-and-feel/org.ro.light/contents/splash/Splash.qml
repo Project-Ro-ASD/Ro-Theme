@@ -2,7 +2,7 @@ import QtQuick 2.15
 
 // Ro login sonrası geçiş ekranı.
 // KDE'nin stok dönen/şişen splash animasyonunu kullanmıyoruz.
-// Amaç: SDDM'den masaüstüne geçerken önce blur bir yüzey göstermek,
+// Amaç: giriş yöneticisinden masaüstüne geçerken önce blur bir yüzey göstermek,
 // sonra bu yüzeyi yavaşça azaltıp masaüstünü sakin şekilde ortaya çıkarmak.
 // Not: KWin başlamadan önce gerçek masaüstü arkasına blur verilemez.
 // Bu yüzden burada login wallpaper'ın önceden blur'lanmış hali kullanılır.

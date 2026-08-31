@@ -1,6 +1,6 @@
 Name:           ro-theme
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 License:        GPL-3.0-or-later
 URL:            https://ro-theme.local
@@ -18,6 +18,7 @@ Requires:       kf6-kservice
 Requires:       plasma-desktop
 Requires:       plasma-workspace
 Requires:       plasma-workspace-libs
+Requires:       plasma-login-manager
 Requires:       util-linux
 Requires(post): bash
 Requires(post): coreutils
@@ -28,7 +29,6 @@ Requires(post): plymouth-plugin-script
 Requires(post): dracut
 Requires(post): grubby
 Requires(postun): bash
-Recommends:     sddm
 Requires:       plymouth
 Requires:       plymouth-plugin-script
 Requires:       dracut
@@ -36,7 +36,7 @@ Requires:       grubby
 
 %description
 Ro Desktop için KDE Plasma global theme, Plasma style, color scheme,
-KWin efekti, SDDM giriş ekranı, Plymouth boot teması, GTK stili,
+KWin efekti, Plymouth boot teması, GTK stili,
 icon/cursor tanımları ve tanı araçlarını içeren tema paketi.
 
 %prep
@@ -59,11 +59,10 @@ install -d \
   %{buildroot}%{_datadir}/kwin/effects \
   %{buildroot}%{_datadir}/themes \
   %{buildroot}%{_datadir}/icons \
-  %{buildroot}%{_datadir}/sddm/themes \
   %{buildroot}%{_datadir}/plymouth/themes \
+  %{buildroot}%{_prefix}/lib/plasmalogin/plasmalogin.conf.d \
   %{buildroot}%{_libexecdir}/ro-theme \
   %{buildroot}%{_bindir} \
-  %{buildroot}%{_sysconfdir}/sddm.conf.d \
   %{buildroot}%{_sysconfdir}/xdg/autostart
 
 # Plasma renk şemaları, global theme ve Plasma style.
@@ -77,6 +76,7 @@ cp -a platform/plasma/layout-templates/org.ro.desktop %{buildroot}%{_datadir}/pl
 # Wallpaper dosyaları.
 install -Dm0644 assets/wallpapers/light.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/light.jpg
 install -Dm0644 assets/wallpapers/dark.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/dark.jpg
+install -Dm0644 assets/wallpapers/loginv2.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/login.jpg
 install -Dm0644 assets/wallpapers/light.jpg "%{buildroot}%{_datadir}/wallpapers/Ro Light.jpg"
 install -Dm0644 assets/wallpapers/dark.jpg "%{buildroot}%{_datadir}/wallpapers/Ro Dark.jpg"
 
@@ -86,19 +86,15 @@ cp -a platform/gtk/Ro-GTK %{buildroot}%{_datadir}/themes/
 cp -a platform/icons/ro-icons %{buildroot}%{_datadir}/icons/
 cp -a platform/cursor/ro-cursor %{buildroot}%{_datadir}/icons/
 
-# SDDM ve Plymouth.
-cp -a platform/sddm/themes/Ro %{buildroot}%{_datadir}/sddm/themes/
+# Plymouth.
 cp -a platform/plymouth/ro-theme %{buildroot}%{_datadir}/plymouth/themes/
+install -Dm0644 platform/plasmalogin/20-ro-theme.conf \
+  %{buildroot}%{_prefix}/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
 
 # Kullanıcı/system tanı ve default uygulama araçları.
 install -Dm0755 scripts/apply-dark-defaults.sh %{buildroot}%{_libexecdir}/ro-theme/apply-dark-defaults
 install -Dm0755 scripts/check-plasma-runtime.sh %{buildroot}%{_libexecdir}/ro-theme/check-plasma-runtime
 install -Dm0755 scripts/diagnose.sh %{buildroot}%{_bindir}/ro-theme-diagnose
-
-cat > %{buildroot}%{_sysconfdir}/sddm.conf.d/10-ro-theme.conf <<'EOF'
-[Theme]
-Current=Ro
-EOF
 
 cat > %{buildroot}%{_sysconfdir}/xdg/kdeglobals <<'EOF'
 [KDE]
@@ -181,12 +177,7 @@ ro_theme_try() {
 }
 
 ro_theme_write_system_defaults() {
-  mkdir -p /etc/sddm.conf.d /etc/xdg/autostart
-
-  cat > /etc/sddm.conf.d/10-ro-theme.conf <<'EOF_RO_THEME_SDDM'
-[Theme]
-Current=Ro
-EOF_RO_THEME_SDDM
+  mkdir -p /etc/xdg/autostart
 
   cat > /etc/xdg/kdeglobals <<'EOF_RO_THEME_KDEGLOBALS'
 [KDE]
@@ -315,19 +306,19 @@ exit 0
 %dir %{_datadir}/ro-theme/wallpapers
 %{_datadir}/ro-theme/wallpapers/light.jpg
 %{_datadir}/ro-theme/wallpapers/dark.jpg
+%{_datadir}/ro-theme/wallpapers/login.jpg
 "%{_datadir}/wallpapers/Ro Light.jpg"
 "%{_datadir}/wallpapers/Ro Dark.jpg"
 %{_datadir}/kwin/effects/ro-smooth-motion
 %{_datadir}/themes/Ro-GTK
 %{_datadir}/icons/ro-icons
 %{_datadir}/icons/ro-cursor
-%{_datadir}/sddm/themes/Ro
 %{_datadir}/plymouth/themes/ro-theme
+%{_prefix}/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
 %dir %{_libexecdir}/ro-theme
 %{_libexecdir}/ro-theme/apply-dark-defaults
 %{_libexecdir}/ro-theme/check-plasma-runtime
 %{_bindir}/ro-theme-diagnose
-%config %{_sysconfdir}/sddm.conf.d/10-ro-theme.conf
 %config %{_sysconfdir}/xdg/kdeglobals
 %config %{_sysconfdir}/xdg/plasmarc
 %config %{_sysconfdir}/xdg/ksplashrc
@@ -336,6 +327,10 @@ exit 0
 %config %{_sysconfdir}/xdg/autostart/ro-theme-dark-defaults.desktop
 
 %changelog
+* Fri Aug 28 2026 Project Ro-ASD <contact@roasd.org> - 1.0.1-2
+- Rebuild for Fedora 44 and Plasma Login Manager.
+- Remove the legacy SDDM theme and provide only the Ro login wallpaper default.
+
 * Mon May 11 2026 Project Ro-ASD <ro-theme@example.invalid> - 1.0.1-1
 - Update v2 wallpaper assets and SDDM login logo treatment.
 - Improve lock screen wallpaper dimming and Plymouth RPM activation dependencies.

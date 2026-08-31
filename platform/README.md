@@ -3,7 +3,7 @@
 Bu klasör masaüstü ortamlarının doğrudan okuduğu tema paketlerini içerir.
 
 - `plasma/`: KDE color scheme, Plasma style, global theme ve panel layout dosyaları
-- `sddm/`: Giriş ekranı teması
+- `plasmalogin/`: Plasma Login Manager için Ro giriş duvar kâğıdı varsayılanı
 - `plymouth/`: Açılış animasyonu ve boot splash teması
 - `gtk/`: GTK3/GTK4 uygulamaları için temel Ro stili
 - `kwin/`: Opsiyonel KWin efekt paketi

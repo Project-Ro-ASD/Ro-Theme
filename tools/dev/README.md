@@ -9,7 +9,7 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-layout.sh`: Plasma layout dosyasını canlı oturumda dener.
 - `build-rpm.sh`: Yerel makinede kaynak arşivi ve RPM üretimini kolaylaştırır.
 - `test-rpm.sh`: Oluşan RPM dosyasını kurmadan önce denetler.
-- `install-system-preview.sh`: RPM kurmadan SDDM/Plymouth önizlemesi yapar.
+- `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesi yapar.
 
 Kısa yerel test:
 

@@ -20,10 +20,10 @@ assets/wallpapers/light.jpg
 assets/wallpapers/dark.jpg
 ```
 
-SDDM login ekranı şu dosyayı kullanır:
+Plasma Login Manager giriş ekranı RPM içinde şu dosyayı kullanır:
 
 ```text
-platform/sddm/themes/Ro/assets/login.jpg
+/usr/share/ro-theme/wallpapers/login.jpg
 ```
 
 Splash ekranı şu dosyaları kullanır:
@@ -47,7 +47,7 @@ platform/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
 ```bash
 cp assets/wallpapers/lightv2.jpg assets/wallpapers/light.jpg
 cp assets/wallpapers/darkv2.jpg assets/wallpapers/dark.jpg
-cp assets/wallpapers/loginv2.jpg platform/sddm/themes/Ro/assets/login.jpg
+# RPM derlemesi loginv2.jpg dosyasını login.jpg adıyla kurar.
 cp assets/wallpapers/loginv2.jpg platform/plasma/look-and-feel/org.ro.light/contents/splash/login.jpg
 cp assets/wallpapers/loginv2.jpg platform/plasma/look-and-feel/org.ro.dark/contents/splash/login.jpg
 ```

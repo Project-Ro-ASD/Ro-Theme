@@ -125,15 +125,15 @@ required_paths=(
   /usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
   /usr/share/ro-theme/wallpapers/light.jpg
   /usr/share/ro-theme/wallpapers/dark.jpg
+  /usr/share/ro-theme/wallpapers/login.jpg
   "/usr/share/wallpapers/Ro Light.jpg"
   "/usr/share/wallpapers/Ro Dark.jpg"
   /usr/share/kwin/effects/ro-smooth-motion/contents/code/main.js
-  /usr/share/sddm/themes/Ro/Main.qml
   /usr/share/plymouth/themes/ro-theme/ro-theme.plymouth
+  /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
   /usr/bin/ro-theme-diagnose
   /usr/libexec/ro-theme/apply-dark-defaults
   /usr/libexec/ro-theme/check-plasma-runtime
-  /etc/sddm.conf.d/10-ro-theme.conf
   /etc/xdg/kdeglobals
   /etc/xdg/plasmarc
   /etc/xdg/ksplashrc
@@ -150,9 +150,22 @@ for path in "${required_paths[@]}"; do
   fi
 done
 
+forbidden_paths=(
+  /usr/share/sddm/themes/Ro/Main.qml
+  /etc/sddm.conf.d/10-ro-theme.conf
+)
+
+for path in "${forbidden_paths[@]}"; do
+  if grep -Fxq "$path" "$payload"; then
+    fail "RPM payload must not own Fedora 44 login-manager path $path"
+  else
+    pass "not packaged: $path"
+  fi
+done
+
 rm -f "$payload" "$payload_err"
 
-run_capture "Install Or Upgrade Transaction Test" rpm -Uvh --test "$RPM_PATH" || true
+run_capture "Install Or Upgrade Transaction Test" rpm -Uvh --test --ignoresize "$RPM_PATH" || true
 
 if [[ "$VERIFY_INSTALLED" -eq 1 ]]; then
   run_capture "Installed Package Verify" rpm -V ro-theme || true

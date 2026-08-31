@@ -30,12 +30,16 @@ run_optional() {
   return 0
 }
 
-echo "Installing Ro SDDM and Plymouth system preview..."
+echo "Installing Ro Plasma Login Manager and Plymouth system preview..."
 
-mkdir -p /usr/share/sddm/themes /usr/share/plymouth/themes
-rm -rf /usr/share/sddm/themes/Ro /usr/share/plymouth/themes/ro-theme
+mkdir -p /usr/share/ro-theme/wallpapers \
+  /usr/lib/plasmalogin/plasmalogin.conf.d \
+  /usr/share/plymouth/themes
+rm -rf /usr/share/plymouth/themes/ro-theme
 
-cp -r platform/sddm/themes/Ro /usr/share/sddm/themes/
+install -m0644 assets/wallpapers/loginv2.jpg /usr/share/ro-theme/wallpapers/login.jpg
+install -m0644 platform/plasmalogin/20-ro-theme.conf \
+  /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
 cp -r platform/plymouth/ro-theme /usr/share/plymouth/themes/
 
 # Plymouth script zip dosyasını doğrudan okuyamaz.
@@ -63,13 +67,9 @@ if [[ -f /usr/share/plymouth/themes/ro-theme/animation.zip ]]; then
   fi
 fi
 
-chmod -R a+rX /usr/share/sddm/themes/Ro /usr/share/plymouth/themes/ro-theme
-
-mkdir -p /etc/sddm.conf.d
-cat > /etc/sddm.conf.d/10-ro-theme.conf <<'CONF'
-[Theme]
-Current=Ro
-CONF
+chmod -R a+rX /usr/share/ro-theme/wallpapers/login.jpg \
+  /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf \
+  /usr/share/plymouth/themes/ro-theme
 
 # Eski paketlerden kalmış /etc/xdg/kdeglobals [KDE] ColorScheme değeri,
 # kullanıcı Colors ekranından light/dark seçince stale kalıp paleti karıştırabilir.
@@ -102,5 +102,5 @@ if command -v dracut >/dev/null 2>&1; then
   run_optional "dracut initramfs regeneration" dracut -f --regenerate-all || true
 fi
 
-echo "System preview installed. Reboot to test login/boot screen."
+echo "System preview installed. Reboot to test Plasma Login Manager and boot screen."
 echo "Debug command: ./scripts/diagnose.sh"

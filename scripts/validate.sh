@@ -312,27 +312,12 @@ check_file platform/gtk/Ro-GTK/gtk-4.0/gtk.css
 check_file platform/icons/ro-icons/index.theme
 check_file platform/cursor/ro-cursor/index.theme
 
-section "SDDM And Plymouth"
-check_file platform/sddm/themes/Ro/Main.qml
-check_file platform/sddm/themes/Ro/theme.conf
-check_file platform/sddm/themes/Ro/metadata.desktop
-check_file platform/sddm/themes/Ro/assets/login.jpg
-check_file platform/sddm/themes/Ro/assets/roasd-logo.png
-check_absent_file platform/sddm/themes/Ro/assets/light.jpg "unused SDDM light wallpaper"
-check_absent_file platform/sddm/themes/Ro/assets/dark.jpg "unused SDDM dark wallpaper"
-check_contains platform/sddm/themes/Ro/Main.qml "sessionModel" "SDDM session chooser support"
-check_contains platform/sddm/themes/Ro/Main.qml "Instantiator" "SDDM session model instantiator"
-check_contains platform/sddm/themes/Ro/Main.qml "model.index" "SDDM real session index usage"
-check_contains platform/sddm/themes/Ro/Main.qml "sessionIndexValue" "SDDM session index role"
-check_contains platform/sddm/themes/Ro/Main.qml "keyboard.layouts" "SDDM keyboard layout chooser support"
-check_contains platform/sddm/themes/Ro/Main.qml "selectedUserAvatar" "SDDM user avatar binding"
-check_contains platform/sddm/themes/Ro/Main.qml "userAvatarAt" "SDDM user avatar lookup"
-check_contains platform/sddm/themes/Ro/Main.qml "assets/roasd-logo.png" "SDDM login card logo"
-check_contains platform/sddm/themes/Ro/Main.qml "#352F44" "SDDM Ro dark background color"
-check_contains platform/sddm/themes/Ro/Main.qml "#AAD7D9" "SDDM Ro soft auth accent"
-check_contains platform/sddm/themes/Ro/Main.qml "#92C7CF" "SDDM Ro action auth accent"
-check_contains platform/sddm/themes/Ro/Main.qml "#FAF0E6" "SDDM Ro text color"
-check_not_contains platform/sddm/themes/Ro/Main.qml "#30C7E0" "SDDM old cyan accent removed"
+section "Plasma Login Manager And Plymouth"
+check_file platform/plasmalogin/20-ro-theme.conf
+check_contains platform/plasmalogin/20-ro-theme.conf "WallpaperPlugin=org.kde.image" "Plasma Login Manager image wallpaper plugin"
+check_contains platform/plasmalogin/20-ro-theme.conf "file:///usr/share/ro-theme/wallpapers/login.jpg" "Plasma Login Manager Ro wallpaper"
+check_file assets/wallpapers/loginv2.jpg
+check_absent_file platform/sddm "legacy SDDM source tree"
 check_not_contains platform/plasma/look-and-feel/org.ro.light/contents/splash/Splash.qml "#30C7E0" "RoLight splash old cyan accent removed"
 check_not_contains platform/plasma/look-and-feel/org.ro.dark/contents/splash/Splash.qml "#30C7E0" "RoDark splash old cyan accent removed"
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/lockscreen/README.md "saat alanı" "RoLight lockscreen keeps KDE clock"
@@ -359,6 +344,7 @@ check_contains packaging/ro-theme.spec "%defattr(-,root,root,-)" "RPM root file 
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace" "RPM Plasma dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-desktop" "RPM Plasma desktop dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace-libs" "RPM Plasma applet plugin dependency"
+check_contains packaging/ro-theme.spec "Requires:       plasma-login-manager" "RPM Plasma Login Manager dependency"
 check_contains packaging/ro-theme.spec "Requires:       plymouth-plugin-script" "RPM Plymouth script plugin dependency"
 check_contains .github/workflows/rpm-build.yml "plymouth-plugin-script" "GitHub workflow installs Plymouth test deps"
 check_contains .github/workflows/rpm-build.yml "grubby" "GitHub workflow installs grubby test dep"
@@ -371,11 +357,14 @@ check_contains packaging/ro-theme.spec "ro-theme-diagnose" "RPM diagnose command
 check_contains packaging/ro-theme.spec "kscreenlockerrc" "RPM lock screen wallpaper default"
 check_contains packaging/ro-theme.spec "ro_theme_write_system_defaults" "RPM post enforces system defaults"
 check_contains packaging/ro-theme.spec "contents/lockscreen/assets/login.jpg" "RPM lock screen login wallpaper default"
+check_contains packaging/ro-theme.spec "plasmalogin/plasmalogin.conf.d/20-ro-theme.conf" "RPM Plasma Login Manager default"
+check_contains packaging/ro-theme.spec "wallpapers/login.jpg" "RPM Plasma Login Manager wallpaper"
 check_contains packaging/ro-theme.spec "Blur=false" "RPM lock screen wallpaper blur disabled"
 check_contains packaging/ro-theme.spec "library=org.kde.breeze" "RPM Breeze decoration default"
 check_contains packaging/ro-theme.spec "ro-smooth-motionEnabled=false" "RPM safe KWin effect default"
 check_contains packaging/ro-theme.spec "--group KDE --key ColorScheme --delete" "RPM removes stale KDE ColorScheme fallback"
 check_not_contains packaging/ro-theme.spec "tools/dev" "RPM package excludes developer tools"
+check_not_contains packaging/ro-theme.spec "%{_datadir}/sddm" "RPM excludes SDDM payload"
 check_contains tools/dev/install-system-preview.sh "--group KDE --key ColorScheme --delete" "system preview removes stale KDE ColorScheme fallback"
 
 printf '\nValidation summary: %d error(s), %d warning(s)\n' "$errors" "$warnings"

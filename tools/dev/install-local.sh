@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Ro local kurulum scripti
 # Kullanıcı dizinine kurulum yapar.
-# SDDM ve Plymouth gibi sistem bileşenleri için ayrıca install-system-preview.sh çalıştırılır.
+# Plasma Login Manager ve Plymouth gibi sistem bileşenleri için ayrıca install-system-preview.sh çalıştırılır.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"

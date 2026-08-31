@@ -28,7 +28,7 @@ jobs:
             -e GITHUB_REF_TYPE \
             -v "${GITHUB_WORKSPACE}:/work" \
             -w /work \
-            fedora:43 \
+            fedora:44 \
             bash -lc '
               set -euo pipefail
 
@@ -47,6 +47,7 @@ jobs:
                 plasma-desktop \
                 plasma-workspace \
                 plasma-workspace-libs \
+                plasma-login-manager \
                 plymouth \
                 plymouth-plugin-script \
                 python3 \

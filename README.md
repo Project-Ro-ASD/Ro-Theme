@@ -1,7 +1,7 @@
 # Ro Theme
 
 Fedora KDE Plasma için hazırlanmış Ro masaüstü tema paketi. Proje; global theme,
-Plasma style, color scheme, wallpaper bağlantıları, SDDM login teması, Plymouth
+Plasma style, color scheme, wallpaper bağlantıları, Plasma Login Manager ve Plymouth
 boot teması, GTK stili ve RPM paketleme dosyalarını tek kaynak ağacında tutar.
 
 Güncel paket sürümü: `1.0.1`
@@ -13,7 +13,7 @@ Güncel paket sürümü: `1.0.1`
 - `RoLight` ve `RoDark` Plasma style paketleri
 - Dark/light global theme ile otomatik wallpaper seçimi
 - Kilit ekranında güvenli KDE auth akışını bozmadan `login.jpg` wallpaper ayarı
-- Kullanıcı, masaüstü oturumu ve klavye seçicili SDDM login theme
+- Plasma Login Manager için Ro giriş duvar kâğıdı varsayılanı
 - Plymouth boot theme
 - RPM spec ve yerel doğrulama scriptleri
 
@@ -25,7 +25,7 @@ core/        # Kaynak tasarım tokenları
 dist/        # Tokenlardan üretilen CSS/JSON/Tailwind çıktıları
 docs/        # Geliştirici notları
 packaging/   # RPM spec dosyası
-platform/    # KDE, SDDM, Plymouth, GTK, icon ve cursor paketleri
+platform/    # KDE, Plasma Login Manager, Plymouth, GTK, icon ve cursor paketleri
 scripts/     # Build, doğrulama ve RPM/runtime scriptleri
 tools/dev/   # Yerel kurulum, test ve release yardımcıları
 ```

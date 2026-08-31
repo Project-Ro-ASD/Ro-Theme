@@ -152,5 +152,5 @@ origin  git@github.com:Project-Ro-ASD/Ro-Theme.git (push)
 - `tools/dev/` kaynak repoda kalır ama RPM paketine kurulmaz.
 - `VERSION` ile tag adı eşleşmeli: `VERSION=1.0.0` ise tag `v1.0.0` olmalı.
 - Global theme wallpaper değiştirir; color scheme sadece renk paletini değiştirir.
-- SDDM login theme sistemde görünmesi için RPM kurulumu veya sistem kopyası gerekir.
+- Plasma Login Manager Ro giriş duvar kâğıdının sistemde görünmesi için RPM kurulumu veya sistem önizlemesi gerekir.
 - Kilit ekranında KDE'nin güvenli auth akışı korunur; özel `LockScreen.qml` kullanılmaz.
