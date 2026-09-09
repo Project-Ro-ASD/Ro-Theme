@@ -1,0 +1,97 @@
+name: Ro-Theme CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ro-theme-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fedora44-rpm:
+    name: Fedora 44 RPM CI
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:44
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install build and validation dependencies
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            bash \
+            coreutils \
+            diffutils \
+            dracut \
+            findutils \
+            grubby \
+            gzip \
+            grep \
+            kf6-kconfig \
+            kf6-kpackage \
+            kf6-kservice \
+            plasma-desktop \
+            plasma-workspace \
+            plasma-workspace-libs \
+            plasma-login-manager \
+            plymouth \
+            plymouth-plugin-script \
+            python3 \
+            rpm \
+            rpm-build \
+            sed \
+            tar \
+            util-linux
+
+      - name: Build and validate RPM
+        run: |
+          set -euo pipefail
+          ./tools/dev/build-rpm.sh
+
+      - name: Verify Fedora 44 artifact identity
+        run: |
+          set -euo pipefail
+          VERSION_VALUE="$(tr -d '[:space:]' < VERSION)"
+
+          mapfile -t BIN_RPMS < <(find build/rpmbuild/RPMS -type f -name 'ro-theme-*.noarch.rpm' | sort)
+          mapfile -t SRC_RPMS < <(find build/rpmbuild/SRPMS -type f -name 'ro-theme-*.src.rpm' | sort)
+
+          if [[ "${#BIN_RPMS[@]}" -ne 1 ]]; then
+            echo "Expected exactly one noarch RPM, found ${#BIN_RPMS[@]}." >&2
+            printf '%s\n' "${BIN_RPMS[@]}" >&2
+            exit 1
+          fi
+
+          if [[ "${#SRC_RPMS[@]}" -ne 1 ]]; then
+            echo "Expected exactly one source RPM, found ${#SRC_RPMS[@]}." >&2
+            printf '%s\n' "${SRC_RPMS[@]}" >&2
+            exit 1
+          fi
+
+          BIN_RPM="${BIN_RPMS[0]}"
+          SRC_RPM="${SRC_RPMS[0]}"
+
+          [[ "$(rpm -qp --qf '%{NAME}' "$BIN_RPM")" == "ro-theme" ]]
+          [[ "$(rpm -qp --qf '%{VERSION}' "$BIN_RPM")" == "$VERSION_VALUE" ]]
+          [[ "$(rpm -qp --qf '%{ARCH}' "$BIN_RPM")" == "noarch" ]]
+          [[ "$(rpm -qp --qf '%{VERSION}' "$SRC_RPM")" == "$VERSION_VALUE" ]]
+
+          RELEASE_VALUE="$(rpm -qp --qf '%{RELEASE}' "$BIN_RPM")"
+          if [[ "$RELEASE_VALUE" != *.fc44 ]]; then
+            echo "Expected a Fedora 44 release suffix, got: $RELEASE_VALUE" >&2
+            exit 1
+          fi
+
+          echo "Validated: $(basename "$BIN_RPM")"
+          echo "Validated: $(basename "$SRC_RPM")"
