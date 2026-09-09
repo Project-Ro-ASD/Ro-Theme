@@ -1,22 +1,19 @@
 name: Build RPM
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   rpm:
     name: Fedora RPM
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build in Fedora container
         shell: bash
@@ -24,8 +21,6 @@ jobs:
           set -euo pipefail
 
           docker run --rm \
-            -e GITHUB_REF_NAME \
-            -e GITHUB_REF_TYPE \
             -v "${GITHUB_WORKSPACE}:/work" \
             -w /work \
             fedora:44 \
@@ -57,34 +52,17 @@ jobs:
                 tar \
                 util-linux
 
-              VERSION_VALUE="$(tr -d "[:space:]" < VERSION)"
-              if [[ "${GITHUB_REF_TYPE:-}" = "tag" && "${GITHUB_REF_NAME:-}" != "v${VERSION_VALUE}" ]]; then
-                echo "Tag ${GITHUB_REF_NAME} does not match VERSION v${VERSION_VALUE}" >&2
-                exit 1
-              fi
-
-              ./tools/dev/build-rpm.sh
+              FEDORA_RELEASE=44 ./tools/dev/build-rpm.sh
             '
 
           sudo chown -R "$USER:$USER" build
 
       - name: Upload RPM artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: ro-theme-rpm-${{ github.ref_name }}
+          name: ro-theme-rpm-${{ github.run_id }}
           if-no-files-found: error
           retention-days: 14
           path: |
             build/rpmbuild/RPMS/**/*.rpm
             build/rpmbuild/SRPMS/**/*.src.rpm
-            build/rpmbuild/SOURCES/ro-theme-*.tar.gz
-
-      - name: Publish GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          files: |
-            build/rpmbuild/RPMS/**/*.rpm
-            build/rpmbuild/SRPMS/**/*.src.rpm
-            build/rpmbuild/SOURCES/ro-theme-*.tar.gz
