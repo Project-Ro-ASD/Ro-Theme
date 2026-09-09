@@ -13,6 +13,7 @@ VERSION="$(tr -d '[:space:]' < VERSION)"
 TOPDIR="${RPMBUILD_TOPDIR:-$ROOT/build/rpmbuild}"
 SOURCE_DIR="$TOPDIR/SOURCES"
 SPEC_FILE="$ROOT/packaging/ro-theme.spec"
+FEDORA_RELEASE="${FEDORA_RELEASE:-44}"
 
 echo "Generating theme outputs..."
 ./scripts/generate-theme.sh
@@ -41,8 +42,12 @@ if ! command -v rpmbuild >/dev/null 2>&1; then
   exit 2
 fi
 
-echo "Building RPM..."
-rpmbuild --define "_topdir $TOPDIR" --define "_tmppath ${TMPDIR:-/tmp}" -ba "$SPEC_FILE"
+echo "Building Fedora ${FEDORA_RELEASE} RPM..."
+rpmbuild \
+  --define "_topdir $TOPDIR" \
+  --define "_tmppath ${TMPDIR:-/tmp}" \
+  --define "dist .fc${FEDORA_RELEASE}" \
+  -ba "$SPEC_FILE"
 
 RPM_PATH="$(find "$TOPDIR/RPMS" -type f -name "$NAME-$VERSION-*.rpm" -printf '%T@ %p\n' | sort -n | tail -n 1 | sed 's/^[^ ]* //')"
 
