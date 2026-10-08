@@ -440,18 +440,46 @@ check_contains packaging/ro-theme.spec "Requires:       kf6-kservice" "RPM KDE s
 check_contains packaging/ro-theme.spec "%dir %{_datadir}/ro-theme" "RPM owns Ro data directory"
 check_contains packaging/ro-theme.spec "%dir %{_libexecdir}/ro-theme" "RPM owns Ro libexec directory"
 check_contains packaging/ro-theme.spec "ro-theme-diagnose" "RPM diagnose command"
-check_contains packaging/ro-theme.spec "kscreenlockerrc" "RPM lock screen wallpaper default"
-check_contains packaging/ro-theme.spec "ro_theme_write_system_defaults" "RPM post enforces system defaults"
-check_contains packaging/ro-theme.spec "contents/lockscreen/assets/login.jpg" "RPM lock screen login wallpaper default"
 check_contains packaging/ro-theme.spec "plasmalogin/plasmalogin.conf.d/20-ro-theme.conf" "RPM Plasma Login Manager default"
 check_contains packaging/ro-theme.spec "wallpapers/login.jpg" "RPM Plasma Login Manager wallpaper"
-check_contains packaging/ro-theme.spec "Blur=false" "RPM lock screen wallpaper blur disabled"
-check_contains packaging/ro-theme.spec "library=org.kde.breeze" "RPM Breeze decoration default"
-check_contains packaging/ro-theme.spec "ro-smooth-motionEnabled=false" "RPM safe KWin effect default"
-check_contains packaging/ro-theme.spec "--group KDE --key ColorScheme --delete" "RPM removes stale KDE ColorScheme fallback"
 check_not_contains packaging/ro-theme.spec "tools/dev" "RPM package excludes developer tools"
 check_not_contains packaging/ro-theme.spec "%{_datadir}/sddm" "RPM excludes SDDM payload"
 check_contains tools/dev/install-system-preview.sh "--group KDE --key ColorScheme --delete" "system preview removes stale KDE ColorScheme fallback"
+
+section "System Defaults (/etc/xdg, DEFAULTS-OWNERSHIP-V1)"
+# 22 SYS-01/06/07/11: varsayılanlar üreticiden gelir, %config(noreplace) ile kurulur; %post ve araçlar
+# kullanıcı dosyasına ya da /etc/xdg'ye yazmaz.
+XDG_DEFAULTS=platform/plasma/defaults/xdg
+for f in kdeglobals plasmarc ksplashrc kscreenlockerrc kwinrc; do
+  check_file "$XDG_DEFAULTS/$f"
+  check_contains packaging/ro-theme.spec "%config(noreplace) %{_sysconfdir}/xdg/$f" "RPM installs /etc/xdg/$f as %config(noreplace)"
+  check_not_contains "$XDG_DEFAULTS/$f" "kwin4_effect_" "$f has no obsolete Plasma 5 effect keys"
+done
+for g in "[Colors:Window]" "[Colors:View]" "[Colors:Button]" "[Colors:Selection]" "[Colors:Tooltip]" "[Colors:Complementary]" "[Colors:Header]" "[WM]" "[ColorEffects:Disabled]"; do
+  check_contains "$XDG_DEFAULTS/kdeglobals" "$g" "system kdeglobals has $g (new users get Ro colors from /etc/xdg)"
+done
+check_contains "$XDG_DEFAULTS/kdeglobals" "ColorScheme=RoDark" "system kdeglobals selects RoDark"
+if awk '/^\[KDE\]$/ { g = 1; next } /^\[/ { g = 0 } g && /^ColorScheme=/ { f = 1 } END { exit f ? 0 : 1 }' "$XDG_DEFAULTS/kdeglobals"; then
+  fail "system kdeglobals contains obsolete [KDE] ColorScheme"
+else
+  ok "system kdeglobals has no obsolete [KDE] ColorScheme"
+fi
+check_contains "$XDG_DEFAULTS/kscreenlockerrc" "contents/lockscreen/assets/login.jpg" "system lock screen login wallpaper default"
+check_contains "$XDG_DEFAULTS/kscreenlockerrc" "Blur=false" "system lock screen wallpaper blur disabled"
+check_contains "$XDG_DEFAULTS/kwinrc" "library=org.kde.breeze" "system Breeze decoration default"
+check_contains "$XDG_DEFAULTS/kwinrc" "ro-smooth-motionEnabled=false" "system safe KWin effect default"
+check_not_contains packaging/ro-theme.spec "kwin4_effect_" "RPM has no obsolete Plasma 5 effect keys"
+check_not_contains packaging/ro-theme.spec "--all-users" "RPM never applies settings to all users"
+check_not_contains packaging/ro-theme.spec "xdg/autostart" "RPM ships no autostart that writes user files"
+check_not_contains packaging/ro-theme.spec "ro_theme_write_system_defaults" "RPM post does not rewrite system defaults"
+post_section="$(awk '/^%post$/ { p = 1; next } /^%[a-z]/ && p { exit } p' packaging/ro-theme.spec)"
+if grep -Eq '/etc/xdg|apply-dark-defaults|\$HOME|/home/' <<< "$post_section"; then
+  fail "RPM %post writes to /etc/xdg or user files"
+else
+  ok "RPM %post does not touch /etc/xdg or user files"
+fi
+check_not_contains scripts/apply-dark-defaults.sh "getent passwd" "apply-dark-defaults only changes the current user"
+check_not_contains scripts/apply-dark-defaults.sh "runuser" "apply-dark-defaults never acts as another user"
 
 printf '\nValidation summary: %d error(s), %d warning(s)\n' "$errors" "$warnings"
 

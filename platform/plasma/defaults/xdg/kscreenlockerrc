@@ -1,0 +1,10 @@
+# Ro-ASD system defaults. Generated from core/tokens by scripts/generate-theme.sh.
+# Packaged as %config(noreplace); user settings in ~/.config always take precedence.
+
+[Greeter]
+WallpaperPlugin=org.kde.image
+
+[Greeter][Wallpaper][org.kde.image][General]
+Image=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
+PreviewImage=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
+Blur=false
