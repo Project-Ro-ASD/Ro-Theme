@@ -151,6 +151,35 @@ check_shell() {
   fi
 }
 
+check_scheme_contrast() {
+  # Her renk setinde (Colors:*) metin rolleri kendi normal ve ikinci zemininde >= 4.5:1
+  # (COL-14, COL-15, COL-17, COL-18, COL-28)
+  local path="$1"
+  local report
+  if ! report="$(python3 - "$path" <<'PY'
+import re, sys
+s = open(sys.argv[1], encoding='utf-8').read()
+def lum(c):
+    c = [x / 255 for x in c]; c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+def ratio(a, b):
+    la, lb = sorted([lum(a), lum(b)], reverse=True); return (la + 0.05) / (lb + 0.05)
+bad = []
+for group, body in re.findall(r'\[(Colors:[^\n]*)\]\n(.*?)(?=\n\n|\n\[|\Z)', s, re.S):
+    d = {k: tuple(map(int, v.split(','))) for k, v in (l.split('=', 1) for l in body.splitlines() if '=' in l)}
+    for bg in ['BackgroundNormal', 'BackgroundAlternate']:
+        for k, v in d.items():
+            if k.startswith('Foreground') and ratio(v, d[bg]) < 4.5:
+                bad.append(f'{group} {k} on {bg} {ratio(v, d[bg]):.2f}')
+print('; '.join(bad)); sys.exit(1 if bad else 0)
+PY
+)"; then
+    fail "$path set contrast: $report"
+  else
+    ok "$path every color set readable (WCAG AA)"
+  fi
+}
+
 check_global_theme() {
   local package="$1"
   local look="$2"
@@ -208,7 +237,22 @@ for fg in ['text', 'textSecondary', 'accent', 'link', 'negative', 'neutral', 'po
         if r < 4.5: bad.append(f'{fg} on {bg} {r:.2f}')
 r = ratio(t['selectionText'], t['accent'])
 if r < 4.5: bad.append(f'selectionText on accent {r:.2f}')
-if len({t['negative'], t['neutral'], t['positive'], t['text']}) < 4: bad.append('semantic colors not distinct')
+for k, c in t['selection'].items():
+    r = ratio(c, t['accent'])
+    if r < 4.5: bad.append(f'selection.{k} on accent {r:.2f}')
+if len({t['negative'], t['neutral'], t['positive'], t['link'], t['visited'], t['text']}) < 6: bad.append('semantic colors not distinct')
+# Kontrol kenarlığı (etkileşimli öğe sınırı) zemin ve yüzeyde >= 3:1 (COL-16, COL-28)
+for bg in ['bg', 'surface']:
+    r = ratio(t['controlBorder'], t[bg])
+    if r < 3.0: bad.append(f'controlBorder on {bg} {r:.2f}')
+# Vurgu tonu logo laciverti tonunda: 219 ± 6 derece (COL-04, COL-28)
+import colorsys
+h = t['accent'].lstrip('#'); hue = colorsys.rgb_to_hls(*[int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)])[0] * 360
+if abs(hue - 219) > 6: bad.append(f'accent hue {hue:.0f} not 219+-6')
+# Nötr yüzeyler gri: max(R,G,B) - min(R,G,B) <= 12 (COL-28)
+for k in ['bg', 'surface', 'surfaceAlt', 'border']:
+    h = t[k].lstrip('#'); c = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
+    if max(c) - min(c) > 12: bad.append(f'{k} not neutral gray')
 print('; '.join(bad)); sys.exit(1 if bad else 0)
 PY
 )"; then
@@ -264,16 +308,19 @@ check_file tools/dev/README.md
 section "Tokens"
 check_json core/tokens/colors.light.json
 check_json core/tokens/colors.dark.json
-check_contains core/tokens/colors.light.json '"navy": "#263B66"' "Ro brand navy"
-check_contains core/tokens/colors.light.json '"ink": "#2B2B2C"' "Ro brand ink"
+check_contains core/tokens/colors.light.json '"navy": "#213966"' "Ro brand navy"
+check_contains core/tokens/colors.light.json '"ink": "#2B2D2F"' "Ro brand ink"
 check_token_contrast core/tokens/colors.light.json "RoLight"
 check_token_contrast core/tokens/colors.dark.json "RoDark"
-for palette in core/tokens/palettes/*.json; do
-  check_token_contrast "$palette" "saved palette $(basename "$palette" .json)"
+check_absent_file core/tokens/palettes "archived trial palettes (COL-31)"
+for scheme in RoLight RoDark; do
+  check_scheme_contrast "platform/plasma/color-schemes/$scheme.colors"
 done
-for scheme in RoCoolLight RoCoolDark RoStoneLight RoStoneDark; do
-  check_file "platform/plasma/color-schemes/$scheme.colors"
-done
+if grep -nE "^[A-Za-z]+=[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}$" scripts/generate-theme.sh >/dev/null; then
+  fail "generator contains hard-coded RGB color lines (00 §4.1, COL-21)"
+else
+  ok "generator has no hard-coded RGB color lines"
+fi
 check_json core/tokens/motion.json
 check_json core/tokens/radius.json
 check_json core/tokens/opacity.json
