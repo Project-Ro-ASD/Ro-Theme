@@ -4,4 +4,4 @@ contrast=0.35
 saturation=1.05
 
 [AdaptiveTransparency]
-enabled=true
+enabled=false

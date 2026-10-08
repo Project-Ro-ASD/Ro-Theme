@@ -57,6 +57,7 @@ install -d \
   %{buildroot}%{_datadir}/ro-theme/wallpapers \
   %{buildroot}%{_datadir}/wallpapers \
   %{buildroot}%{_datadir}/kwin/effects \
+  %{buildroot}%{_datadir}/aurorae/themes \
   %{buildroot}%{_datadir}/themes \
   %{buildroot}%{_datadir}/icons \
   %{buildroot}%{_datadir}/plymouth/themes \
@@ -82,6 +83,9 @@ install -Dm0644 assets/wallpapers/dark.jpg "%{buildroot}%{_datadir}/wallpapers/R
 
 # KWin, GTK, icon ve cursor paketleri.
 cp -a platform/kwin/effects/ro-smooth-motion %{buildroot}%{_datadir}/kwin/effects/
+# Pencere dekorasyonu (Aurorae).
+cp -a platform/kwin/aurorae/RoLight %{buildroot}%{_datadir}/aurorae/themes/
+cp -a platform/kwin/aurorae/RoDark %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/gtk/Ro-GTK %{buildroot}%{_datadir}/themes/
 cp -a platform/icons/ro-icons %{buildroot}%{_datadir}/icons/
 cp -a platform/cursor/ro-cursor %{buildroot}%{_datadir}/icons/
@@ -297,6 +301,10 @@ exit 0
 %doc README.md docs
 %{_datadir}/color-schemes/RoLight.colors
 %{_datadir}/color-schemes/RoDark.colors
+%{_datadir}/color-schemes/RoCoolLight.colors
+%{_datadir}/color-schemes/RoCoolDark.colors
+%{_datadir}/color-schemes/RoStoneLight.colors
+%{_datadir}/color-schemes/RoStoneDark.colors
 %{_datadir}/plasma/desktoptheme/RoLight
 %{_datadir}/plasma/desktoptheme/RoDark
 %{_datadir}/plasma/look-and-feel/org.ro.light
@@ -310,6 +318,8 @@ exit 0
 "%{_datadir}/wallpapers/Ro Light.jpg"
 "%{_datadir}/wallpapers/Ro Dark.jpg"
 %{_datadir}/kwin/effects/ro-smooth-motion
+%{_datadir}/aurorae/themes/RoLight
+%{_datadir}/aurorae/themes/RoDark
 %{_datadir}/themes/Ro-GTK
 %{_datadir}/icons/ro-icons
 %{_datadir}/icons/ro-cursor

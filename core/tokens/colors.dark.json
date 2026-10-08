@@ -1,19 +1,32 @@
 {
   "name": "Ro Dark",
-  "palette": ["#FAF0E6", "#B9B4C7", "#5C5470", "#352F44"],
-  "bg": "#352F44",
-  "bgAlt": "#5C5470",
-  "surface": "#5C5470",
-  "surfaceAlt": "#5C5470",
-  "glass": "rgba(92,84,112,0.58)",
-  "text": "#FAF0E6",
-  "textSecondary": "#B9B4C7",
-  "accent": "#B9B4C7",
-  "border": "#B9B4C7",
-  "link": "#FAF0E6",
-  "visited": "#B9B4C7",
-  "negative": "#FAF0E6",
-  "neutral": "#B9B4C7",
-  "positive": "#B9B4C7",
-  "selectionText": "#352F44"
+  "brand": {
+    "navy": "#263B66",
+    "ink": "#2B2B2C",
+    "grayLight": "#B8B9BB",
+    "gray": "#A3A4A7",
+    "grayDark": "#707174"
+  },
+  "palette": [
+    "#263B66",
+    "#2B2B2C",
+    "#B8B9BB",
+    "#A3A4A7",
+    "#707174"
+  ],
+  "bg": "#1C1C1E",
+  "bgAlt": "#2B2B2C",
+  "surface": "#2B2B2C",
+  "surfaceAlt": "#3A3A3C",
+  "glass": "rgba(43,43,44,0.74)",
+  "text": "#F2F2F3",
+  "textSecondary": "#A3A4A7",
+  "accent": "#6E9BFF",
+  "border": "#4A4A4D",
+  "link": "#6E9BFF",
+  "visited": "#B39DFF",
+  "negative": "#FF8A80",
+  "neutral": "#F2C14E",
+  "positive": "#6CCB8A",
+  "selectionText": "#0B1630"
 }

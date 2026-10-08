@@ -1,19 +1,32 @@
 {
   "name": "Ro Light",
-  "palette": ["#E5E1DA", "#FBF9F1", "#AAD7D9", "#92C7CF"],
-  "bg": "#FBF9F1",
-  "bgAlt": "#E5E1DA",
-  "surface": "#FBF9F1",
-  "surfaceAlt": "#E5E1DA",
-  "glass": "rgba(251,249,241,0.76)",
-  "text": "#2F5960",
-  "textSecondary": "#5D8187",
-  "accent": "#92C7CF",
-  "border": "#AAD7D9",
-  "link": "#2F5960",
-  "visited": "#5D8187",
-  "negative": "#2F5960",
-  "neutral": "#5D8187",
-  "positive": "#2F5960",
-  "selectionText": "#2F5960"
+  "brand": {
+    "navy": "#263B66",
+    "ink": "#2B2B2C",
+    "grayLight": "#B8B9BB",
+    "gray": "#A3A4A7",
+    "grayDark": "#707174"
+  },
+  "palette": [
+    "#263B66",
+    "#2B2B2C",
+    "#B8B9BB",
+    "#A3A4A7",
+    "#707174"
+  ],
+  "bg": "#F2F2F3",
+  "bgAlt": "#E4E5E7",
+  "surface": "#FFFFFF",
+  "surfaceAlt": "#E4E5E7",
+  "glass": "rgba(255,255,255,0.78)",
+  "text": "#1E1E1F",
+  "textSecondary": "#5B5C60",
+  "accent": "#2357C6",
+  "border": "#CDCED1",
+  "link": "#2357C6",
+  "visited": "#6B4FBB",
+  "negative": "#C42B1C",
+  "neutral": "#9A5B00",
+  "positive": "#0F7B3A",
+  "selectionText": "#FFFFFF"
 }

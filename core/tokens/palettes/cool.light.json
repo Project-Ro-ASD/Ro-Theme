@@ -1,0 +1,32 @@
+{
+  "name": "Ro Cool Light",
+  "brand": {
+    "navy": "#263B66",
+    "ink": "#2B2B2C",
+    "grayLight": "#B8B9BB",
+    "gray": "#A3A4A7",
+    "grayDark": "#707174"
+  },
+  "palette": [
+    "#263B66",
+    "#2B2B2C",
+    "#B8B9BB",
+    "#A3A4A7",
+    "#707174"
+  ],
+  "bg": "#ECEDEF",
+  "bgAlt": "#E2E3E6",
+  "surface": "#F7F7F8",
+  "surfaceAlt": "#E2E3E6",
+  "glass": "rgba(247,247,248,0.86)",
+  "text": "#2B2B2C",
+  "textSecondary": "#5E5F63",
+  "accent": "#263B66",
+  "border": "#C3C4C8",
+  "link": "#263B66",
+  "visited": "#5A4D86",
+  "negative": "#B3261E",
+  "neutral": "#8A5A00",
+  "positive": "#2D6A47",
+  "selectionText": "#FFFFFF"
+}

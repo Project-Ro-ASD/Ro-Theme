@@ -5,51 +5,67 @@ module.exports = {
         "ro": {
           "light": {
             "name": "Ro Light",
+            "brand": {
+              "navy": "#263B66",
+              "ink": "#2B2B2C",
+              "grayLight": "#B8B9BB",
+              "gray": "#A3A4A7",
+              "grayDark": "#707174"
+            },
             "palette": [
-              "#E5E1DA",
-              "#FBF9F1",
-              "#AAD7D9",
-              "#92C7CF"
+              "#263B66",
+              "#2B2B2C",
+              "#B8B9BB",
+              "#A3A4A7",
+              "#707174"
             ],
-            "bg": "#FBF9F1",
-            "bgAlt": "#E5E1DA",
-            "surface": "#FBF9F1",
-            "surfaceAlt": "#E5E1DA",
-            "glass": "rgba(251,249,241,0.76)",
-            "text": "#2F5960",
-            "textSecondary": "#5D8187",
-            "accent": "#92C7CF",
-            "border": "#AAD7D9",
-            "link": "#2F5960",
-            "visited": "#5D8187",
-            "negative": "#2F5960",
-            "neutral": "#5D8187",
-            "positive": "#2F5960",
-            "selectionText": "#2F5960"
+            "bg": "#F2F2F3",
+            "bgAlt": "#E4E5E7",
+            "surface": "#FFFFFF",
+            "surfaceAlt": "#E4E5E7",
+            "glass": "rgba(255,255,255,0.78)",
+            "text": "#1E1E1F",
+            "textSecondary": "#5B5C60",
+            "accent": "#2357C6",
+            "border": "#CDCED1",
+            "link": "#2357C6",
+            "visited": "#6B4FBB",
+            "negative": "#C42B1C",
+            "neutral": "#9A5B00",
+            "positive": "#0F7B3A",
+            "selectionText": "#FFFFFF"
           },
           "dark": {
             "name": "Ro Dark",
+            "brand": {
+              "navy": "#263B66",
+              "ink": "#2B2B2C",
+              "grayLight": "#B8B9BB",
+              "gray": "#A3A4A7",
+              "grayDark": "#707174"
+            },
             "palette": [
-              "#FAF0E6",
-              "#B9B4C7",
-              "#5C5470",
-              "#352F44"
+              "#263B66",
+              "#2B2B2C",
+              "#B8B9BB",
+              "#A3A4A7",
+              "#707174"
             ],
-            "bg": "#352F44",
-            "bgAlt": "#5C5470",
-            "surface": "#5C5470",
-            "surfaceAlt": "#5C5470",
-            "glass": "rgba(92,84,112,0.58)",
-            "text": "#FAF0E6",
-            "textSecondary": "#B9B4C7",
-            "accent": "#B9B4C7",
-            "border": "#B9B4C7",
-            "link": "#FAF0E6",
-            "visited": "#B9B4C7",
-            "negative": "#FAF0E6",
-            "neutral": "#B9B4C7",
-            "positive": "#B9B4C7",
-            "selectionText": "#352F44"
+            "bg": "#1C1C1E",
+            "bgAlt": "#2B2B2C",
+            "surface": "#2B2B2C",
+            "surfaceAlt": "#3A3A3C",
+            "glass": "rgba(43,43,44,0.74)",
+            "text": "#F2F2F3",
+            "textSecondary": "#A3A4A7",
+            "accent": "#6E9BFF",
+            "border": "#4A4A4D",
+            "link": "#6E9BFF",
+            "visited": "#B39DFF",
+            "negative": "#FF8A80",
+            "neutral": "#F2C14E",
+            "positive": "#6CCB8A",
+            "selectionText": "#0B1630"
           }
         }
       },
@@ -59,7 +75,11 @@ module.exports = {
         "lg": 18,
         "xl": 24,
         "panel": 18,
-        "dock": 22
+        "dock": 22,
+        "popup": 18,
+        "widget": 18,
+        "window": 12,
+        "xs": 4
       },
       "spacing": {
         "xs": 4,
@@ -70,13 +90,21 @@ module.exports = {
         "panelHeight": 32,
         "dockHeight": 48,
         "dockIconSize": 28,
-        "panelMargin": 8
+        "panelMargin": 8,
+        "popupPadding": 12,
+        "shadowSize": 22,
+        "titlebarHeight": 36,
+        "windowBorder": 4,
+        "titleButton": 24,
+        "borderWidth": 1
       },
       "opacity": {
         "glass": 0.68,
         "glassStrong": 0.82,
         "hover": 0.88,
-        "disabled": 0.42
+        "disabled": 0.42,
+        "shadow": 0.38,
+        "solid": 1.0
       }
     }
   }

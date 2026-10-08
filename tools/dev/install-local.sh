@@ -31,6 +31,7 @@ mkdir -p \
   "$HOME/.local/share/ro-theme/wallpapers" \
   "$HOME/.local/share/wallpapers" \
   "$HOME/.local/share/kwin/effects" \
+  "$HOME/.local/share/aurorae/themes" \
   "$HOME/.themes" \
   "$HOME/.local/share/icons"
 
@@ -50,6 +51,8 @@ rm -rf "$HOME/.local/share/plasma/desktoptheme/Ro" \
        "$HOME/.local/share/wallpapers/light" \
        "$HOME/.local/share/ro-theme/wallpapers" \
        "$HOME/.local/share/kwin/effects/ro-smooth-motion" \
+       "$HOME/.local/share/aurorae/themes/RoLight" \
+       "$HOME/.local/share/aurorae/themes/RoDark" \
        "$HOME/.themes/Ro-GTK" \
        "$HOME/.local/share/icons/ro-icons" \
        "$HOME/.local/share/icons/ro-cursor"
@@ -63,6 +66,7 @@ mkdir -p "$HOME/.local/share/ro-theme/wallpapers" "$HOME/.local/share/wallpapers
 
 cp platform/plasma/color-schemes/RoLight.colors "$HOME/.local/share/color-schemes/"
 cp platform/plasma/color-schemes/RoDark.colors "$HOME/.local/share/color-schemes/"
+cp platform/plasma/color-schemes/RoCool*.colors platform/plasma/color-schemes/RoStone*.colors "$HOME/.local/share/color-schemes/"
 
 # Wallpaper dosyaları iki yere kopyalanır:
 # 1) Ro scriptlerinin sabit beklediği klasör
@@ -78,6 +82,8 @@ cp -r platform/plasma/look-and-feel/org.ro.light "$HOME/.local/share/plasma/look
 cp -r platform/plasma/look-and-feel/org.ro.dark "$HOME/.local/share/plasma/look-and-feel/"
 cp -r platform/plasma/layout-templates/org.ro.desktop "$HOME/.local/share/plasma/layout-templates/"
 cp -r platform/kwin/effects/ro-smooth-motion "$HOME/.local/share/kwin/effects/"
+cp -r platform/kwin/aurorae/RoLight "$HOME/.local/share/aurorae/themes/"
+cp -r platform/kwin/aurorae/RoDark "$HOME/.local/share/aurorae/themes/"
 cp -r platform/gtk/Ro-GTK "$HOME/.themes/"
 cp -r platform/icons/ro-icons "$HOME/.local/share/icons/" || true
 cp -r platform/cursor/ro-cursor "$HOME/.local/share/icons/" || true

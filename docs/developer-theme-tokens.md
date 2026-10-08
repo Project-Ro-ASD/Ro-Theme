@@ -89,10 +89,10 @@ CSS tarafında dark değerleri otomatik değişir:
 
 ```css
 [data-ro-theme="dark"] {
-  --ro-bg: #352F44;
-  --ro-surface: #5C5470;
-  --ro-accent: #B9B4C7;
-  --ro-text: #FAF0E6;
+  --ro-bg: #1D1E20;
+  --ro-surface: #2B2B2C;
+  --ro-accent: #8EA6D9;
+  --ro-text: #E7E8EA;
 }
 ```
 
