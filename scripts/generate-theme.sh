@@ -175,6 +175,8 @@ def token_color(tokens, key, fallback):
         return value
     return fallback
 
+# [ColorEffects:Inactive] ChangeSelectionColor=false: odak dışındaki seçim de vurgu renginde kalır,
+# soluklaşmaz (Ro-Theme-Docs 02 COL-13). true iken KDE seçimi soluk açık maviye çeviriyordu.
 def color_scheme(theme_id, tokens, dark_mode):
     accent = tokens['accent']
     bg = tokens['bg']
@@ -238,7 +240,7 @@ IntensityAmount=0.1
 IntensityEffect=2
 
 [ColorEffects:Inactive]
-ChangeSelectionColor=true
+ChangeSelectionColor=false
 Color=112,111,110
 ColorAmount=0.025
 ColorEffect=2
