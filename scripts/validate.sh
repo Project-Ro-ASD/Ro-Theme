@@ -338,6 +338,36 @@ PY
   fi
 }
 
+check_plasma_control_svg() {
+  # Ro'nun çizdiği kabuk kontrolleri (03 PST-22/23): her durum 9 parça, stroke yok, iç boşluk ipuçları,
+  # renkler ColorScheme-* sınıflarından (PST-03; sabit fill hex yok), köşe token'dan (radius.md).
+  local path="$1"
+  local label="$2"
+  local report
+  if ! report="$(python3 - "$path" <<'PY'
+import re, sys
+s = open(sys.argv[1], encoding='utf-8').read()
+bad = []
+if '<stroke' in s or ' stroke=' in s: bad.append('stroke used')
+if re.search(r'fill="#', s): bad.append('hard-coded fill color')
+if 'id="current-color-scheme"' not in s: bad.append('no current-color-scheme style')
+prefixes = sorted({m.group(1) for m in re.finditer(r'<g id="([a-z-]+?)-topleft"', s)})
+if not prefixes: bad.append('no state frames')
+for p in prefixes:
+    for part in ['topleft', 'top', 'topright', 'left', 'center', 'right', 'bottomleft', 'bottom', 'bottomright']:
+        if f'<g id="{p}-{part}">' not in s: bad.append(f'{p}-{part} missing')
+    if not p.startswith('mask-') and f'id="{p}-hint-top-margin"' not in s and p != 'focusframe':
+        bad.append(f'{p} margin hint missing')
+if ' A ' not in s: bad.append('no rounded corner arc')
+print('; '.join(bad)); sys.exit(1 if bad else 0)
+PY
+)"; then
+    fail "$label: $report"
+  else
+    ok "$label (9-part states, scheme classes, no stroke)"
+  fi
+}
+
 check_plasma_frame_svg() {
   # Yuvarlak popup çerçevesi: köşe parçaları yay (arc) ve iç boşluk ipuçları içermeli.
   local path="$1"
@@ -494,6 +524,9 @@ check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/dialogs/background.
 for theme in RoLight RoDark; do
   for variant in "" translucent/ solid/; do
     check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}dialogs/background.svg" "$theme ${variant}dialog frame"
+  done
+  for control in lineedit button; do
+    check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
   done
   check_aurorae_theme "$theme"
 done

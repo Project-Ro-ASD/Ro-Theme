@@ -1,0 +1,286 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="116" height="520" viewBox="0 0 116 520">
+  <!-- Ro control: radius 12. Generated from core/tokens by scripts/generate-theme.sh. -->
+  <defs>
+  <style id="current-color-scheme" type="text/css">
+    .ColorScheme-Text { color:#2b2d2f; }
+    .ColorScheme-ViewBackground { color:#ffffff; }
+    .ColorScheme-ButtonBackground { color:#e7e8eb; }
+    .ColorScheme-ButtonText { color:#2b2d2f; }
+    .ColorScheme-ViewFocus { color:#3059a6; }
+    .ColorScheme-ButtonFocus { color:#3059a6; }
+  </style>
+  </defs>
+  <g id="normal-topleft">
+    <path d="M 12,12 L 0,12 A 12,12 0 0 1 12,0 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-topright">
+    <path d="M 44,12 L 56,12 A 12,12 0 0 0 44,0 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-bottomleft">
+    <path d="M 12,44 L 0,44 A 12,12 0 0 0 12,56 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-bottomright">
+    <path d="M 44,44 L 56,44 A 12,12 0 0 1 44,56 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-top">
+    <rect x="12" y="0" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-bottom">
+    <rect x="12" y="44" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-left">
+    <rect x="0" y="12" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-right">
+    <rect x="44" y="12" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="normal-center">
+    <rect x="12" y="12" width="32" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <rect id="normal-hint-top-margin" x="64" y="0" width="1" height="4" fill-opacity="0"/>
+  <rect id="normal-hint-bottom-margin" x="68" y="0" width="1" height="4" fill-opacity="0"/>
+  <rect id="normal-hint-left-margin" x="72" y="0" width="12" height="1" fill-opacity="0"/>
+  <rect id="normal-hint-right-margin" x="72" y="4" width="12" height="1" fill-opacity="0"/>
+  <g id="hover-topleft">
+    <path d="M 12,76 L 0,76 A 12,12 0 0 1 12,64 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 12,76 L 0,76 A 12,12 0 0 1 12,64 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-topright">
+    <path d="M 44,76 L 56,76 A 12,12 0 0 0 44,64 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 44,76 L 56,76 A 12,12 0 0 0 44,64 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-bottomleft">
+    <path d="M 12,108 L 0,108 A 12,12 0 0 0 12,120 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 12,108 L 0,108 A 12,12 0 0 0 12,120 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-bottomright">
+    <path d="M 44,108 L 56,108 A 12,12 0 0 1 44,120 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 44,108 L 56,108 A 12,12 0 0 1 44,120 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-top">
+    <rect x="12" y="64" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="64" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-bottom">
+    <rect x="12" y="108" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="108" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-left">
+    <rect x="0" y="76" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="0" y="76" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-right">
+    <rect x="44" y="76" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="44" y="76" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="hover-center">
+    <rect x="12" y="76" width="32" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="76" width="32" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <rect id="hover-hint-top-margin" x="64" y="64" width="1" height="4" fill-opacity="0"/>
+  <rect id="hover-hint-bottom-margin" x="68" y="64" width="1" height="4" fill-opacity="0"/>
+  <rect id="hover-hint-left-margin" x="72" y="64" width="12" height="1" fill-opacity="0"/>
+  <rect id="hover-hint-right-margin" x="72" y="68" width="12" height="1" fill-opacity="0"/>
+  <g id="pressed-topleft">
+    <path d="M 12,140 L 0,140 A 12,12 0 0 1 12,128 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 12,140 L 0,140 A 12,12 0 0 1 12,128 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-topright">
+    <path d="M 44,140 L 56,140 A 12,12 0 0 0 44,128 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 44,140 L 56,140 A 12,12 0 0 0 44,128 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-bottomleft">
+    <path d="M 12,172 L 0,172 A 12,12 0 0 0 12,184 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 12,172 L 0,172 A 12,12 0 0 0 12,184 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-bottomright">
+    <path d="M 44,172 L 56,172 A 12,12 0 0 1 44,184 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 44,172 L 56,172 A 12,12 0 0 1 44,184 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-top">
+    <rect x="12" y="128" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="128" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-bottom">
+    <rect x="12" y="172" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="172" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-left">
+    <rect x="0" y="140" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="0" y="140" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-right">
+    <rect x="44" y="140" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="44" y="140" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="pressed-center">
+    <rect x="12" y="140" width="32" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="140" width="32" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <rect id="pressed-hint-top-margin" x="64" y="128" width="1" height="4" fill-opacity="0"/>
+  <rect id="pressed-hint-bottom-margin" x="68" y="128" width="1" height="4" fill-opacity="0"/>
+  <rect id="pressed-hint-left-margin" x="72" y="128" width="12" height="1" fill-opacity="0"/>
+  <rect id="pressed-hint-right-margin" x="72" y="132" width="12" height="1" fill-opacity="0"/>
+  <g id="focus-topleft">
+    <path d="M 12,204 L 0,204 A 12,12 0 0 1 12,192 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 0,204 A 12,12 0 0 1 12,192 L 12,194 A 10,10 0 0 0 2,204 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-topright">
+    <path d="M 44,204 L 56,204 A 12,12 0 0 0 44,192 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 56,204 A 12,12 0 0 0 44,192 L 44,194 A 10,10 0 0 1 54,204 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-bottomleft">
+    <path d="M 12,236 L 0,236 A 12,12 0 0 0 12,248 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 0,236 A 12,12 0 0 0 12,248 L 12,246 A 10,10 0 0 1 2,236 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-bottomright">
+    <path d="M 44,236 L 56,236 A 12,12 0 0 1 44,248 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <path d="M 56,236 A 12,12 0 0 1 44,248 L 44,246 A 10,10 0 0 0 54,236 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-top">
+    <rect x="12" y="192" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="192" width="32" height="2" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-bottom">
+    <rect x="12" y="236" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="12" y="246" width="32" height="2" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-left">
+    <rect x="0" y="204" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="0" y="204" width="2" height="32" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-right">
+    <rect x="44" y="204" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+    <rect x="54" y="204" width="2" height="32" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="focus-center">
+    <rect x="12" y="204" width="32" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <rect id="focus-hint-top-margin" x="64" y="192" width="1" height="4" fill-opacity="0"/>
+  <rect id="focus-hint-bottom-margin" x="68" y="192" width="1" height="4" fill-opacity="0"/>
+  <rect id="focus-hint-left-margin" x="72" y="192" width="12" height="1" fill-opacity="0"/>
+  <rect id="focus-hint-right-margin" x="72" y="196" width="12" height="1" fill-opacity="0"/>
+  <g id="toolbutton-hover-topleft">
+    <path d="M 12,268 L 0,268 A 12,12 0 0 1 12,256 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-topright">
+    <path d="M 44,268 L 56,268 A 12,12 0 0 0 44,256 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-bottomleft">
+    <path d="M 12,300 L 0,300 A 12,12 0 0 0 12,312 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-bottomright">
+    <path d="M 44,300 L 56,300 A 12,12 0 0 1 44,312 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-top">
+    <rect x="12" y="256" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-bottom">
+    <rect x="12" y="300" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-left">
+    <rect x="0" y="268" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-right">
+    <rect x="44" y="268" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="toolbutton-hover-center">
+    <rect x="12" y="268" width="32" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <rect id="toolbutton-hover-hint-top-margin" x="64" y="256" width="1" height="4" fill-opacity="0"/>
+  <rect id="toolbutton-hover-hint-bottom-margin" x="68" y="256" width="1" height="4" fill-opacity="0"/>
+  <rect id="toolbutton-hover-hint-left-margin" x="72" y="256" width="12" height="1" fill-opacity="0"/>
+  <rect id="toolbutton-hover-hint-right-margin" x="72" y="260" width="12" height="1" fill-opacity="0"/>
+  <g id="toolbutton-pressed-topleft">
+    <path d="M 12,332 L 0,332 A 12,12 0 0 1 12,320 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-topright">
+    <path d="M 44,332 L 56,332 A 12,12 0 0 0 44,320 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-bottomleft">
+    <path d="M 12,364 L 0,364 A 12,12 0 0 0 12,376 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-bottomright">
+    <path d="M 44,364 L 56,364 A 12,12 0 0 1 44,376 Z" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-top">
+    <rect x="12" y="320" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-bottom">
+    <rect x="12" y="364" width="32" height="12" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-left">
+    <rect x="0" y="332" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-right">
+    <rect x="44" y="332" width="12" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <g id="toolbutton-pressed-center">
+    <rect x="12" y="332" width="32" height="32" class="ColorScheme-ButtonText" fill="currentColor" fill-opacity="0.14"/>
+  </g>
+  <rect id="toolbutton-pressed-hint-top-margin" x="64" y="320" width="1" height="4" fill-opacity="0"/>
+  <rect id="toolbutton-pressed-hint-bottom-margin" x="68" y="320" width="1" height="4" fill-opacity="0"/>
+  <rect id="toolbutton-pressed-hint-left-margin" x="72" y="320" width="12" height="1" fill-opacity="0"/>
+  <rect id="toolbutton-pressed-hint-right-margin" x="72" y="324" width="12" height="1" fill-opacity="0"/>
+  <g id="toolbutton-focus-topleft">
+    <path d="M 0,396 A 12,12 0 0 1 12,384 L 12,386 A 10,10 0 0 0 2,396 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-topright">
+    <path d="M 56,396 A 12,12 0 0 0 44,384 L 44,386 A 10,10 0 0 1 54,396 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-bottomleft">
+    <path d="M 0,428 A 12,12 0 0 0 12,440 L 12,438 A 10,10 0 0 1 2,428 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-bottomright">
+    <path d="M 56,428 A 12,12 0 0 1 44,440 L 44,438 A 10,10 0 0 0 54,428 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-top">
+    <rect x="12" y="384" width="32" height="2" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-bottom">
+    <rect x="12" y="438" width="32" height="2" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-left">
+    <rect x="0" y="396" width="2" height="32" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-right">
+    <rect x="54" y="396" width="2" height="32" class="ColorScheme-ButtonFocus" fill="currentColor"/>
+  </g>
+  <g id="toolbutton-focus-center">
+  </g>
+  <rect id="toolbutton-focus-hint-top-margin" x="64" y="384" width="1" height="4" fill-opacity="0"/>
+  <rect id="toolbutton-focus-hint-bottom-margin" x="68" y="384" width="1" height="4" fill-opacity="0"/>
+  <rect id="toolbutton-focus-hint-left-margin" x="72" y="384" width="12" height="1" fill-opacity="0"/>
+  <rect id="toolbutton-focus-hint-right-margin" x="72" y="388" width="12" height="1" fill-opacity="0"/>
+  <g id="mask-normal-topleft">
+    <path d="M 12,460 L 0,460 A 12,12 0 0 1 12,448 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-topright">
+    <path d="M 44,460 L 56,460 A 12,12 0 0 0 44,448 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-bottomleft">
+    <path d="M 12,492 L 0,492 A 12,12 0 0 0 12,504 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-bottomright">
+    <path d="M 44,492 L 56,492 A 12,12 0 0 1 44,504 Z" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-top">
+    <rect x="12" y="448" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-bottom">
+    <rect x="12" y="492" width="32" height="12" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-left">
+    <rect x="0" y="460" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-right">
+    <rect x="44" y="460" width="12" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <g id="mask-normal-center">
+    <rect x="12" y="460" width="32" height="32" class="ColorScheme-ButtonBackground" fill="currentColor"/>
+  </g>
+  <rect id="mask-normal-hint-top-margin" x="64" y="448" width="1" height="0" fill-opacity="0"/>
+  <rect id="mask-normal-hint-bottom-margin" x="68" y="448" width="1" height="0" fill-opacity="0"/>
+  <rect id="mask-normal-hint-left-margin" x="72" y="448" width="0" height="1" fill-opacity="0"/>
+  <rect id="mask-normal-hint-right-margin" x="72" y="452" width="0" height="1" fill-opacity="0"/>
+</svg>

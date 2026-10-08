@@ -482,6 +482,116 @@ plasma_modes = {
     'RoLight': (light['surface'], rgba_opacity(light.get('glass'), '0.76'), light['frameBorder'], '1.0'),
     'RoDark': (dark['surface'], rgba_opacity(dark.get('glass'), '0.58'), dark['frameBorder'], '1.0'),
 }
+# --- Plasma stili: giriş alanı ve düğme (03 PST-22, PST-23; köşe TOK-02f) ---
+# Renkler sabit değil ColorScheme-* sınıflarıyla şemadan gelir (PST-03): kullanıcı vurgusu ve renk şeması kabuğa
+# yansır. <style id="current-color-scheme"> yalnızca şemasız önizleme için yedek değerdir (token'dan).
+def _ctl_corner_paths(ox, oy, dx, dy, r, b):
+    ax = ox + (r if dx < 0 else 0)
+    ay = oy + (r if dy < 0 else 0)
+    p1, p2 = (ax + dx * r, ay), (ax, ay + dy * r)
+    q1, q2 = (ax + dx * (r - b), ay), (ax, ay + dy * (r - b))
+    sw = _arc_sweep(ax, ay, p1, p2)
+    surface = f'M {fmt(ax)},{fmt(ay)} L {fmt(p1[0])},{fmt(p1[1])} A {fmt(r)},{fmt(r)} 0 0 {sw} {fmt(p2[0])},{fmt(p2[1])} Z'
+    ring = (f'M {fmt(p1[0])},{fmt(p1[1])} A {fmt(r)},{fmt(r)} 0 0 {sw} {fmt(p2[0])},{fmt(p2[1])} '
+            f'L {fmt(q2[0])},{fmt(q2[1])} A {fmt(r - b)},{fmt(r - b)} 0 0 {1 - sw} {fmt(q1[0])},{fmt(q1[1])} Z')
+    return surface, ring
+
+def _ctl_layer(shape, cls, opacity):
+    op = '' if opacity >= 1 else f' fill-opacity="{fmt(opacity)}"'
+    return '    ' + shape.replace('/>', f' class="{cls}" fill="currentColor"{op}/>') + '\n'
+
+def _ctl_block(prefix, y0, r, fills, border, b, margins):
+    # Bir durum için 9 parçalı çerçeve (dolgulu halka, stroke yok); fills: [(sınıf, opaklık)]; border: (sınıf, opaklık) | None
+    e = FRAME_EDGE
+    spec = {
+        'topleft': ('c', 0, 0, -1, -1), 'topright': ('c', r + e, 0, 1, -1),
+        'bottomleft': ('c', 0, r + e, -1, 1), 'bottomright': ('c', r + e, r + e, 1, 1),
+        'top': ('e', r, 0, e, r, 'top'), 'bottom': ('e', r, r + e, e, r, 'bottom'),
+        'left': ('e', 0, r, r, e, 'left'), 'right': ('e', r + e, r, r, e, 'right'),
+        'center': ('e', r, r, e, e, None),
+    }
+    parts = []
+    for name, sp in spec.items():
+        body = ''
+        if sp[0] == 'c':
+            surface, ring = _ctl_corner_paths(sp[1], sp[2] + y0, sp[3], sp[4], r, b)
+            for cls, op in fills:
+                body += _ctl_layer(f'<path d="{surface}"/>', cls, op)
+            if border:
+                body += _ctl_layer(f'<path d="{ring}"/>', *border)
+        else:
+            _, x, y, w, h, outer = sp
+            y += y0
+            for cls, op in fills:
+                body += _ctl_layer(f'<rect x="{fmt(x)}" y="{fmt(y)}" width="{fmt(w)}" height="{fmt(h)}"/>', cls, op)
+            line = {'top': (x, y, w, b), 'bottom': (x, y + h - b, w, b), 'left': (x, y, b, h), 'right': (x + w - b, y, b, h)}.get(outer)
+            if border and line:
+                body += _ctl_layer(f'<rect x="{fmt(line[0])}" y="{fmt(line[1])}" width="{fmt(line[2])}" height="{fmt(line[3])}"/>', *border)
+        parts.append(f'  <g id="{prefix}-{name}">\n{body}  </g>\n')
+    hx = 2 * r + e + 8
+    top, bottom, left, right = margins
+    hints = (
+        f'  <rect id="{prefix}-hint-top-margin" x="{fmt(hx)}" y="{fmt(y0)}" width="1" height="{fmt(top)}" fill-opacity="0"/>\n'
+        f'  <rect id="{prefix}-hint-bottom-margin" x="{fmt(hx + 4)}" y="{fmt(y0)}" width="1" height="{fmt(bottom)}" fill-opacity="0"/>\n'
+        f'  <rect id="{prefix}-hint-left-margin" x="{fmt(hx + 8)}" y="{fmt(y0)}" width="{fmt(left)}" height="1" fill-opacity="0"/>\n'
+        f'  <rect id="{prefix}-hint-right-margin" x="{fmt(hx + 8)}" y="{fmt(y0 + 4)}" width="{fmt(right)}" height="1" fill-opacity="0"/>\n'
+    )
+    return ''.join(parts) + hints
+
+def _ctl_svg(content, r, rows, tokens):
+    size = 2 * r + FRAME_EDGE
+    scheme_style = (
+        f'    .ColorScheme-Text {{ color:{tokens["text"].lower()}; }}\n'
+        f'    .ColorScheme-ViewBackground {{ color:{tokens["surface"].lower()}; }}\n'
+        f'    .ColorScheme-ButtonBackground {{ color:{tokens["surfaceAlt"].lower()}; }}\n'
+        f'    .ColorScheme-ButtonText {{ color:{tokens["text"].lower()}; }}\n'
+        f'    .ColorScheme-ViewFocus {{ color:{tokens["accent"].lower()}; }}\n'
+        f'    .ColorScheme-ButtonFocus {{ color:{tokens["accent"].lower()}; }}\n')
+    h = rows * (size + 8) + 8
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{fmt(size + 60)}" height="{fmt(h)}" viewBox="0 0 {fmt(size + 60)} {fmt(h)}">\n'
+            f'  <!-- Ro control: radius {fmt(r)}. Generated from core/tokens by scripts/generate-theme.sh. -->\n'
+            f'  <defs>\n  <style id="current-color-scheme" type="text/css">\n{scheme_style}  </style>\n  </defs>\n{content}</svg>\n')
+
+def plasma_lineedit_svg(tokens):
+    # PST-22: base = View zemini + kenarlık (metin %50, >= 3:1 COL-16); hover kenar %70; focus vurgu kenarı;
+    # focusframe = vurgu halkası (klavye odağı, Ro imzası, 2 × kenarlık).
+    r, b = radius['md'], spacing['borderWidth']
+    m = (spacing['xs'], spacing['xs'], spacing['sm'] + spacing['xs'], spacing['sm'] + spacing['xs'])
+    size, out, y = 2 * r + FRAME_EDGE, '', 0
+    for prefix, border, bw, margins in (
+        ('base', ('ColorScheme-Text', 0.5), b, m),
+        ('hover', ('ColorScheme-Text', 0.7), b, m),
+        ('focus', ('ColorScheme-ViewFocus', 1), b, m),
+        ('focusframe', ('ColorScheme-ViewFocus', 1), 2 * b, (0, 0, 0, 0)),
+    ):
+        fills = [] if prefix == 'focusframe' else [('ColorScheme-ViewBackground', 1)]
+        out += _ctl_block(prefix, y, r, fills, border, bw, margins)
+        y += size + 8
+    out += '  <rect id="hint-focus-over-base" x="0" y="0" width="1" height="1" fill-opacity="0"/>\n'
+    out += '  <rect id="hint-tile-center" x="0" y="0" width="1" height="1" fill-opacity="0"/>\n'
+    return _ctl_svg(out, r, 4, tokens)
+
+def plasma_button_svg(tokens):
+    # PST-23: normal = Button zemini, kenarsız; hover = + metin %8 (opacity.hover); pressed = + mixPressed;
+    # focus = vurgu halkası; araç düğmesi normalde zeminsiz. mask-normal bulanıklık maskesi (PST-09).
+    r, b = radius['md'], spacing['borderWidth']
+    m = (spacing['xs'], spacing['xs'], spacing['sm'] + spacing['xs'], spacing['sm'] + spacing['xs'])
+    size, out, y = 2 * r + FRAME_EDGE, '', 0
+    states = (
+        ('normal', [('ColorScheme-ButtonBackground', 1)], None, b, m),
+        ('hover', [('ColorScheme-ButtonBackground', 1), ('ColorScheme-ButtonText', opacity['hover'])], None, b, m),
+        ('pressed', [('ColorScheme-ButtonBackground', 1), ('ColorScheme-ButtonText', opacity['mixPressed'])], None, b, m),
+        ('focus', [('ColorScheme-ButtonBackground', 1)], ('ColorScheme-ButtonFocus', 1), 2 * b, m),
+        ('toolbutton-hover', [('ColorScheme-ButtonText', opacity['hover'])], None, b, m),
+        ('toolbutton-pressed', [('ColorScheme-ButtonText', opacity['mixPressed'])], None, b, m),
+        ('toolbutton-focus', [], ('ColorScheme-ButtonFocus', 1), 2 * b, m),
+        ('mask-normal', [('ColorScheme-ButtonBackground', 1)], None, b, (0, 0, 0, 0)),
+    )
+    for prefix, fills, border, bw, margins in states:
+        out += _ctl_block(prefix, y, r, fills, border, bw, margins)
+        y += size + 8
+    return _ctl_svg(out, r, len(states), tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -497,6 +607,9 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, widget_radius, popup_padding),
         # NOT: Plasma paneli widgets/panel-background'dan okur; bu dosya şu an kullanılmıyor (yol haritası Faz 3).
         'panel/panel-background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, radius['panel'], popup_padding),
+        # Kabuk kontrolleri (03): Breeze'e düşen giriş alanı ve düğme artık Ro köşesi ve kenarlığıyla çizilir.
+        'widgets/lineedit.svg': plasma_lineedit_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/button.svg': plasma_button_svg(light if theme_name == 'RoLight' else dark),
     }
     for rel, content in outputs.items():
         out = base / rel
