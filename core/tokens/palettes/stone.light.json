@@ -1,0 +1,32 @@
+{
+  "name": "Ro Stone Light",
+  "brand": {
+    "navy": "#263B66",
+    "ink": "#2B2B2C",
+    "grayLight": "#B8B9BB",
+    "gray": "#A3A4A7",
+    "grayDark": "#707174"
+  },
+  "palette": [
+    "#263B66",
+    "#2B2B2C",
+    "#B8B9BB",
+    "#A3A4A7",
+    "#707174"
+  ],
+  "bg": "#F1EEE9",
+  "bgAlt": "#E8E3DC",
+  "surface": "#FAF8F5",
+  "surfaceAlt": "#E8E3DC",
+  "glass": "rgba(250,248,245,0.76)",
+  "text": "#2C2926",
+  "textSecondary": "#685F57",
+  "accent": "#263B66",
+  "border": "#D3CBC1",
+  "link": "#263B66",
+  "visited": "#5A4D86",
+  "negative": "#A8322A",
+  "neutral": "#8A5A00",
+  "positive": "#2F6B45",
+  "selectionText": "#FFFFFF"
+}

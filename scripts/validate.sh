@@ -187,6 +187,67 @@ check_plasma_surface_svg() {
   check_not_contains "$path" 'stroke=' "$label has no corner stroke artefact"
 }
 
+check_token_contrast() {
+  # WCAG 2.x: metin ve anlamsal renkler zeminde >= 4.5:1, seçim metni vurgu renginde >= 4.5:1
+  local path="$1"
+  local label="$2"
+  local report
+  if ! report="$(python3 - "$path" <<'PY'
+import json, sys
+t = json.load(open(sys.argv[1], encoding='utf-8'))
+def lum(h):
+    h = h.lstrip('#'); c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+    c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+def ratio(a, b):
+    la, lb = sorted([lum(a), lum(b)], reverse=True); return (la + 0.05) / (lb + 0.05)
+bad = []
+for fg in ['text', 'textSecondary', 'accent', 'link', 'negative', 'neutral', 'positive']:
+    for bg in ['bg', 'surface']:
+        r = ratio(t[fg], t[bg])
+        if r < 4.5: bad.append(f'{fg} on {bg} {r:.2f}')
+r = ratio(t['selectionText'], t['accent'])
+if r < 4.5: bad.append(f'selectionText on accent {r:.2f}')
+if len({t['negative'], t['neutral'], t['positive'], t['text']}) < 4: bad.append('semantic colors not distinct')
+print('; '.join(bad)); sys.exit(1 if bad else 0)
+PY
+)"; then
+    fail "$label token contrast: $report"
+  else
+    ok "$label token contrast (WCAG AA)"
+  fi
+}
+
+check_plasma_frame_svg() {
+  # Yuvarlak popup çerçevesi: köşe parçaları yay (arc) içermeli, iç boşluk ve gölge tanımlı olmalı
+  local path="$1"
+  local label="$2"
+
+  check_plasma_surface_svg "$path" "$label"
+  check_contains "$path" '<g id="topleft">' "$label corner element"
+  check_contains "$path" ' A ' "$label rounded corner arc"
+  check_contains "$path" 'id="hint-top-margin"' "$label content margin hint"
+}
+
+check_aurorae_theme() {
+  local name="$1"
+  local dir="platform/kwin/aurorae/$name"
+
+  check_dir "$dir"
+  check_file "$dir/metadata.desktop"
+  check_contains "$dir/metadata.desktop" "X-KDE-PluginInfo-Name=$name" "$name Aurorae plugin name"
+  check_file "$dir/${name}rc"
+  check_contains "$dir/${name}rc" "[Layout]" "$name Aurorae layout group"
+  check_file "$dir/decoration.svg"
+  for prefix in decoration decoration-inactive decoration-maximized decoration-maximized-inactive; do
+    check_contains "$dir/decoration.svg" "id=\"$prefix-topleft\"" "$name $prefix frame"
+  done
+  for button in close minimize maximize restore; do
+    check_file "$dir/$button.svg"
+    check_contains "$dir/$button.svg" 'id="active-center"' "$name $button button"
+  done
+}
+
 section "Project"
 check_file VERSION
 check_file README.md
@@ -203,14 +264,16 @@ check_file tools/dev/README.md
 section "Tokens"
 check_json core/tokens/colors.light.json
 check_json core/tokens/colors.dark.json
-check_contains core/tokens/colors.dark.json "#FAF0E6" "RoDark palette color FAF0E6"
-check_contains core/tokens/colors.dark.json "#B9B4C7" "RoDark palette color B9B4C7"
-check_contains core/tokens/colors.dark.json "#5C5470" "RoDark palette color 5C5470"
-check_contains core/tokens/colors.dark.json "#352F44" "RoDark palette color 352F44"
-check_contains core/tokens/colors.light.json "#E5E1DA" "RoLight palette color E5E1DA"
-check_contains core/tokens/colors.light.json "#FBF9F1" "RoLight palette color FBF9F1"
-check_contains core/tokens/colors.light.json "#AAD7D9" "RoLight palette color AAD7D9"
-check_contains core/tokens/colors.light.json "#92C7CF" "RoLight palette color 92C7CF"
+check_contains core/tokens/colors.light.json '"navy": "#263B66"' "Ro brand navy"
+check_contains core/tokens/colors.light.json '"ink": "#2B2B2C"' "Ro brand ink"
+check_token_contrast core/tokens/colors.light.json "RoLight"
+check_token_contrast core/tokens/colors.dark.json "RoDark"
+for palette in core/tokens/palettes/*.json; do
+  check_token_contrast "$palette" "saved palette $(basename "$palette" .json)"
+done
+for scheme in RoCoolLight RoCoolDark RoStoneLight RoStoneDark; do
+  check_file "platform/plasma/color-schemes/$scheme.colors"
+done
 check_json core/tokens/motion.json
 check_json core/tokens/radius.json
 check_json core/tokens/opacity.json
@@ -249,7 +312,9 @@ check_not_contains platform/plasma/color-schemes/RoDark.colors "Wallpaper" "RoDa
 check_not_contains platform/plasma/color-schemes/RoLight.colors "Image=" "RoLight color scheme image-free"
 check_not_contains platform/plasma/color-schemes/RoDark.colors "Image=" "RoDark color scheme image-free"
 check_contains platform/plasma/color-schemes/RoLight.colors "[Colors:Complementary]" "RoLight complementary group"
-check_contains platform/plasma/color-schemes/RoLight.colors "BackgroundNormal=47,89,96" "RoLight complementary lockscreen dim surface"
+# Açık temada kilit ekranı yüzeyi bilerek koyu: açık temanın metin rengi (token'dan hesaplanır)
+ro_light_text_rgb="$(python3 -c 'import json; h=json.load(open("core/tokens/colors.light.json"))["text"].lstrip("#"); print(",".join(str(int(h[i:i+2],16)) for i in (0,2,4)))')"
+check_contains platform/plasma/color-schemes/RoLight.colors "BackgroundNormal=$ro_light_text_rgb" "RoLight complementary lockscreen dim surface"
 
 section "Plasma Desktop Themes"
 check_dir platform/plasma/desktoptheme/RoLight
@@ -271,9 +336,18 @@ check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/dialogs/background
 check_file platform/plasma/desktoptheme/RoDark/colors
 check_file platform/plasma/desktoptheme/RoDark/plasmarc
 check_not_contains platform/plasma/desktoptheme/RoDark/plasmarc "[Wallpaper]" "RoDark Plasma style wallpaper-free"
+for theme in RoLight RoDark; do
+  check_contains "platform/plasma/desktoptheme/$theme/plasmarc" "enabled=false" "$theme adaptive transparency off (frosted glass stays visible)"
+done
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/widgets/background.svg "RoDark widget background"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/panel/panel-background.svg "RoDark panel background"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/dialogs/background.svg "RoDark dialog background"
+for theme in RoLight RoDark; do
+  for variant in "" translucent/ solid/; do
+    check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}dialogs/background.svg" "$theme ${variant}dialog frame"
+  done
+  check_aurorae_theme "$theme"
+done
 if [[ -e platform/plasma/desktoptheme/Ro ]]; then
   fail "removed compatibility desktop theme still exists: platform/plasma/desktoptheme/Ro"
 fi
