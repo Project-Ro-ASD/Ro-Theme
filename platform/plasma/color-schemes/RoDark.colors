@@ -39,7 +39,7 @@ DecorationHover=60,72,99
 
 [Colors:View]
 BackgroundNormal=43,43,44
-BackgroundAlternate=43,43,44
+BackgroundAlternate=50,50,52
 ForegroundNormal=242,242,243
 ForegroundInactive=163,164,167
 ForegroundActive=110,155,255
