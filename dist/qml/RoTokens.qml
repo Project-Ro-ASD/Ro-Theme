@@ -25,9 +25,11 @@ QtObject {
     readonly property real popupPadding: 12
     readonly property real opacityGlass: 0.68
     readonly property real opacityGlassStrong: 0.82
-    readonly property real opacityHover: 0.88
+    readonly property real opacityHover: 0.08
     readonly property real opacityDisabled: 0.42
     readonly property real opacitySolid: 1.0
+    readonly property real opacityMixCard: 0.07
+    readonly property real opacityMixPressed: 0.14
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170

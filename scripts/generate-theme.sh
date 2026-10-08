@@ -177,65 +177,47 @@ def token_color(tokens, key, fallback):
 
 # [ColorEffects:Inactive] ChangeSelectionColor=false: odak dışındaki seçim de vurgu renginde kalır,
 # soluklaşmaz (Ro-Theme-Docs 02 COL-13). true iken KDE seçimi soluk açık maviye çeviriyordu.
+SCHEME_NAMES = {'RoLight': ('Ro Light', 'Ro Açık'), 'RoDark': ('Ro Dark', 'Ro Koyu')}
+
 def color_scheme(theme_id, tokens, dark_mode):
-    accent = tokens['accent']
-    bg = tokens['bg']
-    bg_alt = tokens['bgAlt']
-    surface = tokens['surface']
-    surface_alt = tokens['surfaceAlt']
-    # Ayrıntılı görünümdeki çizgili satır (View BackgroundAlternate): iki temada da yüzey ile ikinci yüzey
-    # arasının yarısı (Ro-Theme-Docs 02 COL-15f; ~1.10 satır ayrımı). bgAlt kullanılmaz: koyu temada surface ile
-    # aynı renkti, zebra kayboluyordu.
+    # Set başına rol eşlemesi: Ro-Theme-Docs 02 (COL-14…COL-26). Anlamsal token'lar zorunlu (COL-07): eksikse
+    # üretim KeyError ile durur; yedek değer kullanılmaz ("hata = metin rengi" gibi hataları önlemek için).
+    t = tokens
+    bg, surface, surface_alt = t['bg'], t['surface'], t['surfaceAlt']
+    text, text_secondary, accent = t['text'], t['textSecondary'], t['accent']
+    # Çizgili satır: iki temada da yüzey ile ikinci yüzeyin yarısı (COL-15f).
     view_alt = mix_hex(surface_alt, surface, 0.5)
-    text = tokens['text']
-    text_secondary = tokens['textSecondary']
-    border = tokens['border']
 
-    hover = mix_hex(accent, surface, 0.26 if dark_mode else 0.34)
-    link = token_color(tokens, 'link', accent)
-    visited = token_color(tokens, 'visited', text_secondary)
-    negative = token_color(tokens, 'negative', text)
-    neutral = token_color(tokens, 'neutral', text_secondary)
-    positive = token_color(tokens, 'positive', accent)
-    selection_text = token_color(tokens, 'selectionText', bg if dark_mode else text)
-    button_bg = surface_alt
-    button_alt = surface
-    inactive_blend = mix_hex(border, bg, 0.72)
-    header_bg = mix_hex(surface_alt, bg, 0.72)
-    header_alt = mix_hex(surface, bg, 0.82)
-    # KDE lock screen WallpaperFader uses the Complementary background to decide
-    # whether to brighten or dim the wallpaper behind the password prompt. Ro Light
-    # keeps normal app surfaces light, but uses a dark complementary surface so the
-    # lock screen stays readable without washing out the wallpaper.
-    if dark_mode:
-        complementary_bg = surface
-        complementary_alt = surface_alt
-        complementary_text = text
-        complementary_secondary = text_secondary
-    else:
-        complementary_bg = text
-        complementary_alt = text_secondary
-        complementary_text = bg
-        complementary_secondary = border
+    def roles(normal_fg, inactive_fg, src):
+        # Ortak ön plan rolleri (COL-14): etkin = vurgu (COL-08), odak = vurgu (COL-10), hover = vurgu (COL-09).
+        return {
+            'ForegroundNormal': normal_fg, 'ForegroundInactive': inactive_fg,
+            'ForegroundActive': src['accent'], 'ForegroundLink': src['link'], 'ForegroundVisited': src['visited'],
+            'ForegroundNegative': src['negative'], 'ForegroundNeutral': src['neutral'], 'ForegroundPositive': src['positive'],
+            'DecorationFocus': src['accent'], 'DecorationHover': src['accent'],
+        }
 
-    def group(name, normal_bg, alternate_bg, normal_fg, inactive_fg, include_active=True):
-        active_line = f'ForegroundActive={rgb(accent)}\n' if include_active else ''
-        return f'''[{name}]
-BackgroundNormal={rgb(normal_bg)}
-BackgroundAlternate={rgb(alternate_bg)}
-ForegroundNormal={rgb(normal_fg)}
-ForegroundInactive={rgb(inactive_fg)}
-{active_line}ForegroundLink={rgb(link)}
-ForegroundVisited={rgb(visited)}
-ForegroundNegative={rgb(negative)}
-ForegroundNeutral={rgb(neutral)}
-ForegroundPositive={rgb(positive)}
-DecorationFocus={rgb(accent)}
-DecorationHover={rgb(hover)}
-'''
+    def group(name, normal_bg, alternate_bg, fg):
+        lines = [f'BackgroundNormal={rgb(normal_bg)}', f'BackgroundAlternate={rgb(alternate_bg)}']
+        lines += [f'{k}={rgb(v)}' for k, v in fg.items()]
+        return f'[{name}]\n' + '\n'.join(lines) + '\n'
+
+    common = roles(text, text_secondary, t)
+    # Seçim seti (COL-17): seçim zemini üstünde her rol >= 4.5; seçili öğede odak seçim metni renginde.
+    sel = t['selection']
+    selection = {
+        'ForegroundNormal': t['selectionText'], 'ForegroundInactive': sel['inactive'],
+        'ForegroundActive': t['selectionText'], 'ForegroundLink': sel['link'], 'ForegroundVisited': sel['visited'],
+        'ForegroundNegative': sel['negative'], 'ForegroundNeutral': sel['neutral'], 'ForegroundPositive': sel['positive'],
+        'DecorationFocus': t['selectionText'], 'DecorationHover': t['accentHover'],
+    }
+    # Complementary (COL-18): iki temada da koyu temanın yüzeyi ve rolleri (kilit ekranı, OSD).
+    d = dark
+    complementary = roles(d['text'], d['textSecondary'], d)
+    display_name, display_name_tr = SCHEME_NAMES[theme_id]
 
     return f'''[ColorEffects:Disabled]
-Color=56,56,56
+Color={rgb(bg)}
 ColorAmount=0
 ColorEffect=0
 ContrastAmount=0.65
@@ -245,7 +227,7 @@ IntensityEffect=2
 
 [ColorEffects:Inactive]
 ChangeSelectionColor=false
-Color=112,111,110
+Color={rgb(text_secondary)}
 ColorAmount=0.025
 ColorEffect=2
 ContrastAmount=0.1
@@ -255,43 +237,32 @@ IntensityAmount=0
 IntensityEffect=0
 
 [General]
-Name={theme_id}
+Name={display_name}
+Name[tr]={display_name_tr}
 ColorScheme={theme_id}
 shadeSortColumn=true
+accentActiveTitlebar=false
+accentInactiveTitlebar=false
 
-{group('Colors:Window', bg, bg_alt, text, text_secondary)}
-{group('Colors:View', surface, view_alt, text, text_secondary)}
-{group('Colors:Button', button_bg, button_alt, text, text_secondary)}
-{group('Colors:Tooltip', surface, surface_alt, text, text_secondary)}
-{group('Colors:Header', header_bg, header_alt, text, text_secondary)}
-{group('Colors:Header][Inactive', bg_alt, header_bg, text_secondary, text_secondary)}
-{group('Colors:Complementary', complementary_bg, complementary_alt, complementary_text, complementary_secondary)}
-
-[Colors:Selection]
-BackgroundNormal={rgb(accent)}
-BackgroundAlternate={rgb(hover)}
-ForegroundActive={rgb(selection_text)}
-ForegroundInactive={rgb(text_secondary)}
-ForegroundLink={rgb(link)}
-ForegroundVisited={rgb(visited)}
-ForegroundNegative={rgb(negative)}
-ForegroundNeutral={rgb(neutral)}
-ForegroundPositive={rgb(positive)}
-ForegroundNormal={rgb(selection_text)}
-DecorationFocus={rgb(accent)}
-DecorationHover={rgb(accent)}
-
+{group('Colors:Window', bg, surface_alt, common)}
+{group('Colors:View', surface, view_alt, common)}
+{group('Colors:Button', surface_alt, surface, common)}
+{group('Colors:Tooltip', surface, surface_alt, common)}
+{group('Colors:Header', bg, surface, common)}
+{group('Colors:Header][Inactive', bg, surface, roles(text_secondary, text_secondary, t))}
+{group('Colors:Complementary', d['surface'], d['surfaceAlt'], complementary)}
+{group('Colors:Selection', accent, t['accentHover'], selection)}
 [KDE]
 ColorScheme={theme_id}
 contrast=4
 
 [WM]
-activeBackground={rgb(surface)}
+activeBackground={rgb(bg)}
 activeForeground={rgb(text)}
-inactiveBackground={rgb(bg_alt)}
+inactiveBackground={rgb(bg)}
 inactiveForeground={rgb(text_secondary)}
-activeBlend={rgb(accent)}
-inactiveBlend={rgb(inactive_blend)}
+activeBlend={rgb(text)}
+inactiveBlend={rgb(t['border'])}
 '''
 
 (root / 'platform/plasma/color-schemes/RoLight.colors').write_text(
@@ -326,7 +297,7 @@ def set_key(groups, head, key, value):
 XDG_HEADER = '# Ro-ASD system defaults. Generated from core/tokens by scripts/generate-theme.sh.\n# Packaged as %config(noreplace); user settings in ~/.config always take precedence.\n'
 default_scheme = 'RoDark'
 kdeglobals = ini_groups(color_scheme(default_scheme, dark, True))
-kdeglobals['[General]'] = [l for l in kdeglobals.get('[General]', []) if not l.startswith('Name=')]
+kdeglobals['[General]'] = [l for l in kdeglobals.get('[General]', []) if not l.startswith('Name')]
 # [KDE] ColorScheme eski bir yedek anahtar; eski %post bunu /etc/xdg'den siliyordu. Yazılmaz.
 kdeglobals['[KDE]'] = [l for l in kdeglobals.get('[KDE]', []) if not l.startswith('ColorScheme=')]
 set_key(kdeglobals, '[General]', 'ColorScheme', default_scheme)
@@ -352,20 +323,7 @@ xdg_dir.mkdir(parents=True, exist_ok=True)
 for name, groups in xdg_defaults.items():
     (xdg_dir / name).write_text(XDG_HEADER + '\n' + ini_text(groups), encoding='utf-8')
 
-# Saklanan paletler (core/tokens/palettes/<ad>.light|dark.json) ayrı renk şeması olarak üretilir:
-# karşılaştırma ve geri dönüş için. Ad: Ro<Ad>Light / Ro<Ad>Dark (ör. cool -> RoCoolLight).
-saved_palettes = []
-for light_path in sorted((root / 'core/tokens/palettes').glob('*.light.json')):
-    pal = light_path.name[:-len('.light.json')]
-    dark_path = light_path.with_name(f'{pal}.dark.json')
-    if not dark_path.exists():
-        raise SystemExit(f'palette {pal}: {dark_path} missing')
-    base_id = 'Ro' + ''.join(part.capitalize() for part in pal.replace('_', '-').split('-'))
-    for mode_path, suffix, is_dark in [(light_path, 'Light', False), (dark_path, 'Dark', True)]:
-        theme_id = base_id + suffix
-        (root / 'platform/plasma/color-schemes' / f'{theme_id}.colors').write_text(
-            color_scheme(theme_id, json.loads(mode_path.read_text(encoding='utf-8')), is_dark), encoding='utf-8')
-        saved_palettes.append(theme_id)
+# Eski deneme paletleri (cool, stone) arşivde: docs/archive/palettes (Ro-Theme-Docs 02 COL-31). Üretilmez.
 
 # Plasma çerçeve SVG'si (FrameSvg / 9 parça kuralı):
 # - topleft/top/topright/left/center/right/bottomleft/bottom/bottomright öğeleri ayrı parçalardır.
@@ -502,8 +460,9 @@ def plasma_frame_svg(fill, fill_opacity, border, border_opacity, r, padding, sha
             + defs_block + ''.join(parts) + hints + shadow_body + '</svg>\n')
 
 plasma_modes = {
-    'RoLight': (light['surface'], rgba_opacity(light.get('glass'), '0.76'), light['border'], '0.58'),
-    'RoDark': (dark['surface'], rgba_opacity(dark.get('glass'), '0.58'), dark['textSecondary'], '0.28'),
+    # Çerçeve kenarlığı opak frameBorder (COL-32): gölge olmadığı için popup'ı zeminden kenarlık ayırır.
+    'RoLight': (light['surface'], rgba_opacity(light.get('glass'), '0.76'), light['frameBorder'], '1.0'),
+    'RoDark': (dark['surface'], rgba_opacity(dark.get('glass'), '0.58'), dark['frameBorder'], '1.0'),
 }
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])

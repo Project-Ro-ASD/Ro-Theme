@@ -1,6 +1,6 @@
 [General]
-ActiveTextColor=242,242,243
-InactiveTextColor=163,164,167
+ActiveTextColor=237,238,240
+InactiveTextColor=180,181,185
 TitleAlignment=Center
 TitleVerticalAlignment=Center
 UseTextShadow=false

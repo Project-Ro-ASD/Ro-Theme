@@ -1,3 +1,6 @@
+> **Arşiv (Ro-Theme-Docs 02 COL-31):** Bu paletler artık üretilmiyor ve pakette yok. Ro'nun paleti logo
+> renklerinden türetilen hedef palettir (`core/tokens/colors.*.json`). Aşağıdaki metin arşiv kaydıdır.
+
 # Saklanan paletler
 
 Ana tema `core/tokens/colors.light.json` / `colors.dark.json` dosyalarından üretilir (RoLight / RoDark).
