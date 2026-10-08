@@ -1,12 +1,12 @@
 /* Generated from core/tokens by scripts/generate-theme.sh. */
-@define-color ro_bg #1C1C1E;
-@define-color ro_bg_alt #2B2B2C;
-@define-color ro_surface #2B2B2C;
-@define-color ro_surface_alt #3A3A3C;
-@define-color ro_text #F2F2F3;
-@define-color ro_text_secondary #A3A4A7;
-@define-color ro_accent #6E9BFF;
-@define-color ro_border #4A4A4D;
+@define-color ro_bg #1E1F21;
+@define-color ro_bg_alt #37393C;
+@define-color ro_surface #2B2D2F;
+@define-color ro_surface_alt #37393C;
+@define-color ro_text #EDEEF0;
+@define-color ro_text_secondary #B4B5B9;
+@define-color ro_accent #7DA2E8;
+@define-color ro_border #4B4D52;
 
 * {
   border-radius: 12px;

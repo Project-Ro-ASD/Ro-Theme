@@ -173,10 +173,6 @@ exit 0
 %doc README.md docs
 %{_datadir}/color-schemes/RoLight.colors
 %{_datadir}/color-schemes/RoDark.colors
-%{_datadir}/color-schemes/RoCoolLight.colors
-%{_datadir}/color-schemes/RoCoolDark.colors
-%{_datadir}/color-schemes/RoStoneLight.colors
-%{_datadir}/color-schemes/RoStoneDark.colors
 %{_datadir}/plasma/desktoptheme/RoLight
 %{_datadir}/plasma/desktoptheme/RoDark
 %{_datadir}/plasma/look-and-feel/org.ro.light

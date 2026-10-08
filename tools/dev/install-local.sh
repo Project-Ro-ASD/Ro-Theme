@@ -66,7 +66,6 @@ mkdir -p "$HOME/.local/share/ro-theme/wallpapers" "$HOME/.local/share/wallpapers
 
 cp platform/plasma/color-schemes/RoLight.colors "$HOME/.local/share/color-schemes/"
 cp platform/plasma/color-schemes/RoDark.colors "$HOME/.local/share/color-schemes/"
-cp platform/plasma/color-schemes/RoCool*.colors platform/plasma/color-schemes/RoStone*.colors "$HOME/.local/share/color-schemes/"
 
 # Wallpaper dosyaları iki yere kopyalanır:
 # 1) Ro scriptlerinin sabit beklediği klasör
