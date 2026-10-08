@@ -139,7 +139,6 @@ required_paths=(
   /etc/xdg/ksplashrc
   /etc/xdg/kscreenlockerrc
   /etc/xdg/kwinrc
-  /etc/xdg/autostart/ro-theme-dark-defaults.desktop
 )
 
 for path in "${required_paths[@]}"; do

@@ -64,7 +64,7 @@ install -d \
   %{buildroot}%{_prefix}/lib/plasmalogin/plasmalogin.conf.d \
   %{buildroot}%{_libexecdir}/ro-theme \
   %{buildroot}%{_bindir} \
-  %{buildroot}%{_sysconfdir}/xdg/autostart
+  %{buildroot}%{_sysconfdir}/xdg
 
 # Plasma renk şemaları, global theme ve Plasma style.
 cp -a platform/plasma/color-schemes/* %{buildroot}%{_datadir}/color-schemes/
@@ -100,63 +100,11 @@ install -Dm0755 scripts/apply-dark-defaults.sh %{buildroot}%{_libexecdir}/ro-the
 install -Dm0755 scripts/check-plasma-runtime.sh %{buildroot}%{_libexecdir}/ro-theme/check-plasma-runtime
 install -Dm0755 scripts/diagnose.sh %{buildroot}%{_bindir}/ro-theme-diagnose
 
-cat > %{buildroot}%{_sysconfdir}/xdg/kdeglobals <<'EOF'
-[KDE]
-LookAndFeelPackage=org.ro.dark
-widgetStyle=Breeze
-
-[General]
-ColorScheme=RoDark
-EOF
-
-cat > %{buildroot}%{_sysconfdir}/xdg/plasmarc <<'EOF'
-[Theme]
-name=RoDark
-EOF
-
-cat > %{buildroot}%{_sysconfdir}/xdg/ksplashrc <<'EOF'
-[KSplash]
-Engine=KSplashQML
-Theme=org.ro.dark
-EOF
-
-cat > %{buildroot}%{_sysconfdir}/xdg/kscreenlockerrc <<'EOF'
-[Greeter]
-WallpaperPlugin=org.kde.image
-
-[Greeter][Wallpaper][org.kde.image][General]
-Image=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
-PreviewImage=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
-Blur=false
-EOF
-
-cat > %{buildroot}%{_sysconfdir}/xdg/kwinrc <<'EOF'
-[org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
-
-[Plugins]
-ro-smooth-motionEnabled=false
-kwin4_effect_scaleEnabled=false
-kwin4_effect_glideEnabled=false
-kwin4_effect_squashEnabled=false
-kwin4_effect_magiclampEnabled=false
-magiclampEnabled=false
-kwin4_effect_windowapertureEnabled=false
-kwin4_effect_frozenappEnabled=false
-EOF
-
-cat > %{buildroot}%{_sysconfdir}/xdg/autostart/ro-theme-dark-defaults.desktop <<'EOF'
-[Desktop Entry]
-Type=Application
-Name=Ro Theme Dark Defaults
-Comment=Apply Ro Dark defaults once for the current user
-Exec=/usr/libexec/ro-theme/apply-dark-defaults --current-user
-OnlyShowIn=KDE;
-X-KDE-autostart-after=panel
-X-GNOME-Autostart-enabled=true
-NoDisplay=true
-EOF
+# Sistem varsayılanları üreticiden gelir (platform/plasma/defaults/xdg); %config(noreplace) ile kurulur.
+# %post bu dosyalara ve kullanıcı dosyalarına yazmaz (DEFAULTS-OWNERSHIP-V1).
+for f in kdeglobals plasmarc ksplashrc kscreenlockerrc kwinrc; do
+  install -Dm0644 "platform/plasma/defaults/xdg/$f" "%{buildroot}%{_sysconfdir}/xdg/$f"
+done
 
 %post
 set +e
@@ -179,82 +127,6 @@ ro_theme_try() {
   fi
   return 0
 }
-
-ro_theme_write_system_defaults() {
-  mkdir -p /etc/xdg/autostart
-
-  cat > /etc/xdg/kdeglobals <<'EOF_RO_THEME_KDEGLOBALS'
-[KDE]
-LookAndFeelPackage=org.ro.dark
-widgetStyle=Breeze
-
-[General]
-ColorScheme=RoDark
-EOF_RO_THEME_KDEGLOBALS
-
-  cat > /etc/xdg/plasmarc <<'EOF_RO_THEME_PLASMARC'
-[Theme]
-name=RoDark
-EOF_RO_THEME_PLASMARC
-
-  cat > /etc/xdg/ksplashrc <<'EOF_RO_THEME_KSPLASH'
-[KSplash]
-Engine=KSplashQML
-Theme=org.ro.dark
-EOF_RO_THEME_KSPLASH
-
-  cat > /etc/xdg/kscreenlockerrc <<'EOF_RO_THEME_LOCKER'
-[Greeter]
-WallpaperPlugin=org.kde.image
-
-[Greeter][Wallpaper][org.kde.image][General]
-Image=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
-PreviewImage=file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
-Blur=false
-EOF_RO_THEME_LOCKER
-
-  cat > /etc/xdg/kwinrc <<'EOF_RO_THEME_KWIN'
-[org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
-
-[Plugins]
-ro-smooth-motionEnabled=false
-kwin4_effect_scaleEnabled=false
-kwin4_effect_glideEnabled=false
-kwin4_effect_squashEnabled=false
-kwin4_effect_magiclampEnabled=false
-magiclampEnabled=false
-kwin4_effect_windowapertureEnabled=false
-kwin4_effect_frozenappEnabled=false
-EOF_RO_THEME_KWIN
-
-  cat > /etc/xdg/autostart/ro-theme-dark-defaults.desktop <<'EOF_RO_THEME_AUTOSTART'
-[Desktop Entry]
-Type=Application
-Name=Ro Theme Dark Defaults
-Comment=Apply Ro Dark defaults once for the current user
-Exec=/usr/libexec/ro-theme/apply-dark-defaults --current-user
-OnlyShowIn=KDE;
-X-KDE-autostart-after=panel
-X-GNOME-Autostart-enabled=true
-NoDisplay=true
-EOF_RO_THEME_AUTOSTART
-}
-
-ro_theme_write_system_defaults || ro_theme_warn "system defaults could not be written"
-
-if [ -x /usr/libexec/ro-theme/apply-dark-defaults ]; then
-  ro_theme_try "apply dark defaults" /usr/libexec/ro-theme/apply-dark-defaults --all-users --force || true
-fi
-
-if [ -f /etc/xdg/kdeglobals ]; then
-  if command -v kwriteconfig6 >/dev/null 2>&1; then
-    ro_theme_try "remove stale KDE ColorScheme fallback" kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key ColorScheme --delete "" || true
-  elif command -v kwriteconfig5 >/dev/null 2>&1; then
-    ro_theme_try "remove stale KDE ColorScheme fallback" kwriteconfig5 --file /etc/xdg/kdeglobals --group KDE --key ColorScheme --delete "" || true
-  fi
-fi
 
 if command -v kbuildsycoca6 >/dev/null 2>&1; then
   ro_theme_try "KDE service cache refresh" kbuildsycoca6 --noincremental || true
@@ -329,12 +201,11 @@ exit 0
 %{_libexecdir}/ro-theme/apply-dark-defaults
 %{_libexecdir}/ro-theme/check-plasma-runtime
 %{_bindir}/ro-theme-diagnose
-%config %{_sysconfdir}/xdg/kdeglobals
-%config %{_sysconfdir}/xdg/plasmarc
-%config %{_sysconfdir}/xdg/ksplashrc
-%config %{_sysconfdir}/xdg/kscreenlockerrc
-%config %{_sysconfdir}/xdg/kwinrc
-%config %{_sysconfdir}/xdg/autostart/ro-theme-dark-defaults.desktop
+%config(noreplace) %{_sysconfdir}/xdg/kdeglobals
+%config(noreplace) %{_sysconfdir}/xdg/plasmarc
+%config(noreplace) %{_sysconfdir}/xdg/ksplashrc
+%config(noreplace) %{_sysconfdir}/xdg/kscreenlockerrc
+%config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
 * Fri Aug 28 2026 Project Ro-ASD <contact@roasd.org> - 1.0.1-2

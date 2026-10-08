@@ -301,6 +301,57 @@ inactiveBlend={rgb(inactive_blend)}
     color_scheme('RoDark', dark, True), encoding='utf-8'
 )
 
+# --- Sistem varsayılanları (/etc/xdg; 22 SYS-01, SYS-11) ---
+# Spec bu dosyaları %config(noreplace) ile /etc/xdg altına kurar; %post hiçbir ayar dosyasına yazmaz.
+# kdeglobals renkleri yukarıdaki renk şemasıyla aynı kaynaktan gelir: yeni kullanıcı renkleri XDG
+# zincirinden (/etc/xdg) alır, kullanıcı dosyasına yazılmaz. Diğer değerler bugünkü hâliyle taşınır (22b).
+def ini_groups(text):
+    # KDE INI metnini [grup] -> [satır] sözlüğüne çevirir; grup sırası korunur.
+    groups, current = {}, None
+    for line in text.splitlines():
+        if line.startswith('[') and line.endswith(']'):
+            current = line
+            groups.setdefault(current, [])
+        elif line.strip() and current is not None:
+            groups[current].append(line)
+    return groups
+
+def ini_text(groups):
+    return '\n'.join(head + '\n' + '\n'.join(lines) + '\n' for head, lines in groups.items() if lines)
+
+def set_key(groups, head, key, value):
+    lines = [l for l in groups.setdefault(head, []) if not l.startswith(key + '=')]
+    groups[head] = lines + [f'{key}={value}']
+
+XDG_HEADER = '# Ro-ASD system defaults. Generated from core/tokens by scripts/generate-theme.sh.\n# Packaged as %config(noreplace); user settings in ~/.config always take precedence.\n'
+default_scheme = 'RoDark'
+kdeglobals = ini_groups(color_scheme(default_scheme, dark, True))
+kdeglobals['[General]'] = [l for l in kdeglobals.get('[General]', []) if not l.startswith('Name=')]
+# [KDE] ColorScheme eski bir yedek anahtar; eski %post bunu /etc/xdg'den siliyordu. Yazılmaz.
+kdeglobals['[KDE]'] = [l for l in kdeglobals.get('[KDE]', []) if not l.startswith('ColorScheme=')]
+set_key(kdeglobals, '[General]', 'ColorScheme', default_scheme)
+set_key(kdeglobals, '[KDE]', 'LookAndFeelPackage', 'org.ro.dark')
+set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Breeze')
+lock_wallpaper = 'file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg'
+xdg_defaults = {
+    'kdeglobals': kdeglobals,
+    'plasmarc': {'[Theme]': ['name=RoDark']},
+    'ksplashrc': {'[KSplash]': ['Engine=KSplashQML', 'Theme=org.ro.dark']},
+    'kscreenlockerrc': {
+        '[Greeter]': ['WallpaperPlugin=org.kde.image'],
+        '[Greeter][Wallpaper][org.kde.image][General]': [f'Image={lock_wallpaper}', f'PreviewImage={lock_wallpaper}', 'Blur=false'],
+    },
+    # Plasma 5 kimlikli kwin4_effect_* satırları etkisiz olduğu için yazılmaz (FX-23).
+    'kwinrc': {
+        '[org.kde.kdecoration2]': ['library=org.kde.breeze', 'theme=Breeze'],
+        '[Plugins]': ['ro-smooth-motionEnabled=false', 'magiclampEnabled=false'],
+    },
+}
+xdg_dir = root / 'platform/plasma/defaults/xdg'
+xdg_dir.mkdir(parents=True, exist_ok=True)
+for name, groups in xdg_defaults.items():
+    (xdg_dir / name).write_text(XDG_HEADER + '\n' + ini_text(groups), encoding='utf-8')
+
 # Saklanan paletler (core/tokens/palettes/<ad>.light|dark.json) ayrı renk şeması olarak üretilir:
 # karşılaştırma ve geri dönüş için. Ad: Ro<Ad>Light / Ro<Ad>Dark (ör. cool -> RoCoolLight).
 saved_palettes = []
