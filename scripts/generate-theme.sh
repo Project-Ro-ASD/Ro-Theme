@@ -183,6 +183,10 @@ def color_scheme(theme_id, tokens, dark_mode):
     bg_alt = tokens['bgAlt']
     surface = tokens['surface']
     surface_alt = tokens['surfaceAlt']
+    # Ayrıntılı görünümdeki çizgili satır (View BackgroundAlternate): iki temada da yüzey ile ikinci yüzey
+    # arasının yarısı (Ro-Theme-Docs 02 COL-15f; ~1.10 satır ayrımı). bgAlt kullanılmaz: koyu temada surface ile
+    # aynı renkti, zebra kayboluyordu.
+    view_alt = mix_hex(surface_alt, surface, 0.5)
     text = tokens['text']
     text_secondary = tokens['textSecondary']
     border = tokens['border']
@@ -256,7 +260,7 @@ ColorScheme={theme_id}
 shadeSortColumn=true
 
 {group('Colors:Window', bg, bg_alt, text, text_secondary)}
-{group('Colors:View', surface, bg_alt, text, text_secondary)}
+{group('Colors:View', surface, view_alt, text, text_secondary)}
 {group('Colors:Button', button_bg, button_alt, text, text_secondary)}
 {group('Colors:Tooltip', surface, surface_alt, text, text_secondary)}
 {group('Colors:Header', header_bg, header_alt, text, text_secondary)}

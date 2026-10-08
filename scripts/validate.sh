@@ -319,6 +319,13 @@ check_contains platform/plasma/color-schemes/RoLight.colors "BackgroundNormal=$r
 
 for scheme in RoLight RoDark; do
   check_contains "platform/plasma/color-schemes/$scheme.colors" "ChangeSelectionColor=false" "$scheme keeps selection color in inactive views (COL-13)"
+  view_bg="$(awk '/^\[Colors:View\]$/ { s = 1; next } /^\[/ { s = 0 } s && /^BackgroundNormal=/ { sub(/^[^=]*=/, ""); print }' "platform/plasma/color-schemes/$scheme.colors")"
+  view_alt="$(awk '/^\[Colors:View\]$/ { s = 1; next } /^\[/ { s = 0 } s && /^BackgroundAlternate=/ { sub(/^[^=]*=/, ""); print }' "platform/plasma/color-schemes/$scheme.colors")"
+  if [[ -n "$view_bg" && "$view_bg" != "$view_alt" ]]; then
+    ok "$scheme view has a distinct alternate row color (COL-15f)"
+  else
+    fail "$scheme [Colors:View] BackgroundAlternate equals BackgroundNormal ($view_bg); alternate rows are invisible"
+  fi
 done
 
 section "Plasma Desktop Themes"
