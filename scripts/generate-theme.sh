@@ -34,6 +34,7 @@ for path in [
     'platform/plasma/look-and-feel/org.ro.dark/contents/layouts',
     'platform/kwin/effects/ro-smooth-motion/contents/code',
     'dist/tokens',
+    'dist/qml',
 ]:
     (root / path).mkdir(parents=True, exist_ok=True)
 
@@ -113,6 +114,35 @@ tailwind = {
     'module.exports = ' + json.dumps(tailwind, indent=2, ensure_ascii=False) + ';\n',
     encoding='utf-8'
 )
+
+# --- QML token modülü (Ro'nun kendi QML widget'ları için; renkler burada YOK, onlar Kirigami.Theme'den gelir) ---
+def _qml_name(key):
+    return key[0].lower() + key[1:]
+
+def _qml_props(prefix, values, kind='real'):
+    lines = []
+    for key, value in values.items():
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            lines.append(f'    readonly property {kind} {prefix}{key[0].upper() + key[1:]}: {value}')
+    return '\n'.join(lines)
+
+qml_tokens = (
+    'pragma Singleton\n'
+    'import QtQuick\n\n'
+    '// Ro tasarım token\'ları (QML). scripts/generate-theme.sh tarafından core/tokens\'tan ÜRETİLİR, elle düzenlenmez.\n'
+    '// Kullanım: widget paketine bu dosyayı kopyala ve qmldir\'e şunu ekle: singleton RoTokens 1.0 RoTokens.qml\n'
+    '// Renkler bu dosyada yok: Kirigami.Theme kullan, böylece her renk şemasıyla uyumlu kalır.\n'
+    '// Süreler taban değerdir (ms); Plasma animasyon hızı çarpanını (AnimationDurationFactor) uygulamak widget\'ın işidir.\n'
+    'QtObject {\n'
+    + _qml_props('radius', radius) + '\n'
+    + _qml_props('space', {k: v for k, v in spacing.items() if k in ('xs', 'sm', 'md', 'lg', 'xl')}) + '\n'
+    + '    readonly property real borderWidth: ' + str(spacing.get('borderWidth', 1)) + '\n'
+    + '    readonly property real popupPadding: ' + str(spacing.get('popupPadding', 12)) + '\n'
+    + _qml_props('opacity', {k: v for k, v in opacity.items() if k != 'shadow'}) + '\n'
+    + _qml_props('motion', {k: v for k, v in motion.items() if isinstance(v, (int, float))}) + '\n'
+    '}\n'
+)
+(root / 'dist/qml/RoTokens.qml').write_text(qml_tokens, encoding='utf-8')
 
 # --- Plasma SVG yüzeyleri ---
 def rgba_opacity(value, fallback):

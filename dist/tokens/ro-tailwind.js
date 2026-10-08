@@ -78,7 +78,8 @@ module.exports = {
         "dock": 22,
         "popup": 18,
         "widget": 18,
-        "window": 12
+        "window": 12,
+        "xs": 4
       },
       "spacing": {
         "xs": 4,
@@ -90,11 +91,12 @@ module.exports = {
         "dockHeight": 48,
         "dockIconSize": 28,
         "panelMargin": 8,
-        "popupPadding": 8,
+        "popupPadding": 12,
         "shadowSize": 22,
         "titlebarHeight": 36,
         "windowBorder": 4,
-        "titleButton": 24
+        "titleButton": 24,
+        "borderWidth": 1
       },
       "opacity": {
         "glass": 0.68,

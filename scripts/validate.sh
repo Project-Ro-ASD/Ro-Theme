@@ -281,6 +281,7 @@ check_json core/tokens/spacing.json
 check_file dist/tokens/ro-colors.css
 check_json dist/tokens/ro-colors.json
 check_file dist/tokens/ro-tailwind.js
+check_file dist/qml/RoTokens.qml
 
 section "Scripts"
 check_shell scripts/generate-theme.sh
