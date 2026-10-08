@@ -11,11 +11,11 @@ QtObject {
     readonly property real radiusLg: 18
     readonly property real radiusXl: 24
     readonly property real radiusPanel: 18
-    readonly property real radiusDock: 22
     readonly property real radiusPopup: 18
     readonly property real radiusWidget: 18
     readonly property real radiusWindow: 12
     readonly property real radiusXs: 4
+    readonly property real radiusDock: 24.0
     readonly property real spaceXs: 4
     readonly property real spaceSm: 8
     readonly property real spaceMd: 12

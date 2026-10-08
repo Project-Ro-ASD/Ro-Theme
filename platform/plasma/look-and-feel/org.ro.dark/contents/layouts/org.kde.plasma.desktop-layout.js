@@ -33,7 +33,7 @@ function removePanels() {
 function createTopPanel() {
     var top = new Panel();
     top.location = "top";
-    top.height = 28;
+    top.height = 32;
     top.hiding = "none";
     try { top.alignment = "center"; } catch (e) {}
 
@@ -64,7 +64,7 @@ function createTopPanel() {
 function createDock() {
     var dock = new Panel();
     dock.location = "bottom";
-    dock.height = 44;
+    dock.height = 48;
     dock.hiding = "dodgewindows";
     try { dock.alignment = "center"; } catch (e) {}
     try { dock.lengthMode = "fit"; } catch (e) {}

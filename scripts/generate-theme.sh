@@ -11,6 +11,7 @@ cd "$ROOT"
 python3 - <<'PY'
 from pathlib import Path
 import json
+import re
 
 root = Path('.')
 
@@ -23,6 +24,23 @@ motion = read_json('core/tokens/motion.json')
 radius = read_json('core/tokens/radius.json')
 opacity = read_json('core/tokens/opacity.json')
 spacing = read_json('core/tokens/spacing.json')
+dock_radius = spacing['dockHeight'] / 2  # TOK-02d: bağımsız token değil, tam hap geometrisi.
+
+# Yerleşimlerin diğer davranışları kendi dosyalarında kalır; yüksekliklerin tek kaynağı token'dır.
+layout_paths = [
+    'platform/plasma/layout-templates/org.ro.desktop/contents/layout.js',
+    'platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js',
+    'platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js',
+]
+for path in layout_paths:
+    layout_path = root / path
+    layout = layout_path.read_text(encoding='utf-8')
+    for panel, token in [('top', 'panelHeight'), ('dock', 'dockHeight')]:
+        pattern = rf'(?m)^(\s*{panel}\.height\s*=\s*)[0-9]+(?:\.[0-9]+)?(\s*;[^\n]*)$'
+        layout, count = re.subn(pattern, lambda m: f'{m[1]}{spacing[token]}{m[2]}', layout)
+        if count != 1:
+            raise SystemExit(f'{path}: expected exactly one {panel}.height assignment, found {count}')
+    layout_path.write_text(layout, encoding='utf-8')
 
 for path in [
     'platform/plasma/color-schemes',
@@ -60,7 +78,7 @@ css = f''':root,
   --ro-radius-lg: {radius['lg']}px;
   --ro-radius-xl: {radius['xl']}px;
   --ro-radius-panel: {radius['panel']}px;
-  --ro-radius-dock: {radius['dock']}px;
+  --ro-radius-dock: {dock_radius:g}px;
   --ro-space-xs: {spacing['xs']}px;
   --ro-space-sm: {spacing['sm']}px;
   --ro-space-md: {spacing['md']}px;
@@ -104,7 +122,7 @@ tailwind = {
                     'dark': dark,
                 }
             },
-            'borderRadius': radius,
+            'borderRadius': {**radius, 'dock': dock_radius},
             'spacing': spacing,
             'opacity': opacity,
         }
@@ -134,7 +152,7 @@ qml_tokens = (
     '// Renkler bu dosyada yok: Kirigami.Theme kullan, böylece her renk şemasıyla uyumlu kalır.\n'
     '// Süreler taban değerdir (ms); Plasma animasyon hızı çarpanını (AnimationDurationFactor) uygulamak widget\'ın işidir.\n'
     'QtObject {\n'
-    + _qml_props('radius', radius) + '\n'
+    + _qml_props('radius', {**radius, 'dock': dock_radius}) + '\n'
     + _qml_props('space', {k: v for k, v in spacing.items() if k in ('xs', 'sm', 'md', 'lg', 'xl')}) + '\n'
     + '    readonly property real borderWidth: ' + str(spacing.get('borderWidth', 1)) + '\n'
     + '    readonly property real popupPadding: ' + str(spacing.get('popupPadding', 12)) + '\n'
@@ -334,7 +352,7 @@ for name, groups in xdg_defaults.items():
 # - Kenarlık stroke ile değil, yüzeyin üstüne dolgulu halka olarak çizilir: stroke parçaların
 #   birleştiği yerde "L" izleri bırakıyordu (validate.sh stroke'u yasaklıyor).
 FRAME_EDGE = 32   # esneyen kenar parçalarının taslak uzunluğu; görünümü etkilemez
-FRAME_BORDER = 1  # kenarlık kalınlığı (px)
+FRAME_BORDER = spacing['borderWidth']  # dekoratif kenarlığın tek kaynağı (TOK-08)
 
 def fmt(value):
     return ('%.4f' % value).rstrip('0').rstrip('.')
@@ -467,7 +485,7 @@ plasma_modes = {
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
-popup_shadow = (spacing.get('shadowSize', 22), opacity.get('shadow', 0.38))
+popup_shadow = None  # TOK-09/10: katman ayrımı yüzey ve kenarlıkla yapılır.
 solid_opacity = opacity.get('solid', 1.0)
 for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
     base = root / 'platform/plasma/desktoptheme' / theme_name
@@ -515,7 +533,7 @@ gtk_css = f'''/* Generated from core/tokens by scripts/generate-theme.sh. */
 @define-color ro_border {dark['border']};
 
 * {{
-  border-radius: 10px;
+  border-radius: {radius['md']}px;
 }}
 
 window,
@@ -529,14 +547,14 @@ headerbar,
 .titlebar {{
   background: @ro_surface;
   color: @ro_text;
-  border-bottom: 1px solid @ro_border;
+  border-bottom: {spacing['borderWidth']}px solid @ro_border;
 }}
 
 button {{
   background: @ro_surface_alt;
   color: @ro_text;
-  border: 1px solid @ro_border;
-  padding: 7px 12px;
+  border: {spacing['borderWidth']}px solid @ro_border;
+  padding: {spacing['sm']}px {spacing['md']}px;
 }}
 
 button:hover {{
@@ -554,7 +572,7 @@ textview,
 spinbutton {{
   background: @ro_surface;
   color: @ro_text;
-  border: 1px solid @ro_border;
+  border: {spacing['borderWidth']}px solid @ro_border;
 }}
 
 entry:focus,
@@ -584,7 +602,7 @@ window_radius = radius.get('window', radius['md'])
 window_border = spacing.get('windowBorder', 4)
 titlebar_height = spacing.get('titlebarHeight', 36)
 title_button = spacing.get('titleButton', 24)
-window_shadow = spacing.get('shadowSize', 22)
+window_shadow = 0  # TOK-09/10: Aurorae dış gölge boşluğu yok.
 if window_border < 0.3 * window_radius:
     raise SystemExit(f'windowBorder ({window_border}) must be >= 0.3 * radius.window ({window_radius}) '
                      'so client corners stay under the rounded frame')
@@ -666,7 +684,7 @@ def aurorae_decoration_svg(tokens):
     pad, r = window_shadow, window_radius
     bg = tokens['bg']
     edge = tokens['border']
-    shadow_alpha = opacity.get('shadow', 0.38)
+    shadow_alpha = 0
     defs, body, x = [], [], 0
     # Aktif / pasif aynı şekil; pasifte kenarlık ve gölge daha sönük
     for prefix, edge_op, sh in [('decoration', 0.22, shadow_alpha), ('decoration-inactive', 0.12, shadow_alpha * 0.6)]:
@@ -702,7 +720,7 @@ def aurorae_button_svg(kind, tokens):
     on_accent = tokens.get('selectionText', tokens['bg'])
     glyph = BUTTON_GLYPHS[kind]
     # Hover nötr; sadece kapat düğmesi vurgu rengini kullanır
-    hover = (accent, 1, on_accent) if kind == 'close' else (text, 0.14, text)
+    hover = (accent, 1, on_accent) if kind == 'close' else (text, opacity['hover'], text)
     pressed = (accent, 0.8, on_accent) if kind == 'close' else (text, 0.24, text)
     # (öğe öneki, daire rengi, daire opaklığı, simge rengi, simge opaklığı)
     states = [

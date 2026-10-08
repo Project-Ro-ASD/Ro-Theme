@@ -9,7 +9,7 @@
 @define-color ro_border #4B4D52;
 
 * {
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 window,
@@ -30,7 +30,7 @@ button {
   background: @ro_surface_alt;
   color: @ro_text;
   border: 1px solid @ro_border;
-  padding: 7px 12px;
+  padding: 8px 12px;
 }
 
 button:hover {

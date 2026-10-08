@@ -101,11 +101,11 @@ module.exports = {
         "lg": 18,
         "xl": 24,
         "panel": 18,
-        "dock": 22,
         "popup": 18,
         "widget": 18,
         "window": 12,
-        "xs": 4
+        "xs": 4,
+        "dock": 24.0
       },
       "spacing": {
         "xs": 4,
@@ -118,7 +118,6 @@ module.exports = {
         "dockIconSize": 28,
         "panelMargin": 8,
         "popupPadding": 12,
-        "shadowSize": 22,
         "titlebarHeight": 36,
         "windowBorder": 4,
         "titleButton": 24,
@@ -131,8 +130,7 @@ module.exports = {
         "disabled": 0.42,
         "solid": 1.0,
         "mixCard": 0.07,
-        "mixPressed": 0.14,
-        "shadow": 0.38
+        "mixPressed": 0.14
       }
     }
   }

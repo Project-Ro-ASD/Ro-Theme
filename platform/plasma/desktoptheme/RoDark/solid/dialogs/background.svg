@@ -1,15 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="236" height="168" viewBox="0 0 236 168">
+<svg xmlns="http://www.w3.org/2000/svg" width="116" height="68" viewBox="0 0 116 68">
   <!-- Ro surface: radius 18, padding 12. Generated from core/tokens by scripts/generate-theme.sh. -->
-  <defs>
-    <radialGradient id="ro-shadow-topleft" gradientUnits="userSpaceOnUse" cx="156" cy="88" r="40"><stop offset="0.449" stop-color="#000000" stop-opacity="0"/><stop offset="0.45" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.5417" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.6333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.725" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.8167" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.9083" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient>
-    <radialGradient id="ro-shadow-topright" gradientUnits="userSpaceOnUse" cx="188" cy="88" r="40"><stop offset="0.449" stop-color="#000000" stop-opacity="0"/><stop offset="0.45" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.5417" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.6333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.725" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.8167" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.9083" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient>
-    <radialGradient id="ro-shadow-bottomleft" gradientUnits="userSpaceOnUse" cx="156" cy="120" r="40"><stop offset="0.449" stop-color="#000000" stop-opacity="0"/><stop offset="0.45" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.5417" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.6333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.725" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.8167" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.9083" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient>
-    <radialGradient id="ro-shadow-bottomright" gradientUnits="userSpaceOnUse" cx="188" cy="120" r="40"><stop offset="0.449" stop-color="#000000" stop-opacity="0"/><stop offset="0.45" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.5417" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.6333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.725" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.8167" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.9083" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient>
-    <linearGradient id="ro-shadow-top" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.1667" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.3333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.5" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.6667" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.8333" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></linearGradient>
-    <linearGradient id="ro-shadow-bottom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.1667" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.3333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.5" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.6667" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.8333" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></linearGradient>
-    <linearGradient id="ro-shadow-left" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.1667" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.3333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.5" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.6667" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.8333" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></linearGradient>
-    <linearGradient id="ro-shadow-right" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000000" stop-opacity="0.38"/><stop offset="0.1667" stop-color="#000000" stop-opacity="0.2639"/><stop offset="0.3333" stop-color="#000000" stop-opacity="0.1689"/><stop offset="0.5" stop-color="#000000" stop-opacity="0.095"/><stop offset="0.6667" stop-color="#000000" stop-opacity="0.0422"/><stop offset="0.8333" stop-color="#000000" stop-opacity="0.0106"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></linearGradient>
-  </defs>
   <g id="topleft">
     <path d="M 18,18 L 0,18 A 18,18 0 0 1 18,0 Z" fill="#2B2D2F" fill-opacity="1.0"/>
     <path d="M 0,18 A 18,18 0 0 1 18,0 L 18,1 A 17,17 0 0 0 1,18 Z" fill="#707276" fill-opacity="1.0"/>
@@ -50,16 +40,4 @@
   <rect id="hint-left-margin" x="84" y="0" width="12" height="1" fill-opacity="0"/>
   <rect id="hint-right-margin" x="84" y="4" width="12" height="1" fill-opacity="0"/>
   <rect id="hint-stretch-borders" x="76" y="20" width="1" height="1" fill-opacity="0"/>
-  <rect id="shadow-topleft" x="116" y="48" width="40" height="40" fill="url(#ro-shadow-topleft)"/>
-  <rect id="shadow-topright" x="188" y="48" width="40" height="40" fill="url(#ro-shadow-topright)"/>
-  <rect id="shadow-bottomleft" x="116" y="120" width="40" height="40" fill="url(#ro-shadow-bottomleft)"/>
-  <rect id="shadow-bottomright" x="188" y="120" width="40" height="40" fill="url(#ro-shadow-bottomright)"/>
-  <rect id="shadow-top" x="156" y="66" width="32" height="22" fill="url(#ro-shadow-top)"/>
-  <rect id="shadow-bottom" x="156" y="120" width="32" height="22" fill="url(#ro-shadow-bottom)"/>
-  <rect id="shadow-left" x="134" y="88" width="22" height="32" fill="url(#ro-shadow-left)"/>
-  <rect id="shadow-right" x="188" y="88" width="22" height="32" fill="url(#ro-shadow-right)"/>
-  <rect id="shadow-hint-top-margin" x="116" y="8" width="1" height="22" fill-opacity="0"/>
-  <rect id="shadow-hint-bottom-margin" x="120" y="8" width="1" height="22" fill-opacity="0"/>
-  <rect id="shadow-hint-left-margin" x="124" y="8" width="22" height="1" fill-opacity="0"/>
-  <rect id="shadow-hint-right-margin" x="124" y="12" width="22" height="1" fill-opacity="0"/>
 </svg>
