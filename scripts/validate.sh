@@ -317,6 +317,10 @@ check_contains platform/plasma/color-schemes/RoLight.colors "[Colors:Complementa
 ro_light_text_rgb="$(python3 -c 'import json; h=json.load(open("core/tokens/colors.light.json"))["text"].lstrip("#"); print(",".join(str(int(h[i:i+2],16)) for i in (0,2,4)))')"
 check_contains platform/plasma/color-schemes/RoLight.colors "BackgroundNormal=$ro_light_text_rgb" "RoLight complementary lockscreen dim surface"
 
+for scheme in RoLight RoDark; do
+  check_contains "platform/plasma/color-schemes/$scheme.colors" "ChangeSelectionColor=false" "$scheme keeps selection color in inactive views (COL-13)"
+done
+
 section "Plasma Desktop Themes"
 check_dir platform/plasma/desktoptheme/RoLight
 check_dir platform/plasma/desktoptheme/RoDark
