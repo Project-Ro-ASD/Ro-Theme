@@ -11,11 +11,11 @@ QtObject {
     readonly property real radiusLg: 18
     readonly property real radiusXl: 24
     readonly property real radiusPanel: 18
-    readonly property real radiusDock: 22
     readonly property real radiusPopup: 18
     readonly property real radiusWidget: 18
     readonly property real radiusWindow: 12
     readonly property real radiusXs: 4
+    readonly property real radiusDock: 24.0
     readonly property real spaceXs: 4
     readonly property real spaceSm: 8
     readonly property real spaceMd: 12
@@ -25,7 +25,7 @@ QtObject {
     readonly property real popupPadding: 12
     readonly property real opacityGlass: 0.68
     readonly property real opacityGlassStrong: 0.82
-    readonly property real opacityHover: 0.88
+    readonly property real opacityHover: 0.08
     readonly property real opacityDisabled: 0.42
     readonly property real opacitySolid: 1.0
     readonly property real motionWindowOpenMs: 185

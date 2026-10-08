@@ -14,7 +14,7 @@
   --ro-radius-lg: 18px;
   --ro-radius-xl: 24px;
   --ro-radius-panel: 18px;
-  --ro-radius-dock: 22px;
+  --ro-radius-dock: 24px;
   --ro-space-xs: 4px;
   --ro-space-sm: 8px;
   --ro-space-md: 12px;
@@ -25,7 +25,7 @@
   --ro-dock-icon-size: 28px;
   --ro-opacity-glass: 0.68;
   --ro-opacity-glass-strong: 0.82;
-  --ro-opacity-hover: 0.88;
+  --ro-opacity-hover: 0.08;
   --ro-opacity-disabled: 0.42;
   --ro-motion-window-open: 185ms;
   --ro-motion-window-close: 155ms;

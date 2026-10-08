@@ -75,11 +75,11 @@ module.exports = {
         "lg": 18,
         "xl": 24,
         "panel": 18,
-        "dock": 22,
         "popup": 18,
         "widget": 18,
         "window": 12,
-        "xs": 4
+        "xs": 4,
+        "dock": 24.0
       },
       "spacing": {
         "xs": 4,
@@ -92,7 +92,6 @@ module.exports = {
         "dockIconSize": 28,
         "panelMargin": 8,
         "popupPadding": 12,
-        "shadowSize": 22,
         "titlebarHeight": 36,
         "windowBorder": 4,
         "titleButton": 24,
@@ -101,9 +100,8 @@ module.exports = {
       "opacity": {
         "glass": 0.68,
         "glassStrong": 0.82,
-        "hover": 0.88,
+        "hover": 0.08,
         "disabled": 0.42,
-        "shadow": 0.38,
         "solid": 1.0
       }
     }

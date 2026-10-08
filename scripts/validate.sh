@@ -218,8 +218,84 @@ PY
   fi
 }
 
+check_token_geometry() {
+  # TOK-03/05/07: iç öğeler popup'a sığmalı; uygulama köşeleri Aurorae çerçevesinin altında kalmalı.
+  local report
+  if ! report="$(python3 - <<'PY'
+import json, math, re, sys
+from pathlib import Path
+
+radius = json.loads(Path('core/tokens/radius.json').read_text())
+spacing = json.loads(Path('core/tokens/spacing.json').read_text())
+opacity = json.loads(Path('core/tokens/opacity.json').read_text())
+errors = []
+
+def positive(values, key):
+    value = values[key]
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+        raise ValueError(f'{key} must be a finite positive number')
+    return value
+
+try:
+    for values, key in [(radius, 'dock'), (spacing, 'shadowSize'), (opacity, 'shadow')]:
+        if key in values:
+            errors.append(f'obsolete token {key}: dock radius is derived and shadows are disabled (TOK-02d/09/10)')
+    minimum = positive(radius, 'sm')
+    popup = positive(radius, 'popup')
+    padding = positive(spacing, 'popupPadding')
+    maximum = popup - padding / 2
+    # Tam daireler ve bağımsız widget yüzeyleri iç öğe değildir (TOK-02/03).
+    for key in ['sm', 'md']:
+        inner = positive(radius, key)
+        if not minimum <= inner <= maximum:
+            errors.append(f'radius.{key} ({inner}) must be between radius.sm ({minimum}) and radius.popup - popupPadding/2 ({maximum})')
+    if padding < 0.3 * popup:
+        errors.append(f'popupPadding ({padding}) must be >= 0.3 * radius.popup ({popup})')
+    window = positive(radius, 'window')
+    border = positive(spacing, 'windowBorder')
+    if border < 0.3 * window:
+        errors.append(f'windowBorder ({border}) must be >= 0.3 * radius.window ({window})')
+    frame_border = positive(spacing, 'borderWidth')
+    if frame_border >= min(popup, positive(radius, 'widget'), positive(radius, 'panel'), window):
+        errors.append('borderWidth must be smaller than each frame radius')
+    hover = positive(opacity, 'hover')
+    if not 0.08 <= hover <= 0.14:
+        errors.append(f'opacity.hover ({hover}) must be a neutral overlay intensity between 0.08 and 0.14')
+    dock_radius = positive(spacing, 'dockHeight') / 2
+    css = Path('dist/tokens/ro-colors.css').read_text()
+    qml = Path('dist/qml/RoTokens.qml').read_text()
+    tailwind = Path('dist/tokens/ro-tailwind.js').read_text().removeprefix('module.exports = ').removesuffix(';\n')
+    derived = json.loads(tailwind)['theme']['extend']['borderRadius']['dock']
+    if (f'--ro-radius-dock: {dock_radius:g}px;' not in css
+            or f'readonly property real radiusDock: {dock_radius}\n' not in qml or derived != dock_radius):
+        errors.append('CSS/QML/Tailwind dock radius must equal spacing.dockHeight / 2; run scripts/generate-theme.sh')
+
+    paths = [
+        Path('platform/plasma/layout-templates/org.ro.desktop/contents/layout.js'),
+        *Path('platform/plasma/look-and-feel').glob('org.ro.*/contents/layouts/org.kde.plasma.desktop-layout.js'),
+    ]
+    for path in paths:
+        layout = path.read_text()
+        for panel, token in [('top', 'panelHeight'), ('dock', 'dockHeight')]:
+            expected = positive(spacing, token)
+            heights = re.findall(rf'(?m)^\s*{panel}\.height\s*=\s*([0-9]+(?:\.[0-9]+)?)\s*;', layout)
+            if len(heights) != 1 or float(heights[0]) != expected:
+                errors.append(f'{path}: {panel}.height must match spacing.{token} ({expected}); run scripts/generate-theme.sh')
+except (KeyError, ValueError, OSError) as error:
+    errors.append(str(error))
+
+print('; '.join(errors))
+sys.exit(1 if errors else 0)
+PY
+)"; then
+    fail "token geometry and layout: $report"
+  else
+    ok "token geometry, neutral hover and generated panel/dock heights"
+  fi
+}
+
 check_plasma_frame_svg() {
-  # Yuvarlak popup çerçevesi: köşe parçaları yay (arc) içermeli, iç boşluk ve gölge tanımlı olmalı
+  # Yuvarlak popup çerçevesi: köşe parçaları yay (arc) ve iç boşluk ipuçları içermeli.
   local path="$1"
   local label="$2"
 
@@ -227,6 +303,11 @@ check_plasma_frame_svg() {
   check_contains "$path" '<g id="topleft">' "$label corner element"
   check_contains "$path" ' A ' "$label rounded corner arc"
   check_contains "$path" 'id="hint-top-margin"' "$label content margin hint"
+  if grep -Eq 'id="shadow-|id="ro-shadow-' "$path"; then
+    fail "$label must not contain popup shadows (TOK-09/10)"
+  else
+    ok "$label no popup shadows"
+  fi
 }
 
 check_aurorae_theme() {
@@ -238,6 +319,14 @@ check_aurorae_theme() {
   check_contains "$dir/metadata.desktop" "X-KDE-PluginInfo-Name=$name" "$name Aurorae plugin name"
   check_file "$dir/${name}rc"
   check_contains "$dir/${name}rc" "[Layout]" "$name Aurorae layout group"
+  for side in Top Bottom Left Right; do
+    check_contains "$dir/${name}rc" "Padding${side}=0" "$name no shadow padding $side"
+  done
+  if grep -Eq 'id="ro-.*-shadow"' "$dir/decoration.svg"; then
+    fail "$name must not contain Aurorae shadow gradients (TOK-09/10)"
+  else
+    ok "$name no Aurorae shadow gradients"
+  fi
   check_file "$dir/decoration.svg"
   for prefix in decoration decoration-inactive decoration-maximized decoration-maximized-inactive; do
     check_contains "$dir/decoration.svg" "id=\"$prefix-topleft\"" "$name $prefix frame"
@@ -278,6 +367,7 @@ check_json core/tokens/motion.json
 check_json core/tokens/radius.json
 check_json core/tokens/opacity.json
 check_json core/tokens/spacing.json
+check_token_geometry
 check_file dist/tokens/ro-colors.css
 check_json dist/tokens/ro-colors.json
 check_file dist/tokens/ro-tailwind.js

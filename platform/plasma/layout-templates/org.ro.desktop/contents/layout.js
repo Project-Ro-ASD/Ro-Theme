@@ -20,7 +20,7 @@ for (var i = 0; i < oldPanels.length; i++) {
 // Sağ: system tray
 var top = new Panel();
 top.location = "top";
-top.height = 28;
+top.height = 32;
 top.hiding = "none";
 try { top.alignment = "center"; } catch (e) {}
 
@@ -49,7 +49,7 @@ top.addWidget("org.kde.plasma.systemtray");
 // sınırlaması nedeniyle arka plan geniş görünebilir, fakat widget içerik ortada kalır.
 var dock = new Panel();
 dock.location = "bottom";
-dock.height = 44;
+dock.height = 48;
 dock.hiding = "dodgewindows";
 try { dock.alignment = "center"; } catch (e) {}
 try { dock.lengthMode = "fit"; } catch (e) {}
