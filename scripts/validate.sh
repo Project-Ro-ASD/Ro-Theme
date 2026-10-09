@@ -571,6 +571,7 @@ check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/dialogs/background.
 for theme in RoLight RoDark; do
   for variant in "" translucent/ solid/; do
     check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}dialogs/background.svg" "$theme ${variant}dialog frame"
+    check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}widgets/tooltip.svg" "$theme ${variant}tooltip frame"
   done
   for control in lineedit button viewitem; do
     check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
