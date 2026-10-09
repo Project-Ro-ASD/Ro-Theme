@@ -33,6 +33,11 @@ QtObject {
     readonly property real opacityListCurrent: 0.15
     readonly property real opacityListSelected: 0.3
     readonly property real opacityListSelectedHover: 0.4
+    readonly property real opacityScrollbarLight: 0.85
+    readonly property real opacityScrollbarHoverLight: 1.0
+    readonly property real opacityScrollbarDark: 0.5
+    readonly property real opacityScrollbarHoverDark: 0.9
+    readonly property real opacityScrollbarGroove: 0.08
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170

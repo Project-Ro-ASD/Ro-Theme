@@ -612,6 +612,54 @@ def plasma_viewitem_svg(tokens):
         y += size + 8
     return _ctl_svg(out, r, len(states), tokens)
 
+def _pill_block(prefix, y0, R, pr, fills):
+    # Kaydırma çubuğu için 9 parça: çerçeve kutusu R (toplam genişlik 2R), görünen hap yarıçapı pr; aradaki boşluk
+    # (R - pr) parçaların içinde saydam kalır. Plasma'nın *-hint-*-inset ipuçlarına bağlı değildir (PST-19).
+    e = FRAME_EDGE
+    def layers(shape):
+        return ''.join(_ctl_layer(shape, c, o) for c, o in fills)
+    parts = {}
+    for name, ox, oy, dx, dy in (('topleft', 0, 0, -1, -1), ('topright', R + e, 0, 1, -1),
+                                 ('bottomleft', 0, R + e, -1, 1), ('bottomright', R + e, R + e, 1, 1)):
+        cx = ox + (R if dx < 0 else 0)
+        cy = y0 + oy + (R if dy < 0 else 0)
+        p1, p2 = (cx + dx * pr, cy), (cx, cy + dy * pr)
+        sw = _arc_sweep(cx, cy, p1, p2)
+        parts[name] = layers(f'<path d="M {fmt(cx)},{fmt(cy)} L {fmt(p1[0])},{fmt(p1[1])} A {fmt(pr)},{fmt(pr)} 0 0 {sw} {fmt(p2[0])},{fmt(p2[1])} Z"/>')
+    parts['left'] = layers(f'<rect x="{fmt(R - pr)}" y="{fmt(y0 + R)}" width="{fmt(pr)}" height="{fmt(e)}"/>')
+    parts['right'] = layers(f'<rect x="{fmt(R + e)}" y="{fmt(y0 + R)}" width="{fmt(pr)}" height="{fmt(e)}"/>')
+    parts['top'] = layers(f'<rect x="{fmt(R)}" y="{fmt(y0 + R - pr)}" width="{fmt(e)}" height="{fmt(pr)}"/>')
+    parts['bottom'] = layers(f'<rect x="{fmt(R)}" y="{fmt(y0 + R + e)}" width="{fmt(e)}" height="{fmt(pr)}"/>')
+    parts['center'] = layers(f'<rect x="{fmt(R)}" y="{fmt(y0 + R)}" width="{fmt(e)}" height="{fmt(e)}"/>')
+    # Saydam sınır kutusu: her parçanın boyutu çerçeve kutusuna eşit olsun (görünen hap daha küçük).
+    boxes = {'topleft': (0, 0, R, R), 'topright': (R + e, 0, R, R), 'bottomleft': (0, R + e, R, R),
+             'bottomright': (R + e, R + e, R, R), 'left': (0, R, R, e), 'right': (R + e, R, R, e),
+             'top': (R, 0, e, R), 'bottom': (R, R + e, e, R), 'center': (R, R, e, e)}
+    out = ''
+    for name, body in parts.items():
+        bx, by, bw, bh = boxes[name]
+        box = f'    <rect x="{fmt(bx)}" y="{fmt(y0 + by)}" width="{fmt(bw)}" height="{fmt(bh)}" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>\n'
+        out += f'  <g id="{prefix}-{name}">\n{box}{body}  </g>\n'
+    return out
+
+def plasma_scrollbar_svg(tokens, mode):
+    # PST-19: 8 px hap tutamak vurgu renginde (açıkta %85 → %100, koyuda %50 → %90; beyaz zeminde aynı opaklık
+    # daha soluk göründüğü için tema başına ayrı). Oluk nötr %8; Plasma onu yalnızca üzerine gelince gösterir.
+    W = spacing['scrollbarWidth']; R = W / 2; pr = spacing['scrollbarHandle'] / 2
+    suffix = 'Light' if mode == 'light' else 'Dark'
+    states = (
+        ('slider', [('ColorScheme-Highlight', opacity['scrollbar' + suffix])]),
+        ('mouseover-slider', [('ColorScheme-Highlight', opacity['scrollbarHover' + suffix])]),
+        ('background-vertical', [('ColorScheme-Text', opacity['scrollbarGroove'])]),
+        ('background-horizontal', [('ColorScheme-Text', opacity['scrollbarGroove'])]),
+    )
+    out, y = '', 0
+    for prefix, fills in states:
+        out += _pill_block(prefix, y, R, pr, fills)
+        y += W + FRAME_EDGE + 8
+    out += f'  <rect id="hint-scrollbar-size" x="{fmt(W + FRAME_EDGE + 20)}" y="0" width="{fmt(W)}" height="{fmt(W)}" fill-opacity="0"/>\n'
+    return _ctl_svg(out, R, len(states), tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -631,6 +679,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/lineedit.svg': plasma_lineedit_svg(light if theme_name == 'RoLight' else dark),
         'widgets/button.svg': plasma_button_svg(light if theme_name == 'RoLight' else dark),
         'widgets/viewitem.svg': plasma_viewitem_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/scrollbar.svg': plasma_scrollbar_svg(light if theme_name == 'RoLight' else dark, 'light' if theme_name == 'RoLight' else 'dark'),
     }
     for rel, content in outputs.items():
         out = base / rel
