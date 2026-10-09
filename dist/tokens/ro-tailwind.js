@@ -130,7 +130,10 @@ module.exports = {
         "disabled": 0.42,
         "solid": 1.0,
         "mixCard": 0.07,
-        "mixPressed": 0.14
+        "mixPressed": 0.14,
+        "listCurrent": 0.1,
+        "listSelected": 0.25,
+        "listSelectedHover": 0.35
       }
     }
   }

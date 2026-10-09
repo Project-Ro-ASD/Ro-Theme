@@ -339,7 +339,7 @@ PY
 }
 
 check_plasma_control_svg() {
-  # Ro'nun çizdiği kabuk kontrolleri (03 PST-22/23): her durum 9 parça, stroke yok, iç boşluk ipuçları,
+  # Ro'nun çizdiği kabuk kontrolleri (03 PST-22/23/26): her durum 9 parça, stroke yok, iç boşluk ipuçları,
   # renkler ColorScheme-* sınıflarından (PST-03; sabit fill hex yok), köşe token'dan (radius.md).
   local path="$1"
   local label="$2"
@@ -351,7 +351,7 @@ bad = []
 if '<stroke' in s or ' stroke=' in s: bad.append('stroke used')
 if re.search(r'fill="#', s): bad.append('hard-coded fill color')
 if 'id="current-color-scheme"' not in s: bad.append('no current-color-scheme style')
-prefixes = sorted({m.group(1) for m in re.finditer(r'<g id="([a-z-]+?)-topleft"', s)})
+prefixes = sorted({m.group(1) for m in re.finditer(r'<g id="([a-z+-]+?)-topleft"', s)})
 if not prefixes: bad.append('no state frames')
 for p in prefixes:
     for part in ['topleft', 'top', 'topright', 'left', 'center', 'right', 'bottomleft', 'bottom', 'bottomright']:
@@ -525,7 +525,7 @@ for theme in RoLight RoDark; do
   for variant in "" translucent/ solid/; do
     check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}dialogs/background.svg" "$theme ${variant}dialog frame"
   done
-  for control in lineedit button; do
+  for control in lineedit button viewitem; do
     check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
   done
   check_aurorae_theme "$theme"

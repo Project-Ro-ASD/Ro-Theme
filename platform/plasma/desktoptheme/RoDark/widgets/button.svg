@@ -8,6 +8,7 @@
     .ColorScheme-ButtonText { color:#edeef0; }
     .ColorScheme-ViewFocus { color:#7da2e8; }
     .ColorScheme-ButtonFocus { color:#7da2e8; }
+    .ColorScheme-Highlight { color:#7da2e8; }
   </style>
   </defs>
   <g id="normal-topleft">
