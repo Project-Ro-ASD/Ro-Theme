@@ -151,7 +151,8 @@ module.exports = {
         "indicatorEdge": 0.5,
         "switchTrackOff": 0.25,
         "sliderGroove": 0.2,
-        "sliderHover": 0.12
+        "sliderHover": 0.12,
+        "separator": 0.15
       }
     }
   }
