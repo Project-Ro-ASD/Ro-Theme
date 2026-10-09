@@ -674,7 +674,7 @@ section "System Defaults (/etc/xdg, DEFAULTS-OWNERSHIP-V1)"
 # 22 SYS-01/06/07/11: varsayılanlar üreticiden gelir, %config(noreplace) ile kurulur; %post ve araçlar
 # kullanıcı dosyasına ya da /etc/xdg'ye yazmaz.
 XDG_DEFAULTS=platform/plasma/defaults/xdg
-for f in kdeglobals plasmarc ksplashrc kscreenlockerrc kwinrc; do
+for f in kdeglobals kcmfonts plasmarc ksplashrc kscreenlockerrc kwinrc; do
   check_file "$XDG_DEFAULTS/$f"
   check_contains packaging/ro-theme.spec "%config(noreplace) %{_sysconfdir}/xdg/$f" "RPM installs /etc/xdg/$f as %config(noreplace)"
   check_not_contains "$XDG_DEFAULTS/$f" "kwin4_effect_" "$f has no obsolete Plasma 5 effect keys"
@@ -683,6 +683,47 @@ for g in "[Colors:Window]" "[Colors:View]" "[Colors:Button]" "[Colors:Selection]
   check_contains "$XDG_DEFAULTS/kdeglobals" "$g" "system kdeglobals has $g (new users get Ro colors from /etc/xdg)"
 done
 check_contains "$XDG_DEFAULTS/kdeglobals" "ColorScheme=RoDark" "system kdeglobals selects RoDark"
+check_file core/tokens/fonts.json
+check_json core/tokens/fonts.json
+if python3 - <<'PY'
+from pathlib import Path
+import configparser, json
+
+root = Path('.')
+tokens = json.loads((root/'core/tokens/fonts.json').read_text())
+def config(path):
+    c = configparser.ConfigParser(interpolation=None, strict=True)
+    c.optionxform = str
+    c.read(path)
+    return c
+def font(value, role):
+    fields = value.split(',')
+    f = tokens[role]
+    assert len(fields) == 19 and fields[16] == f['styleName'], (role, value)
+    assert (fields[0], float(fields[1]), int(fields[4])) == (f['family'], f['pointSize'], f['weight']), (role, value)
+system = config(root/'platform/plasma/defaults/xdg/kdeglobals')
+font(system['WM']['activeFont'], 'windowTitle')
+roles = {'font':'general','fixed':'fixed','smallestReadableFont':'small','toolBarFont':'toolbar','menuFont':'menu'}
+for key in roles:
+    assert key not in system['General'], 'Fedora-identical font role must remain inherited: '+key
+for mode in ['light','dark']:
+    c = config(root/f'platform/plasma/look-and-feel/org.ro.{mode}/contents/defaults')
+    for key, role in roles.items():
+        font(c['kdeglobals][General'][key], role)
+    font(c['kdeglobals][WM']['activeFont'], 'windowTitle')
+    assert c['kdeglobals][WM']['activeFont'] == system['WM']['activeFont']
+r = tokens['rendering']
+assert system['General']['XftAntialias'] == str(r['antialias']).lower()
+assert system['General']['XftHintStyle'] == r['hintStyle']
+assert system['General']['XftSubPixel'] == r['subPixel']
+dpi = config(root/'platform/plasma/defaults/xdg/kcmfonts')
+assert int(dpi['General']['forceFontDPI']) == tokens['forceFontDPI'] == 0
+PY
+then
+  ok "font roles, rendering and DPI defaults agree with font tokens"
+else
+  fail "font defaults disagree with font tokens or Fedora inheritance"
+fi
 if awk '/^\[KDE\]$/ { g = 1; next } /^\[/ { g = 0 } g && /^ColorScheme=/ { f = 1 } END { exit f ? 0 : 1 }' "$XDG_DEFAULTS/kdeglobals"; then
   fail "system kdeglobals contains obsolete [KDE] ColorScheme"
 else
@@ -704,6 +745,7 @@ else
 fi
 check_not_contains scripts/apply-dark-defaults.sh "getent passwd" "apply-dark-defaults only changes the current user"
 check_not_contains scripts/apply-dark-defaults.sh "runuser" "apply-dark-defaults never acts as another user"
+check_contains scripts/apply-dark-defaults.sh "FILES=(kdeglobals kcmfonts" "explicit appearance reset includes the Ro-managed font DPI default"
 
 printf '\nValidation summary: %d error(s), %d warning(s)\n' "$errors" "$warnings"
 
