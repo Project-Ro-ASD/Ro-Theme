@@ -38,6 +38,9 @@ QtObject {
     readonly property real opacityScrollbarDark: 0.5
     readonly property real opacityScrollbarHoverDark: 0.9
     readonly property real opacityScrollbarGroove: 0.08
+    readonly property real opacityButtonEdge: 0.2
+    readonly property real opacityIndicatorEdge: 0.5
+    readonly property real opacitySwitchTrackOff: 0.25
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170

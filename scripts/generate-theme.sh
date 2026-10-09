@@ -573,13 +573,15 @@ def plasma_lineedit_svg(tokens):
     return _ctl_svg(out, r, 4, tokens)
 
 def plasma_button_svg(tokens):
-    # PST-23: normal = Button zemini, kenarsız; hover = + metin %8 (opacity.hover); pressed = + mixPressed;
+    # PST-23 (revize 2026-10-09): köşe sm (8); normal = Button zemini + ince kenar (buttonEdge). Plasma kapalı onay
+    # kutusunu bu çerçeveyle 16 px çizer: köşe 8'den büyük olursa şekil bozulur, kenar kutuyu görünür kılar.
+    # Önceki not: normal = Button zemini, kenarsız; hover = + metin %8 (opacity.hover); pressed = + mixPressed;
     # focus = vurgu halkası; araç düğmesi normalde zeminsiz. mask-normal bulanıklık maskesi (PST-09).
-    r, b = radius['md'], spacing['borderWidth']
+    r, b = radius['sm'], spacing['borderWidth']
     m = (spacing['xs'], spacing['xs'], spacing['sm'] + spacing['xs'], spacing['sm'] + spacing['xs'])
     size, out, y = 2 * r + FRAME_EDGE, '', 0
     states = (
-        ('normal', [('ColorScheme-ButtonBackground', 1)], None, b, m),
+        ('normal', [('ColorScheme-ButtonBackground', 1)], ('ColorScheme-ButtonText', opacity['buttonEdge']), b, m),
         ('hover', [('ColorScheme-ButtonBackground', 1), ('ColorScheme-ButtonText', opacity['hover'])], None, b, m),
         ('pressed', [('ColorScheme-ButtonBackground', 1), ('ColorScheme-ButtonText', opacity['mixPressed'])], None, b, m),
         ('focus', [('ColorScheme-ButtonBackground', 1)], ('ColorScheme-ButtonFocus', 1), 2 * b, m),
@@ -660,6 +662,83 @@ def plasma_scrollbar_svg(tokens, mode):
     out += f'  <rect id="hint-scrollbar-size" x="{fmt(W + FRAME_EDGE + 20)}" y="0" width="{fmt(W)}" height="{fmt(W)}" fill-opacity="0"/>\n'
     return _ctl_svg(out, R, len(states), tokens)
 
+def _sized_g(id_, body, box):
+    # Öğe boyutunu sabitleyen saydam kutu + gövde (KSvg öğe boyutunu sınır kutusundan alır).
+    x, y, w, h = box
+    return (f'  <g id="{id_}">\n    <rect x="{fmt(x)}" y="{fmt(y)}" width="{fmt(w)}" height="{fmt(h)}" fill-opacity="0"/>\n'
+            f'{body}  </g>\n')
+
+def _disk(cx, cy, r, cls, op=1):
+    o = '' if op >= 1 else f' fill-opacity="{fmt(op)}"'
+    return f'    <circle cx="{fmt(cx)}" cy="{fmt(cy)}" r="{fmt(r)}" class="{cls}" fill="currentColor"{o}/>\n'
+
+def _ring(cx, cy, r, w, cls, op=1):
+    # Stroke yerine dolgulu halka (even-odd), 00 §4.4.
+    o = '' if op >= 1 else f' fill-opacity="{fmt(op)}"'
+    ri = r - w
+    d = (f'M {fmt(cx - r)},{fmt(cy)} A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx + r)},{fmt(cy)} A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx - r)},{fmt(cy)} Z '
+         f'M {fmt(cx - ri)},{fmt(cy)} A {fmt(ri)},{fmt(ri)} 0 1 0 {fmt(cx + ri)},{fmt(cy)} A {fmt(ri)},{fmt(ri)} 0 1 0 {fmt(cx - ri)},{fmt(cy)} Z')
+    return f'    <path d="{d}" fill-rule="evenodd" class="{cls}" fill="currentColor"{o}/>\n'
+
+def _checkmark(ox, oy, size, cls):
+    # ✓: iki dolgulu, yuvarlak uçlu çubuk (stroke yok); 16 px kutu oranlarıyla.
+    import math
+    k = size / 16.0
+    t = 2.0 * k
+    out = ''
+    for (x1, y1), (x2, y2) in (((4.6, 8.4), (7.0, 10.8)), ((7.0, 10.8), (11.6, 5.4))):
+        x1, y1, x2, y2 = ox + x1 * k, oy + y1 * k, ox + x2 * k, oy + y2 * k
+        L = math.hypot(x2 - x1, y2 - y1)
+        a = math.degrees(math.atan2(y2 - y1, x2 - x1))
+        out += (f'    <rect x="{fmt(-L / 2 - t / 2)}" y="{fmt(-t / 2)}" width="{fmt(L + t)}" height="{fmt(t)}" rx="{fmt(t / 2)}" '
+                f'transform="translate({fmt((x1 + x2) / 2)} {fmt((y1 + y2) / 2)}) rotate({fmt(a)})" class="{cls}" fill="currentColor"/>\n')
+    return out
+
+def plasma_checkmarks_svg(tokens):
+    # PST-20 A: seçili onay kutusu = vurgu dairesi + ✓ (görünüm zemini rengi; açıkta beyaz, koyuda koyu gri).
+    # Kutu çerçevesi Plasma'da düğmenin "normal" çerçevesidir (PST-23); kısmi seçimde Plasma bu öğeyi %50 çizer.
+    S = spacing['indicatorSize']; r = S / 2
+    out = _sized_g('checkbox', _disk(r, r, r, 'ColorScheme-Highlight') + _checkmark(0, 0, S, 'ColorScheme-ViewBackground'), (0, 0, S, S))
+    out += _sized_g('radiobutton', _disk(S + 8 + r, r, S / 5, 'ColorScheme-Highlight'), (S + 8, 0, S, S))
+    return _ctl_svg(out, r, 1, tokens)
+
+def plasma_radiobutton_svg(tokens):
+    # PST-20 A: daire; seçili = vurgu dairesi + görünüm zemini renginde nokta; üzerine gelince vurgu kenarı;
+    # odak = 1 px boşluklu 2 px vurgu halkası (Ro imzası). Gölge yok (TOK-09). Bütün öğeleri Plasma ortalar.
+    S = spacing['indicatorSize']; r = S / 2; b = spacing['borderWidth']
+    F = S + 6 * b; fr = F / 2
+    out = f'  <circle id="hint-size" cx="{fmt(r)}" cy="{fmt(r)}" r="{fmt(r)}" fill-opacity="0"/>\n'
+    x = lambda i: i * (F + 8)
+    out += _sized_g('normal', _disk(x(1) + r, r, r, 'ColorScheme-ViewBackground') + _ring(x(1) + r, r, r, b, 'ColorScheme-Text', opacity['indicatorEdge']), (x(1), 0, S, S))
+    out += _sized_g('shadow', '', (x(2), 0, S, S))
+    out += _sized_g('checked', _disk(x(3) + r, r, r, 'ColorScheme-Highlight'), (x(3), 0, S, S))
+    dot = S * 3 / 16
+    out += _sized_g('symbol', _disk(x(4) + dot, dot, dot, 'ColorScheme-ViewBackground'), (x(4), 0, 2 * dot, 2 * dot))
+    out += _sized_g('hover', _ring(x(5) + r, r, r, b, 'ColorScheme-Highlight'), (x(5), 0, S, S))
+    out += _sized_g('focus', _ring(x(6) + fr, fr, fr, 2 * b, 'ColorScheme-Highlight'), (x(6), 0, F, F))
+    return _ctl_svg(out, r, 2, tokens)
+
+def plasma_switch_svg(tokens):
+    # PST-20 A: hap çubuk; kapalı = metin %25, açık = vurgu (Plasma çubuğun tutamağa kadarki kısmını "active" ile
+    # çizer); tutamak görünüm zemini renginde daire, çubuğun içinde (2 px boşluk). Gölge yok (TOK-09).
+    W, H, K = spacing['switchWidth'], spacing['switchHeight'], spacing['switchKnob']
+    r, kr, b = H / 2, K / 2, spacing['borderWidth']
+    out, y = '', 0
+    for prefix, fills in (('inactive', [('ColorScheme-Text', opacity['switchTrackOff'])]), ('active', [('ColorScheme-Highlight', 1)])):
+        out += _ctl_block(prefix, y, r, fills, None, b, (0, 0, 0, 0))
+        y += H + FRAME_EDGE + 8
+    hx = 2 * r + FRAME_EDGE + 40
+    out += f'  <rect id="hint-bar-size" x="{fmt(hx)}" y="0" width="{fmt(W)}" height="{fmt(H)}" fill-opacity="0"/>\n'
+    hx += W + 8
+    F = H + 6 * b; fr = F / 2
+    knob = lambda x0: _disk(x0 + r, r, kr, 'ColorScheme-ViewBackground')
+    out += _sized_g('handle', knob(hx), (hx, 0, H, H)); hx += H + 8
+    out += _sized_g('handle-hover', knob(hx) + _ring(hx + r, r, kr, b, 'ColorScheme-Highlight'), (hx, 0, H, H)); hx += H + 8
+    out += _sized_g('handle-pressed', knob(hx) + _disk(hx + r, r, kr, 'ColorScheme-Text', opacity['mixPressed']), (hx, 0, H, H)); hx += H + 8
+    out += _sized_g('handle-focus', _ring(hx + fr, fr, fr, 2 * b, 'ColorScheme-Highlight'), (hx, 0, F, F)); hx += F + 8
+    out += _sized_g('handle-shadow', '', (hx, 0, H, H))
+    return _ctl_svg(out, r, 3, tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -680,6 +759,9 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/button.svg': plasma_button_svg(light if theme_name == 'RoLight' else dark),
         'widgets/viewitem.svg': plasma_viewitem_svg(light if theme_name == 'RoLight' else dark),
         'widgets/scrollbar.svg': plasma_scrollbar_svg(light if theme_name == 'RoLight' else dark, 'light' if theme_name == 'RoLight' else 'dark'),
+        'widgets/checkmarks.svg': plasma_checkmarks_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/radiobutton.svg': plasma_radiobutton_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
     }
     for rel, content in outputs.items():
         out = base / rel
