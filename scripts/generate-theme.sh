@@ -807,6 +807,11 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
         'widgets/slider.svg': plasma_slider_svg(light if theme_name == 'RoLight' else dark),
         'widgets/plasmoidheading.svg': plasma_plasmoidheading_svg(light if theme_name == 'RoLight' else dark),
+        # PST-18 (T1): araç ipucu popup ailesinden; yüzey + opak çerçeve kenarlığı (COL-32), köşe sm, iç boşluk sm,
+        # gölge yok (TOK-09). Ro'nun kendi dosyası yokken Breeze'in gölgeye dayanan çerçevesi kullanılıyordu.
+        'widgets/tooltip.svg': plasma_frame_svg(fill, solid_opacity, stroke, stroke_alpha, radius['sm'], spacing['sm']),
+        'translucent/widgets/tooltip.svg': plasma_frame_svg(fill, solid_opacity, stroke, stroke_alpha, radius['sm'], spacing['sm']),
+        'solid/widgets/tooltip.svg': plasma_frame_svg(fill, solid_opacity, stroke, stroke_alpha, radius['sm'], spacing['sm']),
     }
     for rel, content in outputs.items():
         out = base / rel
