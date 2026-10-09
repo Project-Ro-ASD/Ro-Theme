@@ -739,6 +739,27 @@ def plasma_switch_svg(tokens):
     out += _sized_g('handle-shadow', '', (hx, 0, H, H))
     return _ctl_svg(out, r, 3, tokens)
 
+def plasma_slider_svg(tokens):
+    # PST-24 (G2): oluk 6 px hap, nötr metin %20; dolu kısım vurgu; tutamak 16 px vurgu dairesi (PST-20 ile aynı dolgulu
+    # dil); üzerine gelince metin %12 ile koyulaşır; odak = 1 px boşluklu 2 px vurgu halkası; gölge yok (TOK-09).
+    G, H, b = spacing['sliderGroove'], spacing['sliderHandle'], spacing['borderWidth']
+    gr, hr = G / 2, H / 2
+    out, y = '', 0
+    for prefix, fills in (('groove', [('ColorScheme-Text', opacity['sliderGroove'])]),
+                          ('groove-highlight', [('ColorScheme-Highlight', 1)])):
+        out += _ctl_block(prefix, y, gr, fills, None, b, (0, 0, 0, 0))
+        y += G + FRAME_EDGE + 8
+    F = H + 6 * b; fr = F / 2
+    x = 2 * gr + FRAME_EDGE + 40
+    out += f'  <rect id="hint-handle-size" x="{fmt(x)}" y="0" width="{fmt(H)}" height="{fmt(H)}" fill-opacity="0"/>\n'
+    x += H + 8
+    for o in ('horizontal', 'vertical'):
+        out += _sized_g(f'{o}-slider-handle', _disk(x + hr, hr, hr, 'ColorScheme-Highlight'), (x, 0, H, H)); x += H + 8
+        out += _sized_g(f'{o}-slider-hover', _disk(x + hr, hr, hr, 'ColorScheme-Highlight') + _disk(x + hr, hr, hr, 'ColorScheme-Text', opacity['sliderHover']), (x, 0, H, H)); x += H + 8
+        out += _sized_g(f'{o}-slider-focus', _ring(x + fr, fr, fr, 2 * b, 'ColorScheme-Highlight'), (x, 0, F, F)); x += F + 8
+        out += _sized_g(f'{o}-slider-shadow', '', (x, 0, H, H)); x += H + 8
+    return _ctl_svg(out, gr, 2, tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -762,6 +783,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/checkmarks.svg': plasma_checkmarks_svg(light if theme_name == 'RoLight' else dark),
         'widgets/radiobutton.svg': plasma_radiobutton_svg(light if theme_name == 'RoLight' else dark),
         'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/slider.svg': plasma_slider_svg(light if theme_name == 'RoLight' else dark),
     }
     for rel, content in outputs.items():
         out = base / rel

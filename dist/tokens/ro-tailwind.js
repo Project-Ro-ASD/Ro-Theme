@@ -127,7 +127,9 @@ module.exports = {
         "indicatorSize": 16,
         "switchWidth": 36,
         "switchHeight": 18,
-        "switchKnob": 14
+        "switchKnob": 14,
+        "sliderGroove": 6,
+        "sliderHandle": 16
       },
       "opacity": {
         "glass": 0.68,
@@ -147,7 +149,9 @@ module.exports = {
         "scrollbarGroove": 0.08,
         "buttonEdge": 0.2,
         "indicatorEdge": 0.5,
-        "switchTrackOff": 0.25
+        "switchTrackOff": 0.25,
+        "sliderGroove": 0.2,
+        "sliderHover": 0.12
       }
     }
   }
