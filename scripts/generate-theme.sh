@@ -546,7 +546,8 @@ def _ctl_svg(content, r, rows, tokens):
         f'    .ColorScheme-ButtonBackground {{ color:{tokens["surfaceAlt"].lower()}; }}\n'
         f'    .ColorScheme-ButtonText {{ color:{tokens["text"].lower()}; }}\n'
         f'    .ColorScheme-ViewFocus {{ color:{tokens["accent"].lower()}; }}\n'
-        f'    .ColorScheme-ButtonFocus {{ color:{tokens["accent"].lower()}; }}\n')
+        f'    .ColorScheme-ButtonFocus {{ color:{tokens["accent"].lower()}; }}\n'
+        f'    .ColorScheme-Highlight {{ color:{tokens["accent"].lower()}; }}\n')
     h = rows * (size + 8) + 8
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{fmt(size + 60)}" height="{fmt(h)}" viewBox="0 0 {fmt(size + 60)} {fmt(h)}">\n'
             f'  <!-- Ro control: radius {fmt(r)}. Generated from core/tokens by scripts/generate-theme.sh. -->\n'
@@ -592,6 +593,25 @@ def plasma_button_svg(tokens):
         y += size + 8
     return _ctl_svg(out, r, len(states), tokens)
 
+def plasma_viewitem_svg(tokens):
+    # PST-13/26: Plasma listelerde klavye/fare ile "geçerli öğe" hover önekiyle, basılı öğe selected ile çizilir
+    # (PlasmaExtras.Highlight). Kenarsız; dolgu vurgu rengiyle kademeli (listCurrent, listSelected,
+    # listSelectedHover). Renk ColorScheme-Highlight: kullanıcı vurgu rengine uyar. Yazı rengi değişmediği
+    # için tam vurgu dolgusu kullanılmaz (koyu yazı koyu zeminde okunmaz).
+    r, b = radius['sm'], spacing['borderWidth']
+    m = (spacing['xs'], spacing['xs'], spacing['sm'], spacing['sm'])
+    states = (
+        ('normal', [('ColorScheme-Highlight', 0)], None),
+        ('hover', [('ColorScheme-Highlight', opacity['listCurrent'])], None),
+        ('selected', [('ColorScheme-Highlight', opacity['listSelected'])], None),
+        ('selected+hover', [('ColorScheme-Highlight', opacity['listSelectedHover'])], None),
+    )
+    size, out, y = 2 * r + FRAME_EDGE, '', 0
+    for prefix, fills, border in states:
+        out += _ctl_block(prefix, y, r, fills, border, b, m)
+        y += size + 8
+    return _ctl_svg(out, r, len(states), tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -610,6 +630,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         # Kabuk kontrolleri (03): Breeze'e düşen giriş alanı ve düğme artık Ro köşesi ve kenarlığıyla çizilir.
         'widgets/lineedit.svg': plasma_lineedit_svg(light if theme_name == 'RoLight' else dark),
         'widgets/button.svg': plasma_button_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/viewitem.svg': plasma_viewitem_svg(light if theme_name == 'RoLight' else dark),
     }
     for rel, content in outputs.items():
         out = base / rel
