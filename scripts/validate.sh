@@ -362,6 +362,29 @@ PY
   fi
 }
 
+check_plasma_indicator_svg() {
+  # PST-20: onay işareti, radyo, anahtar; gerekli öğeler var, stroke ve sabit renk yok.
+  local path="$1"
+  local label="$2"
+  local ids="$3"
+  local report
+  if ! report="$(python3 - "$path" "$ids" <<'PY'
+import re, sys
+s = open(sys.argv[1], encoding='utf-8').read()
+bad = []
+if '<stroke' in s or ' stroke=' in s: bad.append('stroke used')
+if re.search(r'fill="#', s): bad.append('hard-coded fill color')
+for i in sys.argv[2].split():
+    if f'id="{i}"' not in s: bad.append(f'{i} missing')
+print('; '.join(bad)); sys.exit(1 if bad else 0)
+PY
+)"; then
+    fail "$label: $report"
+  else
+    ok "$label (Ro-drawn, scheme classes, no stroke)"
+  fi
+}
+
 check_plasma_control_svg() {
   # Ro'nun çizdiği kabuk kontrolleri (03 PST-22/23/26): her durum 9 parça, stroke yok, iç boşluk ipuçları,
   # renkler ColorScheme-* sınıflarından (PST-03; sabit fill hex yok), köşe token'dan (radius.md).
@@ -553,6 +576,9 @@ for theme in RoLight RoDark; do
     check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
   done
   check_plasma_scrollbar_svg "platform/plasma/desktoptheme/$theme/widgets/scrollbar.svg" "$theme scrollbar (Ro-drawn, not Breeze fallback)"
+  check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/checkmarks.svg" "$theme checkmarks" "checkbox radiobutton"
+  check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/radiobutton.svg" "$theme radiobutton" "hint-size normal shadow checked symbol hover focus"
+  check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/switch.svg" "$theme switch" "hint-bar-size handle handle-hover handle-pressed handle-focus handle-shadow inactive-left active-left"
   check_aurorae_theme "$theme"
 done
 if [[ -e platform/plasma/desktoptheme/Ro ]]; then

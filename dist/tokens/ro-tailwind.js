@@ -123,7 +123,11 @@ module.exports = {
         "titleButton": 24,
         "borderWidth": 1,
         "scrollbarWidth": 14,
-        "scrollbarHandle": 8
+        "scrollbarHandle": 8,
+        "indicatorSize": 16,
+        "switchWidth": 36,
+        "switchHeight": 18,
+        "switchKnob": 14
       },
       "opacity": {
         "glass": 0.68,
@@ -140,7 +144,10 @@ module.exports = {
         "scrollbarHoverLight": 1.0,
         "scrollbarDark": 0.5,
         "scrollbarHoverDark": 0.9,
-        "scrollbarGroove": 0.08
+        "scrollbarGroove": 0.08,
+        "buttonEdge": 0.2,
+        "indicatorEdge": 0.5,
+        "switchTrackOff": 0.25
       }
     }
   }
