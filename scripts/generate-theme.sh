@@ -760,6 +760,28 @@ def plasma_slider_svg(tokens):
         out += _sized_g(f'{o}-slider-shadow', '', (x, 0, H, H)); x += H + 8
     return _ctl_svg(out, gr, 2, tokens)
 
+def plasma_plasmoidheading_svg(tokens):
+    # PST-17 (A): popup başlık ve alt şeridi popup ile aynı renkte; başlığın altında ve alt şeridin üstünde ince
+    # ayraç (metin %15, opacity.separator). Dolu ve kaydırılan listelerde son satırın alt şeride karışmasını önler.
+    # Plasma bu öğeyi yalnızca dialogs/background ile aynı temadan geliyorsa çizer. Şeridin iç boşluğu popup iç
+    # boşluğundan (TOK-05) gelir; tema dosyasındaki hint-*-margin öğeleri etkisizdir (denendi).
+    b, R, e = spacing['borderWidth'], spacing['xs'], FRAME_EDGE
+    boxes = {'topleft': (0, 0, R, R), 'top': (R, 0, e, R), 'topright': (R + e, 0, R, R),
+             'left': (0, R, R, e), 'center': (R, R, e, e), 'right': (R + e, R, R, e),
+             'bottomleft': (0, R + e, R, R), 'bottom': (R, R + e, e, R), 'bottomright': (R + e, R + e, R, R)}
+    def frame(prefix, y0, line_on):
+        out = ''
+        for name, (x, y, w, h) in boxes.items():
+            body = f'    <rect x="{fmt(x)}" y="{fmt(y0 + y)}" width="{fmt(w)}" height="{fmt(h)}" fill-opacity="0"/>\n'
+            if name.startswith(line_on):
+                ly = y0 + y + h - b if line_on == 'bottom' else y0 + y
+                body += (f'    <rect x="{fmt(x)}" y="{fmt(ly)}" width="{fmt(w)}" height="{fmt(b)}" class="ColorScheme-Text" '
+                         f'fill="currentColor" fill-opacity="{fmt(opacity["separator"])}"/>\n')
+            out += f'  <g id="{prefix}-{name}">\n{body}  </g>\n'
+        return out
+    out = frame('header', 0, 'bottom') + frame('footer', 2 * R + e + 8, 'top')
+    return _ctl_svg(out, R, 2, tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -784,6 +806,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/radiobutton.svg': plasma_radiobutton_svg(light if theme_name == 'RoLight' else dark),
         'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
         'widgets/slider.svg': plasma_slider_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/plasmoidheading.svg': plasma_plasmoidheading_svg(light if theme_name == 'RoLight' else dark),
     }
     for rel, content in outputs.items():
         out = base / rel
