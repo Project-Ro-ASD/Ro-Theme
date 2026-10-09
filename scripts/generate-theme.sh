@@ -595,17 +595,16 @@ def plasma_button_svg(tokens):
 
 def plasma_viewitem_svg(tokens):
     # PST-13/26: Plasma listelerde klavye/fare ile "geçerli öğe" hover önekiyle, basılı öğe selected ile çizilir
-    # (PlasmaExtras.Highlight). Her durumda 1 px vurgu kenarı; dolgu vurgu rengiyle kademeli (listCurrent,
-    # listSelected, listSelectedHover). Renk ColorScheme-Highlight: kullanıcı vurgu rengine uyar. Yazı rengi
-    # değişmediği için tam vurgu dolgusu kullanılmaz (koyu yazı koyu zeminde okunmaz).
+    # (PlasmaExtras.Highlight). Kenarsız; dolgu vurgu rengiyle kademeli (listCurrent, listSelected,
+    # listSelectedHover). Renk ColorScheme-Highlight: kullanıcı vurgu rengine uyar. Yazı rengi değişmediği
+    # için tam vurgu dolgusu kullanılmaz (koyu yazı koyu zeminde okunmaz).
     r, b = radius['sm'], spacing['borderWidth']
     m = (spacing['xs'], spacing['xs'], spacing['sm'], spacing['sm'])
-    edge = ('ColorScheme-Highlight', 1)
     states = (
         ('normal', [('ColorScheme-Highlight', 0)], None),
-        ('hover', [('ColorScheme-Highlight', opacity['listCurrent'])], edge),
-        ('selected', [('ColorScheme-Highlight', opacity['listSelected'])], edge),
-        ('selected+hover', [('ColorScheme-Highlight', opacity['listSelectedHover'])], edge),
+        ('hover', [('ColorScheme-Highlight', opacity['listCurrent'])], None),
+        ('selected', [('ColorScheme-Highlight', opacity['listSelected'])], None),
+        ('selected+hover', [('ColorScheme-Highlight', opacity['listSelectedHover'])], None),
     )
     size, out, y = 2 * r + FRAME_EDGE, '', 0
     for prefix, fills, border in states:

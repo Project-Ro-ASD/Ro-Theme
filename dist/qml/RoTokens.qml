@@ -30,9 +30,9 @@ QtObject {
     readonly property real opacitySolid: 1.0
     readonly property real opacityMixCard: 0.07
     readonly property real opacityMixPressed: 0.14
-    readonly property real opacityListCurrent: 0.1
-    readonly property real opacityListSelected: 0.25
-    readonly property real opacityListSelectedHover: 0.35
+    readonly property real opacityListCurrent: 0.15
+    readonly property real opacityListSelected: 0.3
+    readonly property real opacityListSelectedHover: 0.4
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170

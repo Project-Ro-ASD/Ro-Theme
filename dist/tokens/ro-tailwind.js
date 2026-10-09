@@ -131,9 +131,9 @@ module.exports = {
         "solid": 1.0,
         "mixCard": 0.07,
         "mixPressed": 0.14,
-        "listCurrent": 0.1,
-        "listSelected": 0.25,
-        "listSelectedHover": 0.35
+        "listCurrent": 0.15,
+        "listSelected": 0.3,
+        "listSelectedHover": 0.4
       }
     }
   }
