@@ -1,1 +1,7 @@
-text-x-generic.svg
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16">
+  <style id="current-color-scheme" type="text/css">.ColorScheme-Text { color:#232629; }</style>
+  <path class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" d="M4 1.5h5.5l3 3V13a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 13V3A1.5 1.5 0 0 1 4 1.5z"/>
+  <path class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" d="M9.5 1.5v3h3"/>
+  <circle class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" cx="7.5" cy="9.5" r="3"/>
+  <circle class="ColorScheme-Text" fill="currentColor" stroke="none" cx="7.5" cy="9.5" r="0.75"/>
+</svg>
