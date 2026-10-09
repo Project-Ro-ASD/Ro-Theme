@@ -338,6 +338,30 @@ PY
   fi
 }
 
+check_plasma_scrollbar_svg() {
+  # PST-19: kaydırma çubuğu (hap tutamak, inset ipucu yok), stroke ve sabit renk yok, hint-scrollbar-size var.
+  local path="$1"
+  local label="$2"
+  local report
+  if ! report="$(python3 - "$path" <<'PY'
+import re, sys
+s = open(sys.argv[1], encoding='utf-8').read()
+bad = []
+if '<stroke' in s or ' stroke=' in s: bad.append('stroke used')
+if re.search(r'fill="#', s): bad.append('hard-coded fill color')
+if 'id="hint-scrollbar-size"' not in s: bad.append('no hint-scrollbar-size')
+for p in ('slider', 'mouseover-slider', 'background-vertical', 'background-horizontal'):
+    for part in ('topleft', 'top', 'topright', 'left', 'center', 'right', 'bottomleft', 'bottom', 'bottomright'):
+        if f'<g id="{p}-{part}">' not in s: bad.append(f'{p}-{part} missing')
+print('; '.join(bad)); sys.exit(1 if bad else 0)
+PY
+)"; then
+    fail "$label: $report"
+  else
+    ok "$label (pill handle, scheme classes, no stroke)"
+  fi
+}
+
 check_plasma_control_svg() {
   # Ro'nun çizdiği kabuk kontrolleri (03 PST-22/23/26): her durum 9 parça, stroke yok, iç boşluk ipuçları,
   # renkler ColorScheme-* sınıflarından (PST-03; sabit fill hex yok), köşe token'dan (radius.md).
@@ -528,6 +552,7 @@ for theme in RoLight RoDark; do
   for control in lineedit button viewitem; do
     check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
   done
+  check_plasma_scrollbar_svg "platform/plasma/desktoptheme/$theme/widgets/scrollbar.svg" "$theme scrollbar (Ro-drawn, not Breeze fallback)"
   check_aurorae_theme "$theme"
 done
 if [[ -e platform/plasma/desktoptheme/Ro ]]; then

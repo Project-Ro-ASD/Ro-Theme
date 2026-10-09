@@ -121,7 +121,9 @@ module.exports = {
         "titlebarHeight": 36,
         "windowBorder": 4,
         "titleButton": 24,
-        "borderWidth": 1
+        "borderWidth": 1,
+        "scrollbarWidth": 14,
+        "scrollbarHandle": 8
       },
       "opacity": {
         "glass": 0.68,
@@ -133,7 +135,12 @@ module.exports = {
         "mixPressed": 0.14,
         "listCurrent": 0.15,
         "listSelected": 0.3,
-        "listSelectedHover": 0.4
+        "listSelectedHover": 0.4,
+        "scrollbarLight": 0.85,
+        "scrollbarHoverLight": 1.0,
+        "scrollbarDark": 0.5,
+        "scrollbarHoverDark": 0.9,
+        "scrollbarGroove": 0.08
       }
     }
   }
