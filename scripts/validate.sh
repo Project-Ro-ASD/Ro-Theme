@@ -579,6 +579,7 @@ for theme in RoLight RoDark; do
   check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/checkmarks.svg" "$theme checkmarks" "checkbox radiobutton"
   check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/radiobutton.svg" "$theme radiobutton" "hint-size normal shadow checked symbol hover focus"
   check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/switch.svg" "$theme switch" "hint-bar-size handle handle-hover handle-pressed handle-focus handle-shadow inactive-left active-left"
+  check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/slider.svg" "$theme slider" "hint-handle-size groove-left groove-highlight-left horizontal-slider-handle horizontal-slider-hover horizontal-slider-focus horizontal-slider-shadow vertical-slider-handle vertical-slider-hover vertical-slider-focus vertical-slider-shadow"
   check_aurorae_theme "$theme"
 done
 if [[ -e platform/plasma/desktoptheme/Ro ]]; then
