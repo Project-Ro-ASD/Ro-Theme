@@ -102,7 +102,7 @@ install -Dm0755 scripts/diagnose.sh %{buildroot}%{_bindir}/ro-theme-diagnose
 
 # Sistem varsayılanları üreticiden gelir (platform/plasma/defaults/xdg); %config(noreplace) ile kurulur.
 # %post bu dosyalara ve kullanıcı dosyalarına yazmaz (DEFAULTS-OWNERSHIP-V1).
-for f in kdeglobals plasmarc ksplashrc kscreenlockerrc kwinrc; do
+for f in kdeglobals kcmfonts plasmarc ksplashrc kscreenlockerrc kwinrc; do
   install -Dm0644 "platform/plasma/defaults/xdg/$f" "%{buildroot}%{_sysconfdir}/xdg/$f"
 done
 
@@ -198,6 +198,7 @@ exit 0
 %{_libexecdir}/ro-theme/check-plasma-runtime
 %{_bindir}/ro-theme-diagnose
 %config(noreplace) %{_sysconfdir}/xdg/kdeglobals
+%config(noreplace) %{_sysconfdir}/xdg/kcmfonts
 %config(noreplace) %{_sysconfdir}/xdg/plasmarc
 %config(noreplace) %{_sysconfdir}/xdg/ksplashrc
 %config(noreplace) %{_sysconfdir}/xdg/kscreenlockerrc

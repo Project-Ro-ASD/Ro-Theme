@@ -24,6 +24,7 @@ motion = read_json('core/tokens/motion.json')
 radius = read_json('core/tokens/radius.json')
 opacity = read_json('core/tokens/opacity.json')
 spacing = read_json('core/tokens/spacing.json')
+fonts = read_json('core/tokens/fonts.json')
 dock_radius = spacing['dockHeight'] / 2  # TOK-02d: bağımsız token değil, tam hap geometrisi.
 
 # Yerleşimlerin diğer davranışları kendi dosyalarında kalır; yüksekliklerin tek kaynağı token'dır.
@@ -312,6 +313,24 @@ def set_key(groups, head, key, value):
     lines = [l for l in groups.setdefault(head, []) if not l.startswith(key + '=')]
     groups[head] = lines + [f'{key}={value}']
 
+# FNT-01…06: tek font tablosu; Qt 6 QFont::toString biçimi (ağırlıklar 400/600).
+# Normal Noto değerleri Fedora ile aynı: /etc/xdg bunları tekrarlamaz (SYS-02).
+# Global tema ise seçildiğinde altı rolü birlikte sunar (GT-04k).
+def qfont_string(role):
+    f = fonts[role]
+    return f"{f['family']},{f['pointSize']},-1,5,{f['weight']},0,0,0,0,0,0,0,0,0,0,1,{f['styleName']},0,0"
+
+font_roles = {'font': 'general', 'fixed': 'fixed', 'smallestReadableFont': 'small',
+              'toolBarFont': 'toolbar', 'menuFont': 'menu'}
+for mode in ['light', 'dark']:
+    defaults_path = root / f'platform/plasma/look-and-feel/org.ro.{mode}/contents/defaults'
+    groups = ini_groups(defaults_path.read_text(encoding='utf-8'))
+    for key, role in font_roles.items():
+        set_key(groups, '[kdeglobals][General]', key, qfont_string(role))
+    set_key(groups, '[kdeglobals][WM]', 'activeFont', qfont_string('windowTitle'))
+    defaults_path.write_text(f'# Ro {mode.title()} Global Theme defaults. Font roles generated from core/tokens/fonts.json.\n\n'
+                             + ini_text(groups), encoding='utf-8')
+
 XDG_HEADER = '# Ro-ASD system defaults. Generated from core/tokens by scripts/generate-theme.sh.\n# Packaged as %config(noreplace); user settings in ~/.config always take precedence.\n'
 default_scheme = 'RoDark'
 kdeglobals = ini_groups(color_scheme(default_scheme, dark, True))
@@ -321,9 +340,15 @@ kdeglobals['[KDE]'] = [l for l in kdeglobals.get('[KDE]', []) if not l.startswit
 set_key(kdeglobals, '[General]', 'ColorScheme', default_scheme)
 set_key(kdeglobals, '[KDE]', 'LookAndFeelPackage', 'org.ro.dark')
 set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Breeze')
+set_key(kdeglobals, '[WM]', 'activeFont', qfont_string('windowTitle'))
+rendering = fonts['rendering']
+for key, value in {'XftAntialias': str(rendering['antialias']).lower(),
+                   'XftHintStyle': rendering['hintStyle'], 'XftSubPixel': rendering['subPixel']}.items():
+    set_key(kdeglobals, '[General]', key, value)
 lock_wallpaper = 'file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg'
 xdg_defaults = {
     'kdeglobals': kdeglobals,
+    'kcmfonts': {'[General]': [f"forceFontDPI={fonts['forceFontDPI']}"]},
     'plasmarc': {'[Theme]': ['name=RoDark']},
     'ksplashrc': {'[KSplash]': ['Engine=KSplashQML', 'Theme=org.ro.dark']},
     'kscreenlockerrc': {

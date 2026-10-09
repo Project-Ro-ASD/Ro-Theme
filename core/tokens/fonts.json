@@ -1,0 +1,10 @@
+{
+  "general": {"family": "Noto Sans", "pointSize": 10, "weight": 400, "styleName": "Regular"},
+  "fixed": {"family": "Noto Sans Mono", "pointSize": 10, "weight": 400, "styleName": "Regular"},
+  "small": {"family": "Noto Sans", "pointSize": 8, "weight": 400, "styleName": "Regular"},
+  "toolbar": {"family": "Noto Sans", "pointSize": 9, "weight": 400, "styleName": "Regular"},
+  "menu": {"family": "Noto Sans", "pointSize": 10, "weight": 400, "styleName": "Regular"},
+  "windowTitle": {"family": "Inter", "pointSize": 10, "weight": 600, "styleName": "SemiBold"},
+  "rendering": {"antialias": true, "hintStyle": "hintslight", "subPixel": "rgb"},
+  "forceFontDPI": 0
+}
