@@ -406,6 +406,10 @@ for mode in ['light', 'dark']:
     for key, role in font_roles.items():
         set_key(groups, '[kdeglobals][General]', key, qfont_string(role))
     set_key(groups, '[kdeglobals][WM]', 'activeFont', qfont_string('windowTitle'))
+    # 06 GT-04i: açılış ekranı dosya önekiyle ([ksplashrc][KSplash]); GT-04l: LookAndFeelPackage'ı Plasma kendisi yazar.
+    if '[KSplash]' in groups:
+        groups['[ksplashrc][KSplash]'] = groups.pop('[KSplash]')
+    groups['[kdeglobals][KDE]'] = [l for l in groups.get('[kdeglobals][KDE]', []) if not l.startswith('LookAndFeelPackage=')]
     defaults_path.write_text(f'# Ro {mode.title()} Global Theme defaults. Font roles generated from core/tokens/fonts.json.\n\n'
                              + ini_text(groups), encoding='utf-8')
 
@@ -417,6 +421,22 @@ kdeglobals['[General]'] = [l for l in kdeglobals.get('[General]', []) if not l.s
 kdeglobals['[KDE]'] = [l for l in kdeglobals.get('[KDE]', []) if not l.startswith('ColorScheme=')]
 set_key(kdeglobals, '[General]', 'ColorScheme', default_scheme)
 set_key(kdeglobals, '[KDE]', 'LookAndFeelPackage', 'org.ro.dark')
+# 06 GT-02/03: varsayılan koyu; otomatik açık/koyu geçişin çifti Ro paketleri (geçiş KDE varsayılanı gibi kapalı).
+set_key(kdeglobals, '[KDE]', 'DefaultLightLookAndFeel', 'org.ro.light')
+set_key(kdeglobals, '[KDE]', 'DefaultDarkLookAndFeel', 'org.ro.dark')
+
+# 06 GT-07: global tema meta verisi; sürüm VERSION'dan, Türkçe ad ve açıklama.
+for mode, tr_name in (('light', 'Ro Açık'), ('dark', 'Ro Koyu')):
+    meta = {'KPlugin': {
+        'Id': f'org.ro.{mode}', 'Name': f'Ro {mode.title()}', 'Name[tr]': tr_name,
+        'Description': f'Ro Desktop {mode} global theme',
+        'Description[tr]': f"Ro masaüstü {'açık' if mode == 'light' else 'koyu'} global teması",
+        'Icon': 'preferences-desktop-theme-global', 'Version': (root / 'VERSION').read_text(encoding='utf-8').strip(),
+        'License': 'GPL-3.0-or-later', 'Website': 'https://github.com/Project-Ro-ASD/Ro-Theme',
+        'Authors': [{'Name': 'Project Ro-ASD'}]},
+        'KPackageStructure': 'Plasma/LookAndFeel'}
+    (root / f'platform/plasma/look-and-feel/org.ro.{mode}/metadata.json').write_text(
+        json.dumps(meta, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Breeze')
 set_key(kdeglobals, '[WM]', 'activeFont', qfont_string('windowTitle'))
 # 04 APP-11/13: Tamam/İptal düğmelerinde ikon yok; ana araç çubuğu ikon + metin (KDE varsayılanı), diğerleri yalnız ikon.
