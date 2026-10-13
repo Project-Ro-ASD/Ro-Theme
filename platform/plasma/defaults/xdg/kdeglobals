@@ -145,6 +145,8 @@ DecorationHover=167,193,241
 [KDE]
 contrast=4
 LookAndFeelPackage=org.ro.dark
+DefaultLightLookAndFeel=org.ro.light
+DefaultDarkLookAndFeel=org.ro.dark
 widgetStyle=Breeze
 ShowIconsOnPushButtons=false
 

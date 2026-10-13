@@ -195,7 +195,11 @@ check_global_theme() {
   check_absent_file "platform/plasma/look-and-feel/$package/contents/lockscreen/LockScreen.qml" "$package unsafe custom lockscreen override"
   check_file "platform/plasma/look-and-feel/$package/contents/lockscreen/assets/login.jpg"
   check_contains "platform/plasma/look-and-feel/$package/contents/splash/Splash.qml" "property int stage" "$package stage-aware splash"
-  check_contains "$defaults" "LookAndFeelPackage=$look" "$package LookAndFeelPackage"
+  check_not_contains "$defaults" "LookAndFeelPackage=" "$package does not write its own id (GT-04l)"
+  check_contains "$defaults" "[ksplashrc][KSplash]" "$package splash group with file prefix (GT-04i)"
+  check_contains "platform/plasma/look-and-feel/$package/metadata.json" "\"Name[tr]\"" "$package Turkish name (GT-07)"
+  check_file "platform/plasma/look-and-feel/$package/contents/previews/preview.png"
+  check_file "platform/plasma/look-and-feel/$package/contents/previews/fullscreenpreview.jpg"
   check_contains "$defaults" "ColorScheme=$scheme" "$package ColorScheme"
   check_kde_group_without_color_scheme "$defaults" "$package defaults"
   check_contains "$defaults" "name=$plasma" "$package Plasma style"
@@ -717,6 +721,7 @@ for g in "[Colors:Window]" "[Colors:View]" "[Colors:Button]" "[Colors:Selection]
   check_contains "$XDG_DEFAULTS/kdeglobals" "$g" "system kdeglobals has $g (new users get Ro colors from /etc/xdg)"
 done
 check_contains "$XDG_DEFAULTS/kdeglobals" "ColorScheme=RoDark" "system kdeglobals selects RoDark"
+check_contains "$XDG_DEFAULTS/kdeglobals" "DefaultLightLookAndFeel=org.ro.light" "automatic light/dark pair is Ro (GT-03)"
 check_contains "$XDG_DEFAULTS/kwinrc" "ButtonsOnRight=IAX" "system kwinrc button layout (WD-16)"
 check_file core/tokens/fonts.json
 check_json core/tokens/fonts.json
