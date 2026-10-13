@@ -341,6 +341,9 @@ set_key(kdeglobals, '[General]', 'ColorScheme', default_scheme)
 set_key(kdeglobals, '[KDE]', 'LookAndFeelPackage', 'org.ro.dark')
 set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Breeze')
 set_key(kdeglobals, '[WM]', 'activeFont', qfont_string('windowTitle'))
+# 04 APP-11/13: Tamam/İptal düğmelerinde ikon yok; ana araç çubuğu ikon + metin (KDE varsayılanı), diğerleri yalnız ikon.
+set_key(kdeglobals, '[KDE]', 'ShowIconsOnPushButtons', 'false')
+set_key(kdeglobals, '[Toolbar style]', 'ToolButtonStyleOtherToolbars', 'IconOnly')
 rendering = fonts['rendering']
 for key, value in {'XftAntialias': str(rendering['antialias']).lower(),
                    'XftHintStyle': rendering['hintStyle'], 'XftSubPixel': rendering['subPixel']}.items():
@@ -349,6 +352,10 @@ lock_wallpaper = 'file:///usr/share/plasma/look-and-feel/org.ro.dark/contents/lo
 xdg_defaults = {
     'kdeglobals': kdeglobals,
     'kcmfonts': {'[General]': [f"forceFontDPI={fonts['forceFontDPI']}"]},
+    # 04 APP-03: Breeze stil ayarları; yalnız KDE varsayılanından farklı olanlar (SYS-02). Ağaç dal çizgisi,
+    # araç çubuğu ayracı ve sürgü işaretleri kapalı; animasyon kısa etkileşim süresi (TOK-12g).
+    'breezerc': {'[Style]': ['ToolBarDrawItemSeparator=false', 'ViewDrawTreeBranchLines=false',
+                             'SliderDrawTickMarks=false', f"AnimationsDuration={motion['fastMs']}"]},
     'plasmarc': {'[Theme]': ['name=RoDark']},
     'ksplashrc': {'[KSplash]': ['Engine=KSplashQML', 'Theme=org.ro.dark']},
     'kscreenlockerrc': {

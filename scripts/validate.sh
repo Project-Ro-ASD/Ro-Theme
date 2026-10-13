@@ -691,7 +691,7 @@ section "System Defaults (/etc/xdg, DEFAULTS-OWNERSHIP-V1)"
 # 22 SYS-01/06/07/11: varsayılanlar üreticiden gelir, %config(noreplace) ile kurulur; %post ve araçlar
 # kullanıcı dosyasına ya da /etc/xdg'ye yazmaz.
 XDG_DEFAULTS=platform/plasma/defaults/xdg
-for f in kdeglobals kcmfonts plasmarc ksplashrc kscreenlockerrc kwinrc; do
+for f in kdeglobals kcmfonts breezerc plasmarc ksplashrc kscreenlockerrc kwinrc; do
   check_file "$XDG_DEFAULTS/$f"
   check_contains packaging/ro-theme.spec "%config(noreplace) %{_sysconfdir}/xdg/$f" "RPM installs /etc/xdg/$f as %config(noreplace)"
   check_not_contains "$XDG_DEFAULTS/$f" "kwin4_effect_" "$f has no obsolete Plasma 5 effect keys"
@@ -765,6 +765,8 @@ else
 fi
 check_not_contains scripts/apply-dark-defaults.sh "getent passwd" "apply-dark-defaults only changes the current user"
 check_not_contains scripts/apply-dark-defaults.sh "runuser" "apply-dark-defaults never acts as another user"
+check_contains "$XDG_DEFAULTS/breezerc" "ViewDrawTreeBranchLines=false" "system Breeze style settings (APP-03)"
+check_contains "$XDG_DEFAULTS/kdeglobals" "ShowIconsOnPushButtons=false" "system push buttons without icons (APP-11)"
 check_contains scripts/apply-dark-defaults.sh "FILES=(kdeglobals kcmfonts" "explicit appearance reset includes the Ro-managed font DPI default"
 
 printf '\nValidation summary: %d error(s), %d warning(s)\n' "$errors" "$warnings"

@@ -13,7 +13,7 @@ set -u
 
 SYSTEM_XDG="${RO_THEME_SYSTEM_XDG:-/etc/xdg}"
 USER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
-FILES=(kdeglobals kcmfonts plasmarc ksplashrc kscreenlockerrc kwinrc)
+FILES=(kdeglobals kcmfonts breezerc plasmarc ksplashrc kscreenlockerrc kwinrc)
 # Eski sürümün kullanıcı dosyalarına yazdığı, artık yönetilmeyen anahtarlar: "dosya|[grup]|anahtar"
 LEGACY_KEYS=(
   "kdeglobals|[KDE]|ColorScheme"

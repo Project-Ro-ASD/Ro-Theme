@@ -146,6 +146,7 @@ DecorationHover=167,193,241
 contrast=4
 LookAndFeelPackage=org.ro.dark
 widgetStyle=Breeze
+ShowIconsOnPushButtons=false
 
 [WM]
 activeBackground=30,31,33
@@ -155,3 +156,6 @@ inactiveForeground=180,181,185
 activeBlend=237,238,240
 inactiveBlend=75,77,82
 activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0
+
+[Toolbar style]
+ToolButtonStyleOtherToolbars=IconOnly
