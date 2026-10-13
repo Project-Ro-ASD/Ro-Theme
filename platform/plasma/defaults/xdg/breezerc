@@ -1,0 +1,8 @@
+# Ro-ASD system defaults. Generated from core/tokens by scripts/generate-theme.sh.
+# Packaged as %config(noreplace); user settings in ~/.config always take precedence.
+
+[Style]
+ToolBarDrawItemSeparator=false
+ViewDrawTreeBranchLines=false
+SliderDrawTickMarks=false
+AnimationsDuration=120

@@ -136,6 +136,7 @@ required_paths=(
   /usr/libexec/ro-theme/check-plasma-runtime
   /etc/xdg/kdeglobals
   /etc/xdg/kcmfonts
+  /etc/xdg/breezerc
   /etc/xdg/plasmarc
   /etc/xdg/ksplashrc
   /etc/xdg/kscreenlockerrc
