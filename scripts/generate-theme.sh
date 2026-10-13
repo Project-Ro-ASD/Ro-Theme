@@ -875,6 +875,36 @@ def plasma_tasks_svg(tokens):
     return svg.replace('    .ColorScheme-Text', f'    .ColorScheme-NeutralText {{ color:{tokens["neutral"].lower()}; }}\n'
                        f'    .ColorScheme-PositiveText {{ color:{tokens["positive"].lower()}; }}\n    .ColorScheme-Text', 1)
 
+def _arc(cx, cy, r, w, a0, sweep, cls, op=1):
+    # Yuvarlak uçlu dolgulu yay (stroke yok, 00 §4.4); açı 0 = saat 12, saat yönünde.
+    import math
+    o = '' if op >= 1 else f' fill-opacity="{fmt(op)}"'
+    ri, rc = r - w, w / 2
+    def pt(rad, a):
+        t = math.radians(a - 90)
+        return cx + rad * math.cos(t), cy + rad * math.sin(t)
+    a1 = a0 + sweep; big = 1 if sweep > 180 else 0
+    (ox0, oy0), (ox1, oy1), (ix1, iy1), (ix0, iy0) = pt(r, a0), pt(r, a1), pt(ri, a1), pt(ri, a0)
+    d = (f'M {fmt(ox0)},{fmt(oy0)} A {fmt(r)},{fmt(r)} 0 {big} 1 {fmt(ox1)},{fmt(oy1)} '
+         f'A {fmt(rc)},{fmt(rc)} 0 0 1 {fmt(ix1)},{fmt(iy1)} '
+         f'A {fmt(ri)},{fmt(ri)} 0 {big} 0 {fmt(ix0)},{fmt(iy0)} '
+         f'A {fmt(rc)},{fmt(rc)} 0 0 1 {fmt(ox0)},{fmt(oy0)} Z')
+    return f'    <path d="{d}" class="{cls}" fill="currentColor"{o}/>\n'
+
+def plasma_busywidget_svg(tokens):
+    # PST-21 A: vurgu renginde 270° yay, yuvarlak uçlu (Ro logo yayı); Plasma 2 sn'de bir tur döndürür.
+    # Küçük boylar için 22-22- ve 16-16- öğeleri daha ince yayla ayrıca çizilir.
+    out, x = '', 0
+    for id_, S, w in (('busywidget', 32, spacing['busyArc']), ('22-22-busywidget', 22, spacing['busyArc22']),
+                      ('16-16-busywidget', 16, spacing['busyArc16'])):
+        c = S / 2
+        out += _sized_g(id_, _arc(x + c, c, c - 0.5, w, 0, spacing['busySweep'], 'ColorScheme-Highlight'), (x, 0, S, S))
+        x += S + 8
+    style = _ctl_svg('', 1, 1, tokens).split('<defs>')[1].split('</defs>')[0]
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{fmt(x)}" height="32" viewBox="0 0 {fmt(x)} 32">\n'
+            f'  <!-- Ro busy indicator. Generated from core/tokens by scripts/generate-theme.sh. -->\n'
+            f'  <defs>{style}</defs>\n{out}</svg>\n')
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -900,6 +930,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
         'widgets/slider.svg': plasma_slider_svg(light if theme_name == 'RoLight' else dark),
         'widgets/plasmoidheading.svg': plasma_plasmoidheading_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/busywidget.svg': plasma_busywidget_svg(light if theme_name == 'RoLight' else dark),
         'widgets/tasks.svg': plasma_tasks_svg(light if theme_name == 'RoLight' else dark),
         # PST-18 (T5): araç ipucu bir ton koyu zemin (surfaceAlt) + popup ailesinin opak çerçeve kenarlığı (COL-32),
         # köşe sm, iç boşluk sm, gölge yok (TOK-09). Ro'nun kendi dosyası yokken Breeze'in gölgeye dayanan çerçevesi

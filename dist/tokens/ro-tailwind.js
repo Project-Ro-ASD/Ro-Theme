@@ -130,7 +130,11 @@ module.exports = {
         "switchKnob": 14,
         "sliderGroove": 6,
         "sliderHandle": 16,
-        "taskLine": 3
+        "taskLine": 3,
+        "busyArc": 3,
+        "busyArc22": 2.5,
+        "busyArc16": 2,
+        "busySweep": 270
       },
       "opacity": {
         "glass": 0.68,
