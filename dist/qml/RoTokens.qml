@@ -24,8 +24,8 @@ QtObject {
     readonly property real spaceXl: 24
     readonly property real borderWidth: 1
     readonly property real popupPadding: 12
-    readonly property real opacityGlass: 0.68
-    readonly property real opacityGlassStrong: 0.82
+    readonly property real opacityGlass: 0.85
+    readonly property real opacityGlassStrong: 0.92
     readonly property real opacityHover: 0.08
     readonly property real opacityDisabled: 0.42
     readonly property real opacitySolid: 1.0

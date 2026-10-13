@@ -4,7 +4,7 @@
   --ro-bg-alt: #E7E8EB;
   --ro-surface: #FFFFFF;
   --ro-surface-alt: #E7E8EB;
-  --ro-glass: rgba(255,255,255,0.78);
+  --ro-glass: rgba(255,255,255,0.85);
   --ro-text: #2B2D2F;
   --ro-text-secondary: #5D5F65;
   --ro-accent: #3059A6;
@@ -23,8 +23,8 @@
   --ro-panel-height: 44px;
   --ro-dock-height: 48px;
   --ro-dock-icon-size: 28px;
-  --ro-opacity-glass: 0.68;
-  --ro-opacity-glass-strong: 0.82;
+  --ro-opacity-glass: 0.85;
+  --ro-opacity-glass-strong: 0.92;
   --ro-opacity-hover: 0.08;
   --ro-opacity-disabled: 0.42;
   --ro-motion-window-open: 185ms;
@@ -40,7 +40,7 @@
   --ro-bg-alt: #37393C;
   --ro-surface: #2B2D2F;
   --ro-surface-alt: #37393C;
-  --ro-glass: rgba(43,45,47,0.74);
+  --ro-glass: rgba(43,45,47,0.85);
   --ro-text: #EDEEF0;
   --ro-text-secondary: #B4B5B9;
   --ro-accent: #7DA2E8;

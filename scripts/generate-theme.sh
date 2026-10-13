@@ -23,6 +23,11 @@ dark = read_json('core/tokens/colors.dark.json')
 motion = read_json('core/tokens/motion.json')
 radius = read_json('core/tokens/radius.json')
 opacity = read_json('core/tokens/opacity.json')
+# FX-15 (2026-10-13, G1): cam opaklığının tek kaynağı opacity.glass (popup ve panel, iki temada aynı). Renk
+# dosyalarında ayrı alfa tutulmaz; dist çıktılarındaki glass rengi yüzey rengi + bu opaklıktan türetilir.
+for _tokens in (light, dark):
+    _r, _g, _b = (int(_tokens['surface'].lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+    _tokens['glass'] = f"rgba({_r},{_g},{_b},{opacity['glass']})"
 spacing = read_json('core/tokens/spacing.json')
 fonts = read_json('core/tokens/fonts.json')
 dock_radius = spacing['dockHeight'] / 2  # TOK-02d: bağımsız token değil, tam hap geometrisi.
@@ -583,8 +588,8 @@ def plasma_frame_svg(fill, fill_opacity, border, border_opacity, r, padding, sha
 
 plasma_modes = {
     # Çerçeve kenarlığı opak frameBorder (COL-32): gölge olmadığı için popup'ı zeminden kenarlık ayırır.
-    'RoLight': (light['surface'], rgba_opacity(light.get('glass'), '0.76'), light['frameBorder'], '1.0'),
-    'RoDark': (dark['surface'], rgba_opacity(dark.get('glass'), '0.58'), dark['frameBorder'], '1.0'),
+    'RoLight': (light['surface'], str(opacity['glass']), light['frameBorder'], '1.0'),
+    'RoDark': (dark['surface'], str(opacity['glass']), dark['frameBorder'], '1.0'),
 }
 # --- Plasma stili: giriş alanı ve düğme (03 PST-22, PST-23; köşe TOK-02f) ---
 # Renkler sabit değil ColorScheme-* sınıflarıyla şemadan gelir (PST-03): kullanıcı vurgusu ve renk şeması kabuğa

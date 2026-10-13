@@ -564,6 +564,16 @@ check_file platform/plasma/desktoptheme/RoLight/plasmarc
 check_not_contains platform/plasma/desktoptheme/RoLight/plasmarc "[Wallpaper]" "RoLight Plasma style wallpaper-free"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/widgets/background.svg "RoLight widget background"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/widgets/panel-background.svg "RoLight panel background"
+# FX-15: cam opaklığının tek kaynağı opacity.glass; renk dosyalarında ayrı alfa yok.
+glass="$(python3 -c "import json; print(json.load(open('core/tokens/opacity.json'))['glass'])")"
+for theme in RoLight RoDark; do
+  for f in dialogs/background widgets/panel-background widgets/background; do
+    check_contains "platform/plasma/desktoptheme/$theme/$f.svg" "fill-opacity=\"$glass\"" "$theme $f uses opacity.glass ($glass, FX-15)"
+  done
+done
+for m in light dark; do
+  check_not_contains "core/tokens/colors.$m.json" '"glass"' "colors.$m.json has no separate glass alpha (FX-15)"
+done
 check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/dialogs/background.svg "RoLight dialog background"
 check_file platform/plasma/desktoptheme/RoDark/colors
 check_file platform/plasma/desktoptheme/RoDark/plasmarc
