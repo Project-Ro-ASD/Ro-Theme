@@ -569,7 +569,7 @@ check_file platform/plasma/desktoptheme/RoDark/colors
 check_file platform/plasma/desktoptheme/RoDark/plasmarc
 check_not_contains platform/plasma/desktoptheme/RoDark/plasmarc "[Wallpaper]" "RoDark Plasma style wallpaper-free"
 for theme in RoLight RoDark; do
-  check_contains "platform/plasma/desktoptheme/$theme/plasmarc" "enabled=false" "$theme adaptive transparency off (frosted glass stays visible)"
+  python3 -c "import configparser,sys; c=configparser.ConfigParser(); c.read(sys.argv[1]); sys.exit(0 if c.getboolean(\"AdaptiveTransparency\", \"enabled\") else 1)" "platform/plasma/desktoptheme/$theme/plasmarc" && ok "$theme adaptive transparency on (FX-17 revised: opaque bar with a maximized window)" || fail "$theme plasmarc [AdaptiveTransparency] enabled must be true (FX-17)"
 done
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/widgets/background.svg "RoDark widget background"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/widgets/panel-background.svg "RoDark panel background"

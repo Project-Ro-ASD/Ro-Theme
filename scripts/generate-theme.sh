@@ -1142,15 +1142,16 @@ desktop_theme_colors = {
 }
 for theme_name, content in desktop_theme_colors.items():
     (root / 'platform/plasma/desktoptheme' / theme_name / 'colors').write_text(content, encoding='utf-8')
-    # AdaptiveTransparency kapalı: açıkken ekranda büyütülmüş pencere olduğunda Plasma popup'ları
-    # tamamen opak çiziyor ve buzlu cam (yarı saydam yüzey + KWin blur) hiç görünmüyordu.
+    # FX-17 revize (2026-10-13): AdaptiveTransparency açık. Panel boşken yarı saydam yüzer; bara pencere değince
+    # (büyütülmüş) solid/widgets/panel-background ile opak Ro zeminine geçer. Büyütülmüş pencere varken popup'lar da
+    # opak çizilir; arkalarında zaten opak pencere olduğu için cam kaybı pratikte görünmüyor.
     (root / 'platform/plasma/desktoptheme' / theme_name / 'plasmarc').write_text('''[ContrastEffect]
 enabled=true
 contrast=0.35
 saturation=1.05
 
 [AdaptiveTransparency]
-enabled=false
+enabled=true
 ''', encoding='utf-8')
 
 # --- GTK yüzeyi ---
