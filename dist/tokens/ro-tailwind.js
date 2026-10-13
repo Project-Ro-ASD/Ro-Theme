@@ -114,7 +114,7 @@ module.exports = {
         "md": 12,
         "lg": 16,
         "xl": 24,
-        "panelHeight": 32,
+        "panelHeight": 44,
         "dockHeight": 48,
         "dockIconSize": 28,
         "panelMargin": 8,

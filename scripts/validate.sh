@@ -320,11 +320,10 @@ try:
     ]
     for path in paths:
         layout = path.read_text()
-        for panel, token in [('top', 'panelHeight'), ('dock', 'dockHeight')]:
-            expected = positive(spacing, token)
-            heights = re.findall(rf'(?m)^\s*{panel}\.height\s*=\s*([0-9]+(?:\.[0-9]+)?)\s*;', layout)
-            if len(heights) != 1 or float(heights[0]) != expected:
-                errors.append(f'{path}: {panel}.height must match spacing.{token} ({expected}); run scripts/generate-theme.sh')
+        expected = positive(spacing, 'panelHeight')
+        heights = re.findall(r'(?m)^\s*bar\.height\s*=\s*([0-9]+(?:\.[0-9]+)?)\s*;', layout)
+        if len(heights) != 1 or float(heights[0]) != expected:
+            errors.append(f'{path}: bar.height must match spacing.panelHeight ({expected}); run scripts/generate-theme.sh')
 except (KeyError, ValueError, OSError) as error:
     errors.append(str(error))
 
@@ -610,14 +609,17 @@ check_global_theme org.ro.light org.ro.light RoLight RoLight
 check_global_theme org.ro.dark org.ro.dark RoDark RoDark
 check_file platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js
 check_file platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js
-check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'userDataPath("data") + "/ro-theme/wallpapers/light.jpg"' "org.ro.light wallpaper path"
-check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'userDataPath("data") + "/ro-theme/wallpapers/dark.jpg"' "org.ro.dark wallpaper path"
-check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'new Panel()' "org.ro.light global layout creates panels"
-check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'new Panel()' "org.ro.dark global layout creates panels"
-check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'org.kde.plasma.icontasks' "org.ro.light global layout creates dock tasks"
-check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'org.kde.plasma.icontasks' "org.ro.dark global layout creates dock tasks"
-check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'dock.hiding = "dodgewindows"' "org.ro.light global layout dock dodge-windows"
-check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'dock.hiding = "dodgewindows"' "org.ro.dark global layout dock dodge-windows"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js '/usr/share/wallpapers/Ro Light.jpg' "org.ro.light system wallpaper path (PAN-23)"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'new Panel()' "org.ro.light global layout creates the bar"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'org.kde.plasma.icontasks' "org.ro.light bar has the icon task manager"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'reverseIconOrder' "org.ro.light tray arrow on the left"
+check_not_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'google-chrome' "org.ro.light pins only installed apps (PAN-18)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js '/usr/share/wallpapers/Ro Dark.jpg' "org.ro.dark system wallpaper path (PAN-23)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'new Panel()' "org.ro.dark global layout creates the bar"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'org.kde.plasma.icontasks' "org.ro.dark bar has the icon task manager"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'reverseIconOrder' "org.ro.dark tray arrow on the left"
+check_not_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'google-chrome' "org.ro.dark pins only installed apps (PAN-18)"
+check_not_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js '.remove()' "layout template never removes the user's panels (PAN-22)"
 check_not_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'userDataPath() + "/ro-theme' "org.ro.light stale wallpaper API absent"
 check_not_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'userDataPath() + "/ro-theme' "org.ro.dark stale wallpaper API absent"
 if [[ -e platform/plasma/look-and-feel/org.ro.global ]]; then
@@ -629,7 +631,7 @@ check_file platform/plasma/layout-templates/org.ro.desktop/metadata.json
 check_file platform/plasma/layout-templates/org.ro.desktop/contents/layout.js
 check_not_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'writeConfig("Image"' "layout template wallpaper-free"
 check_not_contains tools/dev/test-layout.sh "plasma-apply-wallpaperimage" "layout test wallpaper-free"
-check_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'dock.hiding = "dodgewindows"' "layout dock dodge-windows"
+check_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'org.kde.plasma.icontasks' "layout template creates the Ro bar"
 check_json platform/kwin/effects/ro-smooth-motion/metadata.json
 check_file platform/kwin/effects/ro-smooth-motion/contents/code/main.js
 
