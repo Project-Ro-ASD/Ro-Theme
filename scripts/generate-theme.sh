@@ -942,6 +942,67 @@ def plasma_tabbar_svg(tokens):
         y += 2 * r + e + 8
     return _inject(_ctl_svg(out, r, 4, tokens), pieces)
 
+def plasma_bar_meter_svg(tokens):
+    # PST-14 (ilerleme çubuğu, PlasmaComponents.ProgressBar): sürgü G2 diliyle aynı (PST-24): oluk nötr
+    # (sliderGroove), dolu kısım vurgu; hap, yükseklik progressBar. Pil, bildirim aktarımı, disk doluluğu.
+    H = spacing['progressBar']; r = H / 2; e = FRAME_EDGE
+    out = _ctl_block('bar-inactive', 0, r, [('ColorScheme-Text', opacity['sliderGroove'])], None, spacing['borderWidth'], (0, 0, 0, 0))
+    out += _ctl_block('bar-active', H + e + 8, r, [('ColorScheme-Highlight', 1)], None, spacing['borderWidth'], (0, 0, 0, 0))
+    hx = 2 * r + e + 40
+    out += f'  <rect id="hint-bar-size" x="{fmt(hx)}" y="0" width="{fmt(H)}" height="{fmt(H)}" fill-opacity="0"/>\n'
+    return _ctl_svg(out, r, 2, tokens)
+
+def plasma_line_svg(tokens):
+    # PST-14 (ayraç çizgisi; liste bölüm başlıkları, açılır liste öğeleri, sayı kutusu): 1 px, metin %15
+    # (PST-17 ayracıyla aynı).
+    b, L = spacing['borderWidth'], 32
+    sep = ('ColorScheme-Text', opacity['separator'])
+    out = (f'  <rect id="horizontal-line" x="0" y="0" width="{fmt(L)}" height="{fmt(b)}" class="{sep[0]}" fill="currentColor" fill-opacity="{fmt(sep[1])}"/>\n'
+           f'  <rect id="vertical-line" x="{fmt(L + 8)}" y="0" width="{fmt(b)}" height="{fmt(L)}" class="{sep[0]}" fill="currentColor" fill-opacity="{fmt(sep[1])}"/>\n')
+    return _ctl_svg(out, L / 2, 1, tokens)
+
+def plasma_frame_widget_svg(tokens):
+    # PST-14 (genel çerçeve, PlasmaComponents.Frame/GroupBox): zeminsiz, ince nötr kenar (frameEdge), köşe sm;
+    # gölge olmadığı için raised ve sunken plain ile aynı (TOK-09).
+    r, b = radius['sm'], spacing['borderWidth']; m = (spacing['sm'],) * 4
+    out, y = '', 0
+    for prefix in ('plain', 'raised', 'sunken'):
+        out += _ctl_block(prefix, y, r, [('ColorScheme-Text', 0)], ('ColorScheme-Text', opacity['frameEdge']), b, m)
+        y += 2 * r + FRAME_EDGE + 8
+    return _ctl_svg(out, r, 3, tokens)
+
+def plasma_listitem_svg(tokens):
+    # PST-14 (eski tip liste öğesi, PlasmaExtras.ListItem / ItemDelegate zemini / pano menüsü): viewitem (PST-13 V3)
+    # diliyle aynı: normal saydam, üzerinde vurgu listCurrent, basılı/seçili listSelected; bölüm metin %5; ayraç %15.
+    r, b = radius['sm'], spacing['borderWidth']; m = (spacing['xs'], spacing['xs'], spacing['sm'], spacing['sm'])
+    A, T = 'ColorScheme-Highlight', 'ColorScheme-Text'
+    out, y = '', 0
+    for prefix, fills in (('normal', [(T, 0)]), ('hover', [(A, opacity['listCurrent'])]),
+                          ('pressed', [(A, opacity['listSelected'])]), ('section', [(T, opacity['listSection'])])):
+        out += _ctl_block(prefix, y, r, fills, None, b, m)
+        y += 2 * r + FRAME_EDGE + 8
+    out += (f'  <rect id="separator" x="0" y="{fmt(y)}" width="32" height="{fmt(b)}" class="{T}" fill="currentColor" '
+            f'fill-opacity="{fmt(opacity["separator"])}"/>\n')
+    return _ctl_svg(out, r, 5, tokens)
+
+def plasma_arrows_svg(tokens):
+    # PST-14 (yön okları; açılır kutu, menülü düğme): ince, yuvarlak uçlu ok başı; iki dolgulu çubuk (stroke yok).
+    import math
+    S = spacing['arrowSize']; t = 1.5 * spacing['borderWidth']
+    def chevron(ox, rot):
+        out = ''
+        for (x1, y1), (x2, y2) in (((4.5, 6.25), (8, 9.75)), ((8, 9.75), (11.5, 6.25))):
+            L = math.hypot(x2 - x1, y2 - y1); a = math.degrees(math.atan2(y2 - y1, x2 - x1))
+            out += (f'    <rect x="{fmt(-L / 2 - t / 2)}" y="{fmt(-t / 2)}" width="{fmt(L + t)}" height="{fmt(t)}" rx="{fmt(t / 2)}" '
+                    f'transform="rotate({fmt(rot)} {fmt(ox + S / 2)} {fmt(S / 2)}) translate({fmt(ox + (x1 + x2) / 2)} {fmt((y1 + y2) / 2)}) rotate({fmt(a)})" '
+                    f'class="ColorScheme-Text" fill="currentColor"/>\n')
+        return out
+    out = ''
+    for i, (id_, rot) in enumerate((('down-arrow', 0), ('left-arrow', 90), ('up-arrow', 180), ('right-arrow', 270))):
+        x = i * (S + 8)
+        out += _sized_g(id_, chevron(x, rot), (x, 0, S, S))
+    return _ctl_svg(out, S / 2, 1, tokens)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -970,6 +1031,14 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/tabbar.svg': plasma_tabbar_svg(light if theme_name == 'RoLight' else dark),
         'widgets/busywidget.svg': plasma_busywidget_svg(light if theme_name == 'RoLight' else dark),
         'widgets/tasks.svg': plasma_tasks_svg(light if theme_name == 'RoLight' else dark),
+        # PST-14 P2: Plasma bileşenlerinin gerçekten kullandığı, Breeze'e düşen öğeler.
+        'widgets/bar_meter_horizontal.svg': plasma_bar_meter_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/bar_meter_vertical.svg': plasma_bar_meter_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/line.svg': plasma_line_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/frame.svg': plasma_frame_widget_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/listitem.svg': plasma_listitem_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/arrows.svg': plasma_arrows_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/translucentbackground.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, widget_radius, popup_padding),
         # PST-18 (T5): araç ipucu bir ton koyu zemin (surfaceAlt) + popup ailesinin opak çerçeve kenarlığı (COL-32),
         # köşe sm, iç boşluk sm, gölge yok (TOK-09). Ro'nun kendi dosyası yokken Breeze'in gölgeye dayanan çerçevesi
         # kullanılıyordu.
