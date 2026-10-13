@@ -12,6 +12,9 @@ cd "$ROOT"
 ./scripts/validate.sh
 
 echo "Installing Ro Desktop locally..."
+echo "Font roles are included in the global theme defaults."
+echo "System font rendering and kcmfonts/forceFontDPI defaults require the RPM installation."
+echo "Required font families: Noto Sans, Noto Sans Mono and Inter; package installation is coordinated separately (FNT-08)."
 
 for writable_dir in "$HOME/.local/share" "$HOME/.themes"; do
   mkdir -p "$writable_dir"

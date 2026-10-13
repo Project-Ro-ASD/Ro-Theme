@@ -26,6 +26,9 @@ shadeSortColumn=true
 accentActiveTitlebar=false
 accentInactiveTitlebar=false
 ColorScheme=RoDark
+XftAntialias=true
+XftHintStyle=hintslight
+XftSubPixel=rgb
 
 [Colors:Window]
 BackgroundNormal=30,31,33
@@ -151,3 +154,4 @@ inactiveBackground=30,31,33
 inactiveForeground=180,181,185
 activeBlend=237,238,240
 inactiveBlend=75,77,82
+activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0
