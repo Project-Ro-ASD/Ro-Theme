@@ -129,7 +129,8 @@ module.exports = {
         "switchHeight": 18,
         "switchKnob": 14,
         "sliderGroove": 6,
-        "sliderHandle": 16
+        "sliderHandle": 16,
+        "taskLine": 3
       },
       "opacity": {
         "glass": 0.68,
@@ -152,7 +153,16 @@ module.exports = {
         "switchTrackOff": 0.25,
         "sliderGroove": 0.2,
         "sliderHover": 0.12,
-        "separator": 0.15
+        "separator": 0.15,
+        "taskNormal": 0.1,
+        "taskNormalLine": 0.3,
+        "taskFocus": 0.3,
+        "taskHover": 0.18,
+        "taskHoverLine": 0.6,
+        "taskMinimized": 0.05,
+        "taskMinimizedLine": 0.15,
+        "taskAttention": 0.3,
+        "taskProgress": 0.35
       }
     }
   }

@@ -1,0 +1,956 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="1448" viewBox="0 0 112 1448">
+  <!-- Ro control: radius 10. Generated from core/tokens by scripts/generate-theme.sh. -->
+  <defs>
+  <style id="current-color-scheme" type="text/css">
+    .ColorScheme-NeutralText { color:#f2c14e; }
+    .ColorScheme-PositiveText { color:#6ccb8a; }
+    .ColorScheme-Text { color:#edeef0; }
+    .ColorScheme-ViewBackground { color:#2b2d2f; }
+    .ColorScheme-ButtonBackground { color:#37393c; }
+    .ColorScheme-ButtonText { color:#edeef0; }
+    .ColorScheme-ViewFocus { color:#7da2e8; }
+    .ColorScheme-ButtonFocus { color:#7da2e8; }
+    .ColorScheme-Highlight { color:#7da2e8; }
+  </style>
+  </defs>
+  <g id="normal-topleft">
+    <rect x="0" y="0" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,10 L 0,10 L 0,8 A 8,8 0 0 1 8,0 L 10,0 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="normal-top">
+    <rect x="10" y="0" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="0" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="normal-topright">
+    <rect x="42" y="0" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,10 L 52,10 L 52,8 A 8,8 0 0 0 44,0 L 42,0 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="normal-left">
+    <rect x="0" y="10" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="10" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="normal-center">
+    <rect x="10" y="10" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="10" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="normal-right">
+    <rect x="42" y="10" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="10" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="normal-bottomleft">
+    <rect x="0" y="42" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,42 L 0,42 L 0,44 A 8,8 0 0 0 8,52 L 10,52 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="8" y="49" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="normal-bottom">
+    <rect x="10" y="42" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="42" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="10" y="49" width="32" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="normal-bottomright">
+    <rect x="42" y="42" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,42 L 52,42 L 52,44 A 8,8 0 0 1 44,52 L 42,52 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="42" y="49" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <rect id="normal-hint-top-margin" x="72" y="0" width="1" height="4" fill-opacity="0"/>
+  <rect id="normal-hint-bottom-margin" x="76" y="0" width="1" height="4" fill-opacity="0"/>
+  <rect id="normal-hint-left-margin" x="80" y="0" width="4" height="1" fill-opacity="0"/>
+  <rect id="normal-hint-right-margin" x="84" y="0" width="4" height="1" fill-opacity="0"/>
+  <g id="focus-topleft">
+    <rect x="0" y="60" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,70 L 0,70 L 0,68 A 8,8 0 0 1 8,60 L 10,60 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="focus-top">
+    <rect x="10" y="60" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="60" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="focus-topright">
+    <rect x="42" y="60" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,70 L 52,70 L 52,68 A 8,8 0 0 0 44,60 L 42,60 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="focus-left">
+    <rect x="0" y="70" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="70" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="focus-center">
+    <rect x="10" y="70" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="70" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="focus-right">
+    <rect x="42" y="70" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="70" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="focus-bottomleft">
+    <rect x="0" y="102" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,102 L 0,102 L 0,104 A 8,8 0 0 0 8,112 L 10,112 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="8" y="109" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="focus-bottom">
+    <rect x="10" y="102" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="102" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="10" y="109" width="32" height="3" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="focus-bottomright">
+    <rect x="42" y="102" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,102 L 52,102 L 52,104 A 8,8 0 0 1 44,112 L 42,112 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="42" y="109" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="hover-topleft">
+    <rect x="0" y="120" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,130 L 0,130 L 0,128 A 8,8 0 0 1 8,120 L 10,120 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="hover-top">
+    <rect x="10" y="120" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="120" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="hover-topright">
+    <rect x="42" y="120" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,130 L 52,130 L 52,128 A 8,8 0 0 0 44,120 L 42,120 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="hover-left">
+    <rect x="0" y="130" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="130" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="hover-center">
+    <rect x="10" y="130" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="130" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="hover-right">
+    <rect x="42" y="130" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="130" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="hover-bottomleft">
+    <rect x="0" y="162" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,162 L 0,162 L 0,164 A 8,8 0 0 0 8,172 L 10,172 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="8" y="169" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="hover-bottom">
+    <rect x="10" y="162" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="162" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="10" y="169" width="32" height="3" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="hover-bottomright">
+    <rect x="42" y="162" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,162 L 52,162 L 52,164 A 8,8 0 0 1 44,172 L 42,172 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="42" y="169" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="minimized-topleft">
+    <rect x="0" y="180" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,190 L 0,190 L 0,188 A 8,8 0 0 1 8,180 L 10,180 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="minimized-top">
+    <rect x="10" y="180" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="180" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="minimized-topright">
+    <rect x="42" y="180" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,190 L 52,190 L 52,188 A 8,8 0 0 0 44,180 L 42,180 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="minimized-left">
+    <rect x="0" y="190" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="190" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="minimized-center">
+    <rect x="10" y="190" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="190" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="minimized-right">
+    <rect x="42" y="190" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="190" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="minimized-bottomleft">
+    <rect x="0" y="222" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,222 L 0,222 L 0,224 A 8,8 0 0 0 8,232 L 10,232 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="8" y="229" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="minimized-bottom">
+    <rect x="10" y="222" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="222" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="10" y="229" width="32" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="minimized-bottomright">
+    <rect x="42" y="222" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,222 L 52,222 L 52,224 A 8,8 0 0 1 44,232 L 42,232 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="42" y="229" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="attention-topleft">
+    <rect x="0" y="240" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,250 L 0,250 L 0,248 A 8,8 0 0 1 8,240 L 10,240 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="attention-top">
+    <rect x="10" y="240" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="240" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="attention-topright">
+    <rect x="42" y="240" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,250 L 52,250 L 52,248 A 8,8 0 0 0 44,240 L 42,240 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="attention-left">
+    <rect x="0" y="250" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="250" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="attention-center">
+    <rect x="10" y="250" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="250" width="32" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="attention-right">
+    <rect x="42" y="250" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="250" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="attention-bottomleft">
+    <rect x="0" y="282" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,282 L 0,282 L 0,284 A 8,8 0 0 0 8,292 L 10,292 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="8" y="289" width="2" height="3" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="attention-bottom">
+    <rect x="10" y="282" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="282" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="10" y="289" width="32" height="3" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="attention-bottomright">
+    <rect x="42" y="282" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,282 L 52,282 L 52,284 A 8,8 0 0 1 44,292 L 42,292 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="42" y="289" width="2" height="3" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="progress-topleft">
+    <rect x="0" y="300" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,310 L 0,310 L 0,308 A 8,8 0 0 1 8,300 L 10,300 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-top">
+    <rect x="10" y="300" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="300" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-topright">
+    <rect x="42" y="300" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,310 L 52,310 L 52,308 A 8,8 0 0 0 44,300 L 42,300 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-left">
+    <rect x="0" y="310" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="310" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-center">
+    <rect x="10" y="310" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="310" width="32" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-right">
+    <rect x="42" y="310" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="310" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-bottomleft">
+    <rect x="0" y="342" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,342 L 0,342 L 0,344 A 8,8 0 0 0 8,352 L 10,352 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-bottom">
+    <rect x="10" y="342" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="342" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="progress-bottomright">
+    <rect x="42" y="342" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,342 L 52,342 L 52,344 A 8,8 0 0 1 44,352 L 42,352 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-normal-topleft">
+    <rect x="0" y="360" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,370 L 0,370 L 0,368 A 8,8 0 0 1 8,360 L 10,360 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="8" y="360" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-normal-top">
+    <rect x="10" y="360" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="360" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="10" y="360" width="32" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-normal-topright">
+    <rect x="42" y="360" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,370 L 52,370 L 52,368 A 8,8 0 0 0 44,360 L 42,360 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="42" y="360" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-normal-left">
+    <rect x="0" y="370" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="370" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="north-normal-center">
+    <rect x="10" y="370" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="370" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="north-normal-right">
+    <rect x="42" y="370" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="370" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="north-normal-bottomleft">
+    <rect x="0" y="402" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,402 L 0,402 L 0,404 A 8,8 0 0 0 8,412 L 10,412 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="north-normal-bottom">
+    <rect x="10" y="402" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="402" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="north-normal-bottomright">
+    <rect x="42" y="402" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,402 L 52,402 L 52,404 A 8,8 0 0 1 44,412 L 42,412 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <rect id="north-normal-hint-top-margin" x="72" y="360" width="1" height="4" fill-opacity="0"/>
+  <rect id="north-normal-hint-bottom-margin" x="76" y="360" width="1" height="4" fill-opacity="0"/>
+  <rect id="north-normal-hint-left-margin" x="80" y="360" width="4" height="1" fill-opacity="0"/>
+  <rect id="north-normal-hint-right-margin" x="84" y="360" width="4" height="1" fill-opacity="0"/>
+  <g id="north-focus-topleft">
+    <rect x="0" y="420" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,430 L 0,430 L 0,428 A 8,8 0 0 1 8,420 L 10,420 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="8" y="420" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="north-focus-top">
+    <rect x="10" y="420" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="420" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="10" y="420" width="32" height="3" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="north-focus-topright">
+    <rect x="42" y="420" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,430 L 52,430 L 52,428 A 8,8 0 0 0 44,420 L 42,420 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="42" y="420" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="north-focus-left">
+    <rect x="0" y="430" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="430" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-focus-center">
+    <rect x="10" y="430" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="430" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-focus-right">
+    <rect x="42" y="430" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="430" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-focus-bottomleft">
+    <rect x="0" y="462" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,462 L 0,462 L 0,464 A 8,8 0 0 0 8,472 L 10,472 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-focus-bottom">
+    <rect x="10" y="462" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="462" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-focus-bottomright">
+    <rect x="42" y="462" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,462 L 52,462 L 52,464 A 8,8 0 0 1 44,472 L 42,472 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-hover-topleft">
+    <rect x="0" y="480" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,490 L 0,490 L 0,488 A 8,8 0 0 1 8,480 L 10,480 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="8" y="480" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="north-hover-top">
+    <rect x="10" y="480" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="480" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="10" y="480" width="32" height="3" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="north-hover-topright">
+    <rect x="42" y="480" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,490 L 52,490 L 52,488 A 8,8 0 0 0 44,480 L 42,480 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="42" y="480" width="2" height="3" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="north-hover-left">
+    <rect x="0" y="490" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="490" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="north-hover-center">
+    <rect x="10" y="490" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="490" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="north-hover-right">
+    <rect x="42" y="490" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="490" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="north-hover-bottomleft">
+    <rect x="0" y="522" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,522 L 0,522 L 0,524 A 8,8 0 0 0 8,532 L 10,532 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="north-hover-bottom">
+    <rect x="10" y="522" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="522" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="north-hover-bottomright">
+    <rect x="42" y="522" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,522 L 52,522 L 52,524 A 8,8 0 0 1 44,532 L 42,532 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="north-minimized-topleft">
+    <rect x="0" y="540" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,550 L 0,550 L 0,548 A 8,8 0 0 1 8,540 L 10,540 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="8" y="540" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="north-minimized-top">
+    <rect x="10" y="540" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="540" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="10" y="540" width="32" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="north-minimized-topright">
+    <rect x="42" y="540" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,550 L 52,550 L 52,548 A 8,8 0 0 0 44,540 L 42,540 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="42" y="540" width="2" height="3" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="north-minimized-left">
+    <rect x="0" y="550" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="550" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="north-minimized-center">
+    <rect x="10" y="550" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="550" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="north-minimized-right">
+    <rect x="42" y="550" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="550" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="north-minimized-bottomleft">
+    <rect x="0" y="582" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,582 L 0,582 L 0,584 A 8,8 0 0 0 8,592 L 10,592 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="north-minimized-bottom">
+    <rect x="10" y="582" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="582" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="north-minimized-bottomright">
+    <rect x="42" y="582" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,582 L 52,582 L 52,584 A 8,8 0 0 1 44,592 L 42,592 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="north-attention-topleft">
+    <rect x="0" y="600" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,610 L 0,610 L 0,608 A 8,8 0 0 1 8,600 L 10,600 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="8" y="600" width="2" height="3" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="north-attention-top">
+    <rect x="10" y="600" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="600" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="10" y="600" width="32" height="3" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="north-attention-topright">
+    <rect x="42" y="600" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,610 L 52,610 L 52,608 A 8,8 0 0 0 44,600 L 42,600 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="42" y="600" width="2" height="3" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="north-attention-left">
+    <rect x="0" y="610" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="610" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-attention-center">
+    <rect x="10" y="610" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="610" width="32" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-attention-right">
+    <rect x="42" y="610" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="610" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-attention-bottomleft">
+    <rect x="0" y="642" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,642 L 0,642 L 0,644 A 8,8 0 0 0 8,652 L 10,652 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-attention-bottom">
+    <rect x="10" y="642" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="642" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-attention-bottomright">
+    <rect x="42" y="642" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,642 L 52,642 L 52,644 A 8,8 0 0 1 44,652 L 42,652 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="north-progress-topleft">
+    <rect x="0" y="660" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,670 L 0,670 L 0,668 A 8,8 0 0 1 8,660 L 10,660 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-top">
+    <rect x="10" y="660" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="660" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-topright">
+    <rect x="42" y="660" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,670 L 52,670 L 52,668 A 8,8 0 0 0 44,660 L 42,660 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-left">
+    <rect x="0" y="670" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="670" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-center">
+    <rect x="10" y="670" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="670" width="32" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-right">
+    <rect x="42" y="670" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="670" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-bottomleft">
+    <rect x="0" y="702" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,702 L 0,702 L 0,704 A 8,8 0 0 0 8,712 L 10,712 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-bottom">
+    <rect x="10" y="702" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="702" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="north-progress-bottomright">
+    <rect x="42" y="702" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,702 L 52,702 L 52,704 A 8,8 0 0 1 44,712 L 42,712 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-normal-topleft">
+    <rect x="0" y="720" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,730 L 0,730 L 0,728 A 8,8 0 0 1 8,720 L 10,720 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="0" y="728" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-normal-top">
+    <rect x="10" y="720" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="720" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="west-normal-topright">
+    <rect x="42" y="720" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,730 L 52,730 L 52,728 A 8,8 0 0 0 44,720 L 42,720 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="west-normal-left">
+    <rect x="0" y="730" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="730" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="0" y="730" width="3" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-normal-center">
+    <rect x="10" y="730" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="730" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="west-normal-right">
+    <rect x="42" y="730" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="730" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="west-normal-bottomleft">
+    <rect x="0" y="762" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,762 L 0,762 L 0,764 A 8,8 0 0 0 8,772 L 10,772 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="0" y="762" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-normal-bottom">
+    <rect x="10" y="762" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="762" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="west-normal-bottomright">
+    <rect x="42" y="762" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,762 L 52,762 L 52,764 A 8,8 0 0 1 44,772 L 42,772 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <rect id="west-normal-hint-top-margin" x="72" y="720" width="1" height="4" fill-opacity="0"/>
+  <rect id="west-normal-hint-bottom-margin" x="76" y="720" width="1" height="4" fill-opacity="0"/>
+  <rect id="west-normal-hint-left-margin" x="80" y="720" width="4" height="1" fill-opacity="0"/>
+  <rect id="west-normal-hint-right-margin" x="84" y="720" width="4" height="1" fill-opacity="0"/>
+  <g id="west-focus-topleft">
+    <rect x="0" y="780" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,790 L 0,790 L 0,788 A 8,8 0 0 1 8,780 L 10,780 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="0" y="788" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="west-focus-top">
+    <rect x="10" y="780" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="780" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-focus-topright">
+    <rect x="42" y="780" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,790 L 52,790 L 52,788 A 8,8 0 0 0 44,780 L 42,780 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-focus-left">
+    <rect x="0" y="790" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="790" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="0" y="790" width="3" height="32" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="west-focus-center">
+    <rect x="10" y="790" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="790" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-focus-right">
+    <rect x="42" y="790" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="790" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-focus-bottomleft">
+    <rect x="0" y="822" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,822 L 0,822 L 0,824 A 8,8 0 0 0 8,832 L 10,832 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="0" y="822" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="west-focus-bottom">
+    <rect x="10" y="822" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="822" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-focus-bottomright">
+    <rect x="42" y="822" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,822 L 52,822 L 52,824 A 8,8 0 0 1 44,832 L 42,832 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-hover-topleft">
+    <rect x="0" y="840" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,850 L 0,850 L 0,848 A 8,8 0 0 1 8,840 L 10,840 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="0" y="848" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="west-hover-top">
+    <rect x="10" y="840" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="840" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="west-hover-topright">
+    <rect x="42" y="840" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,850 L 52,850 L 52,848 A 8,8 0 0 0 44,840 L 42,840 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="west-hover-left">
+    <rect x="0" y="850" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="850" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="0" y="850" width="3" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="west-hover-center">
+    <rect x="10" y="850" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="850" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="west-hover-right">
+    <rect x="42" y="850" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="850" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="west-hover-bottomleft">
+    <rect x="0" y="882" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,882 L 0,882 L 0,884 A 8,8 0 0 0 8,892 L 10,892 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="0" y="882" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="west-hover-bottom">
+    <rect x="10" y="882" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="882" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="west-hover-bottomright">
+    <rect x="42" y="882" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,882 L 52,882 L 52,884 A 8,8 0 0 1 44,892 L 42,892 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="west-minimized-topleft">
+    <rect x="0" y="900" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,910 L 0,910 L 0,908 A 8,8 0 0 1 8,900 L 10,900 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="0" y="908" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="west-minimized-top">
+    <rect x="10" y="900" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="900" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="west-minimized-topright">
+    <rect x="42" y="900" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,910 L 52,910 L 52,908 A 8,8 0 0 0 44,900 L 42,900 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="west-minimized-left">
+    <rect x="0" y="910" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="910" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="0" y="910" width="3" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="west-minimized-center">
+    <rect x="10" y="910" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="910" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="west-minimized-right">
+    <rect x="42" y="910" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="910" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="west-minimized-bottomleft">
+    <rect x="0" y="942" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,942 L 0,942 L 0,944 A 8,8 0 0 0 8,952 L 10,952 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="0" y="942" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="west-minimized-bottom">
+    <rect x="10" y="942" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="942" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="west-minimized-bottomright">
+    <rect x="42" y="942" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,942 L 52,942 L 52,944 A 8,8 0 0 1 44,952 L 42,952 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="west-attention-topleft">
+    <rect x="0" y="960" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,970 L 0,970 L 0,968 A 8,8 0 0 1 8,960 L 10,960 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="0" y="968" width="3" height="2" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="west-attention-top">
+    <rect x="10" y="960" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="960" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-attention-topright">
+    <rect x="42" y="960" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,970 L 52,970 L 52,968 A 8,8 0 0 0 44,960 L 42,960 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-attention-left">
+    <rect x="0" y="970" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="970" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="0" y="970" width="3" height="32" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="west-attention-center">
+    <rect x="10" y="970" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="970" width="32" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-attention-right">
+    <rect x="42" y="970" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="970" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-attention-bottomleft">
+    <rect x="0" y="1002" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1002 L 0,1002 L 0,1004 A 8,8 0 0 0 8,1012 L 10,1012 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="0" y="1002" width="3" height="2" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="west-attention-bottom">
+    <rect x="10" y="1002" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1002" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-attention-bottomright">
+    <rect x="42" y="1002" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1002 L 52,1002 L 52,1004 A 8,8 0 0 1 44,1012 L 42,1012 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="west-progress-topleft">
+    <rect x="0" y="1020" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1030 L 0,1030 L 0,1028 A 8,8 0 0 1 8,1020 L 10,1020 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-top">
+    <rect x="10" y="1020" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1020" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-topright">
+    <rect x="42" y="1020" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1030 L 52,1030 L 52,1028 A 8,8 0 0 0 44,1020 L 42,1020 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-left">
+    <rect x="0" y="1030" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1030" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-center">
+    <rect x="10" y="1030" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1030" width="32" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-right">
+    <rect x="42" y="1030" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1030" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-bottomleft">
+    <rect x="0" y="1062" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1062 L 0,1062 L 0,1064 A 8,8 0 0 0 8,1072 L 10,1072 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-bottom">
+    <rect x="10" y="1062" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1062" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="west-progress-bottomright">
+    <rect x="42" y="1062" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1062 L 52,1062 L 52,1064 A 8,8 0 0 1 44,1072 L 42,1072 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-normal-topleft">
+    <rect x="0" y="1080" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1090 L 0,1090 L 0,1088 A 8,8 0 0 1 8,1080 L 10,1080 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="east-normal-top">
+    <rect x="10" y="1080" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1080" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="east-normal-topright">
+    <rect x="42" y="1080" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1090 L 52,1090 L 52,1088 A 8,8 0 0 0 44,1080 L 42,1080 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="49" y="1088" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-normal-left">
+    <rect x="0" y="1090" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1090" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="east-normal-center">
+    <rect x="10" y="1090" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1090" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="east-normal-right">
+    <rect x="42" y="1090" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1090" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="49" y="1090" width="3" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-normal-bottomleft">
+    <rect x="0" y="1122" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1122 L 0,1122 L 0,1124 A 8,8 0 0 0 8,1132 L 10,1132 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="east-normal-bottom">
+    <rect x="10" y="1122" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1122" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+  </g>
+  <g id="east-normal-bottomright">
+    <rect x="42" y="1122" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1122 L 52,1122 L 52,1124 A 8,8 0 0 1 44,1132 L 42,1132 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.1"/>
+    <rect x="49" y="1122" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <rect id="east-normal-hint-top-margin" x="72" y="1080" width="1" height="4" fill-opacity="0"/>
+  <rect id="east-normal-hint-bottom-margin" x="76" y="1080" width="1" height="4" fill-opacity="0"/>
+  <rect id="east-normal-hint-left-margin" x="80" y="1080" width="4" height="1" fill-opacity="0"/>
+  <rect id="east-normal-hint-right-margin" x="84" y="1080" width="4" height="1" fill-opacity="0"/>
+  <g id="east-focus-topleft">
+    <rect x="0" y="1140" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1150 L 0,1150 L 0,1148 A 8,8 0 0 1 8,1140 L 10,1140 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-focus-top">
+    <rect x="10" y="1140" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1140" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-focus-topright">
+    <rect x="42" y="1140" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1150 L 52,1150 L 52,1148 A 8,8 0 0 0 44,1140 L 42,1140 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="49" y="1148" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="east-focus-left">
+    <rect x="0" y="1150" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1150" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-focus-center">
+    <rect x="10" y="1150" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1150" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-focus-right">
+    <rect x="42" y="1150" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1150" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="49" y="1150" width="3" height="32" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="east-focus-bottomleft">
+    <rect x="0" y="1182" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1182 L 0,1182 L 0,1184 A 8,8 0 0 0 8,1192 L 10,1192 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-focus-bottom">
+    <rect x="10" y="1182" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1182" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-focus-bottomright">
+    <rect x="42" y="1182" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1182 L 52,1182 L 52,1184 A 8,8 0 0 1 44,1192 L 42,1192 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="49" y="1182" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="east-hover-topleft">
+    <rect x="0" y="1200" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1210 L 0,1210 L 0,1208 A 8,8 0 0 1 8,1200 L 10,1200 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="east-hover-top">
+    <rect x="10" y="1200" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1200" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="east-hover-topright">
+    <rect x="42" y="1200" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1210 L 52,1210 L 52,1208 A 8,8 0 0 0 44,1200 L 42,1200 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="49" y="1208" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="east-hover-left">
+    <rect x="0" y="1210" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1210" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="east-hover-center">
+    <rect x="10" y="1210" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1210" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="east-hover-right">
+    <rect x="42" y="1210" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1210" width="10" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="49" y="1210" width="3" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="east-hover-bottomleft">
+    <rect x="0" y="1242" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1242 L 0,1242 L 0,1244 A 8,8 0 0 0 8,1252 L 10,1252 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="east-hover-bottom">
+    <rect x="10" y="1242" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1242" width="32" height="10" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+  </g>
+  <g id="east-hover-bottomright">
+    <rect x="42" y="1242" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1242 L 52,1242 L 52,1244 A 8,8 0 0 1 44,1252 L 42,1252 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.18"/>
+    <rect x="49" y="1242" width="3" height="2" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.6"/>
+  </g>
+  <g id="east-minimized-topleft">
+    <rect x="0" y="1260" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1270 L 0,1270 L 0,1268 A 8,8 0 0 1 8,1260 L 10,1260 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="east-minimized-top">
+    <rect x="10" y="1260" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1260" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="east-minimized-topright">
+    <rect x="42" y="1260" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1270 L 52,1270 L 52,1268 A 8,8 0 0 0 44,1260 L 42,1260 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="49" y="1268" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="east-minimized-left">
+    <rect x="0" y="1270" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1270" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="east-minimized-center">
+    <rect x="10" y="1270" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1270" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="east-minimized-right">
+    <rect x="42" y="1270" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1270" width="10" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="49" y="1270" width="3" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="east-minimized-bottomleft">
+    <rect x="0" y="1302" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1302 L 0,1302 L 0,1304 A 8,8 0 0 0 8,1312 L 10,1312 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="east-minimized-bottom">
+    <rect x="10" y="1302" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1302" width="32" height="10" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+  </g>
+  <g id="east-minimized-bottomright">
+    <rect x="42" y="1302" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1302 L 52,1302 L 52,1304 A 8,8 0 0 1 44,1312 L 42,1312 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.05"/>
+    <rect x="49" y="1302" width="3" height="2" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="east-attention-topleft">
+    <rect x="0" y="1320" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1330 L 0,1330 L 0,1328 A 8,8 0 0 1 8,1320 L 10,1320 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-attention-top">
+    <rect x="10" y="1320" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1320" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-attention-topright">
+    <rect x="42" y="1320" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1330 L 52,1330 L 52,1328 A 8,8 0 0 0 44,1320 L 42,1320 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="49" y="1328" width="3" height="2" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="east-attention-left">
+    <rect x="0" y="1330" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1330" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-attention-center">
+    <rect x="10" y="1330" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1330" width="32" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-attention-right">
+    <rect x="42" y="1330" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1330" width="10" height="32" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="49" y="1330" width="3" height="32" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="east-attention-bottomleft">
+    <rect x="0" y="1362" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1362 L 0,1362 L 0,1364 A 8,8 0 0 0 8,1372 L 10,1372 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-attention-bottom">
+    <rect x="10" y="1362" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1362" width="32" height="10" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+  </g>
+  <g id="east-attention-bottomright">
+    <rect x="42" y="1362" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1362 L 52,1362 L 52,1364 A 8,8 0 0 1 44,1372 L 42,1372 Z" class="ColorScheme-NeutralText" fill="currentColor" fill-opacity="0.3"/>
+    <rect x="49" y="1362" width="3" height="2" class="ColorScheme-NeutralText" fill="currentColor"/>
+  </g>
+  <g id="east-progress-topleft">
+    <rect x="0" y="1380" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1390 L 0,1390 L 0,1388 A 8,8 0 0 1 8,1380 L 10,1380 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-top">
+    <rect x="10" y="1380" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1380" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-topright">
+    <rect x="42" y="1380" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1390 L 52,1390 L 52,1388 A 8,8 0 0 0 44,1380 L 42,1380 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-left">
+    <rect x="0" y="1390" width="10" height="32" fill-opacity="0"/>
+    <rect x="0" y="1390" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-center">
+    <rect x="10" y="1390" width="32" height="32" fill-opacity="0"/>
+    <rect x="10" y="1390" width="32" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-right">
+    <rect x="42" y="1390" width="10" height="32" fill-opacity="0"/>
+    <rect x="42" y="1390" width="10" height="32" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-bottomleft">
+    <rect x="0" y="1422" width="10" height="10" fill-opacity="0"/>
+    <path d="M 10,1422 L 0,1422 L 0,1424 A 8,8 0 0 0 8,1432 L 10,1432 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-bottom">
+    <rect x="10" y="1422" width="32" height="10" fill-opacity="0"/>
+    <rect x="10" y="1422" width="32" height="10" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="east-progress-bottomright">
+    <rect x="42" y="1422" width="10" height="10" fill-opacity="0"/>
+    <path d="M 42,1422 L 52,1422 L 52,1424 A 8,8 0 0 1 44,1432 L 42,1432 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+</svg>
