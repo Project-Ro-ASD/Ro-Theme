@@ -37,9 +37,16 @@ Requires:       dracut
 Requires:       grubby
 
 %description
-Ro Desktop için KDE Plasma global theme, Plasma style, color scheme,
-KWin efekti, Plymouth boot teması, GTK stili,
-icon/cursor tanımları ve tanı araçlarını içeren tema paketi.
+Ro Desktop theme for KDE Plasma: Ro Light and Ro Dark global themes, Plasma
+styles, colour schemes, the Ro Aurorae window decoration, the panel layout,
+the Plymouth boot theme, the Ro GTK style, icon and cursor definitions, system
+appearance defaults and diagnostic tools.
+
+%description -l tr
+KDE Plasma için Ro masaüstü teması: Ro Açık ve Ro Koyu global temaları, Plasma
+stilleri, renk şemaları, Ro Aurorae pencere dekorasyonu, panel yerleşimi,
+Plymouth açılış teması, Ro GTK stili, ikon ve imleç tanımları, sistem görünüm
+varsayılanları ve tanı araçları.
 
 %prep
 %autosetup -n %{name}-%{version}
@@ -101,8 +108,8 @@ install -Dm0755 scripts/apply-dark-defaults.sh %{buildroot}%{_libexecdir}/ro-the
 install -Dm0755 scripts/check-plasma-runtime.sh %{buildroot}%{_libexecdir}/ro-theme/check-plasma-runtime
 install -Dm0755 scripts/diagnose.sh %{buildroot}%{_bindir}/ro-theme-diagnose
 
-# Sistem varsayılanları üreticiden gelir (platform/plasma/defaults/xdg); %config(noreplace) ile kurulur.
-# %post bu dosyalara ve kullanıcı dosyalarına yazmaz (DEFAULTS-OWNERSHIP-V1).
+# Sistem varsayılanları üreticiden gelir (platform/plasma/defaults/xdg); %%config(noreplace) ile kurulur.
+# %%post bu dosyalara ve kullanıcı dosyalarına yazmaz (DEFAULTS-OWNERSHIP-V1).
 for f in kdeglobals kcmfonts breezerc plasmarc ksplashrc kscreenlockerrc kwinrc; do
   install -Dm0644 "platform/plasma/defaults/xdg/$f" "%{buildroot}%{_sysconfdir}/xdg/$f"
 done
