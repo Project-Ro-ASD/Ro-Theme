@@ -1150,7 +1150,9 @@ window_radius = radius.get('window', radius['md'])
 window_border = spacing.get('windowBorder', 4)
 titlebar_height = spacing.get('titlebarHeight', 36)
 title_button = spacing.get('titleButton', 24)
-window_shadow = 0  # TOK-09/10: Aurorae dış gölge boşluğu yok.
+# WD-18 (2026-10-13): pencereler TOK-09'un istisnası; yumuşak, her yöne eşit gölge (S2.5). Popup, menü ve ipucu
+# gölgesiz kalır. Aurorae gölgeyi Padding* alanında çerçeve SVG'sinin parçası olarak çizer.
+window_shadow = spacing['windowShadow']
 if window_border < 0.3 * window_radius:
     raise SystemExit(f'windowBorder ({window_border}) must be >= 0.3 * radius.window ({window_radius}) '
                      'so client corners stay under the rounded frame')
@@ -1232,7 +1234,7 @@ def aurorae_decoration_svg(tokens):
     pad, r = window_shadow, window_radius
     bg = tokens['bg']
     edge = tokens['border']
-    shadow_alpha = 0
+    shadow_alpha = opacity['windowShadow']
     defs, body, x = [], [], 0
     # Aktif / pasif aynı şekil; pasifte kenarlık ve gölge daha sönük
     for prefix, edge_op, sh in [('decoration', 0.22, shadow_alpha), ('decoration-inactive', 0.12, shadow_alpha * 0.6)]:
@@ -1267,10 +1269,13 @@ def aurorae_button_svg(kind, tokens):
     accent = tokens['accent']
     on_accent = tokens.get('selectionText', tokens['bg'])
     glyph = BUTTON_GLYPHS[kind]
-    # Hover nötr; sadece kapat düğmesi vurgu rengini kullanır
-    hover = (accent, 1, on_accent) if kind == 'close' else (text, opacity['hover'], text)
-    pressed = (accent, 0.8, on_accent) if kind == 'close' else (text, 0.24, text)
-    # (öğe öneki, daire rengi, daire opaklığı, simge rengi, simge opaklığı)
+    # WD-14 B: kapat üzerine gelince kırmızı (negative), glif güçlü renk üstü metin (selectionText: açıkta beyaz,
+    # koyuda koyu; koyu temanın açık kırmızısında beyaz okunmuyor). Diğer düğmeler nötr; vurgu başlığa yayılmaz.
+    negative = tokens['negative']
+    hover = (negative, 1, on_accent) if kind == 'close' else (text, opacity['hover'], text)
+    pressed = (negative, 0.8, on_accent) if kind == 'close' else (text, 0.24, text)
+    # WD-06 B: normalde yalnız glif; üzerine gelince yuvarlatılmış kare zemin (köşe radius.titleButton).
+    # (öğe öneki, zemin rengi, zemin opaklığı, simge rengi, simge opaklığı)
     states = [
         ('active', text, 0, muted, 1),
         ('hover', hover[0], hover[1], hover[2], 1),
@@ -1285,7 +1290,7 @@ def aurorae_button_svg(kind, tokens):
     for prefix, circle, circle_op, ink, ink_op in states:
         out.append(f'  <g id="{prefix}-center" transform="translate({x},0)">\n'
                    f'    <rect width="{size}" height="{size}" fill-opacity="0"/>\n'
-                   f'    <circle cx="12" cy="12" r="11" fill="{circle}" fill-opacity="{fmt(circle_op)}"/>\n'
+                   f'    <rect x="1" y="1" width="22" height="22" rx="{fmt(radius["titleButton"])}" fill="{circle}" fill-opacity="{fmt(circle_op)}"/>\n'
                    f'    <path d="{glyph}" fill="none" stroke="{ink}" stroke-opacity="{fmt(ink_op)}" stroke-width="1.6" '
                    f'stroke-linecap="round" stroke-linejoin="round"/>\n  </g>\n')
         x += size + 4
