@@ -905,6 +905,43 @@ def plasma_busywidget_svg(tokens):
             f'  <!-- Ro busy indicator. Generated from core/tokens by scripts/generate-theme.sh. -->\n'
             f'  <defs>{style}</defs>\n{out}</svg>\n')
 
+def _tab_line(prefix, y0, r, side, cls, t, inset, off):
+    # Yuvarlak uçlu çizgi (stroke yok): köşe parçalarında yarım daire uç, kenar parçasında düz gövde.
+    # side: bottom | top; inset = uç merkezinin parça kenarına uzaklığı - t/2; off = çerçeve kenarından boşluk.
+    e = FRAME_EDGE; rc = t / 2; cx = inset + rc
+    ly = y0 + (2 * r + e - off - t if side == 'bottom' else off)
+    def rect(x, w):
+        return f'    <rect x="{fmt(x)}" y="{fmt(ly)}" width="{fmt(w)}" height="{fmt(t)}" class="{cls}" fill="currentColor"/>\n'
+    def cap(x, left):
+        return (f'    <path d="M {fmt(x)},{fmt(ly)} A {fmt(rc)},{fmt(rc)} 0 0 {0 if left else 1} {fmt(x)},{fmt(ly + t)} Z" '
+                f'class="{cls}" fill="currentColor"/>\n')
+    end = 2 * r + e - cx
+    return {f'{prefix}-{side}left': cap(cx, True) + rect(cx, r - cx),
+            f'{prefix}-{side}': rect(r, e),
+            f'{prefix}-{side}right': rect(r + e, end - (r + e)) + cap(end, False)}
+
+def _inject(svg, pieces):
+    # Üretilmiş çerçeve gruplarının sonuna ek gövde yerleştirir: {grup id: gövde}.
+    for gid, body in pieces.items():
+        k = svg.index(f'<g id="{gid}">\n'); j = svg.index('  </g>\n', k)
+        svg = svg[:j] + body + svg[j:]
+    return svg
+
+def plasma_tabbar_svg(tokens):
+    # PST-25 AB2: etkin sekme = vurgu tonlu hap (tabActive, liste vurgusuyla aynı) + içinde yuvarlak uçlu vurgu çizgisi;
+    # çizgi içeriğe bakan kenarda (north = başlık sekmeleri, alt kenar; south = alt sekmeler, üst kenar).
+    # Plasma bu çerçeveyi sekmeler arasında kaydırır. west-/east- PC3'te kullanılmaz; çizgisiz hap olarak verilir.
+    r, b, e = radius['md'], spacing['borderWidth'], FRAME_EDGE
+    m = (spacing['sm'], spacing['sm'], spacing['md'], spacing['md'])
+    fills = [('ColorScheme-Highlight', opacity['tabActive'])]
+    out, y, pieces = '', 0, {}
+    for d, side in (('north', 'bottom'), ('south', 'top'), ('west', None), ('east', None)):
+        out += _ctl_block(f'{d}-active-tab', y, r, fills, None, b, m)
+        if side:
+            pieces.update(_tab_line(f'{d}-active-tab', y, r, side, 'ColorScheme-Highlight', spacing['tabLine'], r - 2, 3))
+        y += 2 * r + e + 8
+    return _inject(_ctl_svg(out, r, 4, tokens), pieces)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -930,6 +967,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
         'widgets/slider.svg': plasma_slider_svg(light if theme_name == 'RoLight' else dark),
         'widgets/plasmoidheading.svg': plasma_plasmoidheading_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/tabbar.svg': plasma_tabbar_svg(light if theme_name == 'RoLight' else dark),
         'widgets/busywidget.svg': plasma_busywidget_svg(light if theme_name == 'RoLight' else dark),
         'widgets/tasks.svg': plasma_tasks_svg(light if theme_name == 'RoLight' else dark),
         # PST-18 (T5): araç ipucu bir ton koyu zemin (surfaceAlt) + popup ailesinin opak çerçeve kenarlığı (COL-32),
