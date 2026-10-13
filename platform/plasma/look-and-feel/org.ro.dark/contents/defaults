@@ -1,4 +1,4 @@
-# Ro Dark Global Theme defaults.
+# Ro Dark Global Theme defaults. Font roles generated from core/tokens/fonts.json.
 
 [KSplash]
 Engine=KSplashQML
@@ -10,6 +10,11 @@ widgetStyle=Breeze
 
 [kdeglobals][General]
 ColorScheme=RoDark
+font=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+fixed=Noto Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+smallestReadableFont=Noto Sans,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+toolBarFont=Noto Sans,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+menuFont=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
 
 [plasmarc][Theme]
 name=RoDark
@@ -27,3 +32,6 @@ kwin4_effect_magiclampEnabled=false
 magiclampEnabled=false
 kwin4_effect_windowapertureEnabled=false
 kwin4_effect_frozenappEnabled=false
+
+[kdeglobals][WM]
+activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0
