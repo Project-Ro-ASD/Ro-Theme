@@ -563,7 +563,7 @@ check_file platform/plasma/desktoptheme/RoLight/colors
 check_file platform/plasma/desktoptheme/RoLight/plasmarc
 check_not_contains platform/plasma/desktoptheme/RoLight/plasmarc "[Wallpaper]" "RoLight Plasma style wallpaper-free"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/widgets/background.svg "RoLight widget background"
-check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/panel/panel-background.svg "RoLight panel background"
+check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/widgets/panel-background.svg "RoLight panel background"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoLight/dialogs/background.svg "RoLight dialog background"
 check_file platform/plasma/desktoptheme/RoDark/colors
 check_file platform/plasma/desktoptheme/RoDark/plasmarc
@@ -572,12 +572,13 @@ for theme in RoLight RoDark; do
   check_contains "platform/plasma/desktoptheme/$theme/plasmarc" "enabled=false" "$theme adaptive transparency off (frosted glass stays visible)"
 done
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/widgets/background.svg "RoDark widget background"
-check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/panel/panel-background.svg "RoDark panel background"
+check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/widgets/panel-background.svg "RoDark panel background"
 check_plasma_surface_svg platform/plasma/desktoptheme/RoDark/dialogs/background.svg "RoDark dialog background"
 for theme in RoLight RoDark; do
   for variant in "" translucent/ solid/; do
     check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}dialogs/background.svg" "$theme ${variant}dialog frame"
     check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}widgets/tooltip.svg" "$theme ${variant}tooltip frame"
+    check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}widgets/panel-background.svg" "$theme ${variant}panel frame"
   done
   check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/widgets/translucentbackground.svg" "$theme translucent widget frame"
   for control in lineedit button viewitem; do

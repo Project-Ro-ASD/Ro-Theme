@@ -1097,8 +1097,12 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'translucent/dialogs/background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, popup_radius, popup_padding, popup_shadow),
         'solid/dialogs/background.svg': plasma_frame_svg(fill, solid_opacity, stroke, stroke_alpha, popup_radius, popup_padding, popup_shadow),
         'widgets/background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, widget_radius, popup_padding),
-        # NOT: Plasma paneli widgets/panel-background'dan okur; bu dosya şu an kullanılmıyor (yol haritası Faz 3).
-        'panel/panel-background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, radius['panel'], popup_padding),
+        # PST-15 (2026-10-13, P1): panel zemini Plasma'nın okuduğu yolda; köşe radius.panel, iç boşluk xs (44 px barda
+        # ikonlar küçülmesin). Panel yüzerken widgets/ (yarı saydam, bulanıklıkta translucent/); bir pencere bara
+        # değince (uyarlanır opaklık, büyütülmüş pencere) solid/ (opak). solid/ yoksa Plasma Breeze'inkine düşüyordu.
+        **{k: plasma_frame_svg(fill, a_, stroke, stroke_alpha, radius['panel'], spacing['xs'])
+           for k, a_ in (('widgets/panel-background.svg', alpha), ('translucent/widgets/panel-background.svg', alpha),
+                         ('solid/widgets/panel-background.svg', solid_opacity))},
         # Kabuk kontrolleri (03): Breeze'e düşen giriş alanı ve düğme artık Ro köşesi ve kenarlığıyla çizilir.
         'widgets/lineedit.svg': plasma_lineedit_svg(light if theme_name == 'RoLight' else dark),
         'widgets/button.svg': plasma_button_svg(light if theme_name == 'RoLight' else dark),
