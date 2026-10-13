@@ -122,7 +122,6 @@ for path in [
     'platform/plasma/desktoptheme/RoDark',
     'platform/plasma/look-and-feel/org.ro.light/contents/layouts',
     'platform/plasma/look-and-feel/org.ro.dark/contents/layouts',
-    'platform/kwin/effects/ro-smooth-motion/contents/code',
     'dist/tokens',
     'dist/qml',
 ]:
@@ -433,13 +432,12 @@ xdg_defaults = {
         '[Greeter]': ['WallpaperPlugin=org.kde.image'],
         '[Greeter][Wallpaper][org.kde.image][General]': [f'Image={lock_wallpaper}', f'PreviewImage={lock_wallpaper}', 'Blur=false'],
     },
-    # Plasma 5 kimlikli kwin4_effect_* satırları etkisiz olduğu için yazılmaz (FX-23).
+    # Plasma 5 kimlikli eski efekt satırları etkisiz olduğu için yazılmaz (FX-23).
     'kwinrc': {
         # WD-16: solda pencere menüsü, sağda küçült/büyüt/kapat (KDE: MSE / HIAX).
         # WD-02/WD-03: Ro Aurorae (v2 eklentisi) varsayılan dekorasyon; global tema da aynısını seçer.
         '[org.kde.kdecoration2]': ['library=org.kde.kwin.aurorae.v2', f'theme=__aurorae__svg__{default_scheme}',
                                    'ButtonsOnLeft=M', 'ButtonsOnRight=IAX'],
-        '[Plugins]': ['ro-smooth-motionEnabled=false', 'magiclampEnabled=false'],
     },
 }
 xdg_dir = root / 'platform/plasma/defaults/xdg'
@@ -1442,95 +1440,6 @@ for theme_name, (tokens, visible_name) in aurorae_modes.items():
     for kind in BUTTON_GLYPHS:
         (base / f'{kind}.svg').write_text(aurorae_button_svg(kind, tokens), encoding='utf-8')
 
-# --- KWin efekti: süreler motion tokenlarından gelir ---
-kwin_js = f'''"use strict";
-
-// Ro Smooth Motion
-// Motion constants are generated from core/tokens/motion.json by scripts/generate-theme.sh.
-// Bounce, shake, squash and magic-lamp movements are intentionally avoided.
-
-const OPEN_MS = {int(motion['windowOpenMs'])};
-const CLOSE_MS = {int(motion['windowCloseMs'])};
-const MINIMIZE_MS = {int(motion['windowMinimizeMs'])};
-
-class RoSmoothMotion {{
-    constructor() {{
-        effects.windowAdded.connect(this.open.bind(this));
-        effects.windowClosed.connect(this.close.bind(this));
-
-        // Plasma/KWin sürüm farkları için iki minimize sinyali de desteklenir.
-        if (effects.windowMinimized) {{
-            effects.windowMinimized.connect(this.minimize.bind(this));
-            effects.windowUnminimized.connect(this.unminimize.bind(this));
-        }} else if (effects.windowMinimizeStateChanged) {{
-            effects.windowMinimizeStateChanged.connect((w) => {{
-                if (w.minimized) this.minimize(w);
-                else this.unminimize(w);
-            }});
-        }}
-    }}
-
-    // Popup, desktop, fullscreen ve özel pencereler filtrelenir.
-    animatable(w) {{
-        if (!w) return false;
-        if (w.deleted || w.popupWindow || w.specialWindow || w.desktopWindow) return false;
-        if (w.fullScreen || !w.managed) return false;
-        return !!(w.normalWindow || w.dialog);
-    }}
-
-    open(w) {{
-        if (effects.hasActiveFullScreenEffect || !this.animatable(w) || !w.visible) return;
-        animate({{
-            window: w,
-            duration: OPEN_MS,
-            curve: QEasingCurve.OutCubic,
-            animations: [
-                {{ type: Effect.Opacity, from: 0.0, to: 1.0 }}
-            ]
-        }});
-    }}
-
-    close(w) {{
-        if (effects.hasActiveFullScreenEffect || !this.animatable(w)) return;
-        if (!w.visible || w.skipsCloseAnimation) return;
-        animate({{
-            window: w,
-            duration: CLOSE_MS,
-            curve: QEasingCurve.InCubic,
-            animations: [
-                {{ type: Effect.Opacity, from: 1.0, to: 0.0 }}
-            ]
-        }});
-    }}
-
-    minimize(w) {{
-        if (!this.animatable(w)) return;
-        animate({{
-            window: w,
-            duration: MINIMIZE_MS,
-            curve: QEasingCurve.InOutCubic,
-            animations: [
-                {{ type: Effect.Opacity, from: 1.0, to: 0.0 }}
-            ]
-        }});
-    }}
-
-    unminimize(w) {{
-        if (!this.animatable(w)) return;
-        animate({{
-            window: w,
-            duration: OPEN_MS,
-            curve: QEasingCurve.OutCubic,
-            animations: [
-                {{ type: Effect.Opacity, from: 0.0, to: 1.0 }}
-            ]
-        }});
-    }}
-}}
-
-new RoSmoothMotion();
-'''
-(root / 'platform/kwin/effects/ro-smooth-motion/contents/code/main.js').write_text(kwin_js, encoding='utf-8')
 PY
 
 echo "generated: token outputs updated"

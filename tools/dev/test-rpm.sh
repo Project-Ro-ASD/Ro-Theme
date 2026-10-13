@@ -128,7 +128,6 @@ required_paths=(
   /usr/share/ro-theme/wallpapers/login.jpg
   "/usr/share/wallpapers/Ro Light.jpg"
   "/usr/share/wallpapers/Ro Dark.jpg"
-  /usr/share/kwin/effects/ro-smooth-motion/contents/code/main.js
   /usr/share/plymouth/themes/ro-theme/ro-theme.plymouth
   /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
   /usr/bin/ro-theme-diagnose

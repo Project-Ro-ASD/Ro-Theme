@@ -178,7 +178,6 @@ if [[ "$MODE" = "local" ]]; then
   check_absent "$HOME/.local/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/LockScreen.qml" "Unsafe custom dark lockscreen override"
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.light/contents/lockscreen/assets/login.jpg"
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg"
-  check_file "$HOME/.local/share/kwin/effects/ro-smooth-motion/metadata.json"
   check_file "$HOME/.local/share/ro-theme/wallpapers/dark.jpg"
   check_file "$HOME/.local/share/ro-theme/wallpapers/light.jpg"
   check_absent "$HOME/.local/share/plasma/desktoptheme/Ro" "Old Ro compatibility desktoptheme"
@@ -208,7 +207,6 @@ else
   check_absent /usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/LockScreen.qml "Unsafe custom dark lockscreen override"
   check_file /usr/share/plasma/look-and-feel/org.ro.light/contents/lockscreen/assets/login.jpg
   check_file /usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg
-  check_file /usr/share/kwin/effects/ro-smooth-motion/metadata.json
   check_file /usr/share/ro-theme/wallpapers/dark.jpg
   check_file /usr/share/ro-theme/wallpapers/light.jpg
   check_file /usr/share/ro-theme/wallpapers/login.jpg
@@ -240,7 +238,6 @@ kde_scheme="$(read_kde_config kdeglobals KDE ColorScheme)"
 active_look="$(read_kde_config kdeglobals KDE LookAndFeelPackage)"
 active_plasma="$(read_kde_config plasmarc Theme name)"
 active_splash="$(read_kde_config ksplashrc KSplash Theme)"
-active_ro_effect="$(read_kde_config kwinrc Plugins ro-smooth-motionEnabled)"
 active_lock_plugin="$(read_kde_config kscreenlockerrc Greeter WallpaperPlugin)"
 active_lock_image="$(read_kde_config kscreenlockerrc Greeter Wallpaper org.kde.image General Image)"
 active_lock_blur="$(read_kde_config kscreenlockerrc Greeter Wallpaper org.kde.image General Blur)"
@@ -249,7 +246,6 @@ printf '  KDE ColorScheme: %s\n' "$kde_scheme"
 printf '  LookAndFeelPackage: %s\n' "$active_look"
 printf '  Plasma Theme: %s\n' "$active_plasma"
 printf '  Splash Theme: %s\n' "$active_splash"
-printf '  Ro KWin Effect: %s\n' "$active_ro_effect"
 printf '  Lock Screen WallpaperPlugin: %s\n' "$active_lock_plugin"
 printf '  Lock Screen Image: %s\n' "$active_lock_image"
 printf '  Lock Screen Blur: %s\n' "${active_lock_blur:-false}"
