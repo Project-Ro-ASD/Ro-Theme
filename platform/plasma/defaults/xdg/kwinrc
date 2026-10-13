@@ -4,6 +4,8 @@
 [org.kde.kdecoration2]
 library=org.kde.breeze
 theme=Breeze
+ButtonsOnLeft=M
+ButtonsOnRight=IAX
 
 [Plugins]
 ro-smooth-motionEnabled=false
