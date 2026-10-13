@@ -2,8 +2,8 @@
 # Packaged as %config(noreplace); user settings in ~/.config always take precedence.
 
 [org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
+library=org.kde.kwin.aurorae.v2
+theme=__aurorae__svg__RoDark
 ButtonsOnLeft=M
 ButtonsOnRight=IAX
 
