@@ -2,8 +2,9 @@ Name:           ro-theme
 Version:        1.0.1
 Release:        2%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
-License:        GPL-3.0-or-later
-URL:            https://ro-theme.local
+# PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
+License:        GPL-3.0-or-later AND CC-BY-SA-4.0
+URL:            https://github.com/Project-Ro-ASD/Ro-Theme
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 
@@ -12,18 +13,18 @@ BuildRequires:  python3
 
 Requires:       bash
 Requires:       coreutils
+# PKG-05: kf6-kpackage, kf6-kservice ve plasma-workspace-libs plasma-workspace ile zaten geliyor.
+# kf6-kconfig: paketteki apply-dark-defaults ve diagnose kwriteconfig6/kreadconfig6 kullanıyor.
 Requires:       kf6-kconfig
-Requires:       kf6-kpackage
-Requires:       kf6-kservice
 Requires:       aurorae
 Requires:       plasma-desktop
 Requires:       plasma-workspace
-Requires:       plasma-workspace-libs
 Requires:       plasma-login-manager
+# FNT-04: pencere başlığı Inter SemiBold; yoksa Noto Sans'a düşer (FNT-08).
+Recommends:     rsms-inter-fonts
 Requires:       util-linux
 Requires(post): bash
 Requires(post): coreutils
-Requires(post): kf6-kconfig
 Requires(post): util-linux
 Requires(post): plymouth
 Requires(post): plymouth-plugin-script
@@ -169,8 +170,8 @@ exit 0
 
 %files
 %defattr(-,root,root,-)
-%license LICENSE
-%doc README.md docs
+%license LICENSE LICENSES/CC-BY-SA-4.0.txt LICENSES/ASSETS.md
+%doc README.md
 %{_datadir}/color-schemes/RoLight.colors
 %{_datadir}/color-schemes/RoDark.colors
 %{_datadir}/plasma/desktoptheme/RoLight

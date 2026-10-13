@@ -13,56 +13,38 @@ ise `packaging/ro-theme.spec` ve GitHub Actions workflow'u üretir.
 
 - `VERSION`: Projenin ana sürüm numarası.
 - `packaging/ro-theme.spec`: RPM paket tarifidir.
-- `.github/workflows/rpm-build.yml`: Tag gelince GitHub'da RPM build alır.
+- `.github/workflows/ci.yml`: Her PR'da Fedora 44 konteynerinde üretir, doğrular, RPM derler; `rpmlint` raporu verir.
+- `.github/workflows/release.yml`: `vX.Y.Z` etiketi gelince RPM, SRPM ve sağlama toplamlarını yayınlar.
+- `.github/workflows/fedora-weekly.yml`: Her pazartesi güncel Fedora 44 ile derler (PKG-16).
+- `.github/workflows/rpm-build.yml`: Elle başlatılan RPM derlemesi.
 - `scripts/validate.sh`: Dosya yollarını, metadata'yı ve tema bağlantılarını kontrol eder.
 - `tools/dev/build-rpm.sh`: Yerelde RPM build sürecini GitHub'a benzer şekilde çalıştırır.
 - `build/`: Üretilen paketlerin çıktısıdır, Git'e gönderilmez.
 
 ## Normal Release Akışı
 
-Yeni sürüm için genel sıra:
+`main` korumalı: değişiklik yalnızca PR ile girer ve CI geçmeden merge edilemez. Yeni sürüm için sıra:
+
+1. Bir `release/vX.Y.Z` branch'inde `VERSION`, spec'teki `Version`/`Release` ve `%changelog` güncellenir.
+2. `./scripts/generate-theme.sh && ./scripts/validate.sh` temiz olmalı; PR açılır, CI yeşil olunca merge edilir.
+3. Etiket, merge edilen `main` commit'ine atılır:
 
 ```bash
-./scripts/generate-theme.sh
-./scripts/validate.sh
-
-git status
-git add .
-git commit -m "Release 1.0.0"
-git push origin main
-
-git tag -a v1.0.0 -m "Ro Theme 1.0.0"
-git push origin v1.0.0
+git checkout main && git pull
+git tag -a vX.Y.Z -m "Ro Theme X.Y.Z"
+git push origin vX.Y.Z
 ```
 
-Tag GitHub'a gidince `Build RPM` workflow'u otomatik çalışır. Build başarılıysa
-RPM dosyaları GitHub Releases sayfasına eklenir.
+Etiket gidince `release.yml` çalışır; RPM, SRPM ve `SHA256SUMS` GitHub Releases sayfasına eklenir.
+## Etiketler Yeniden Basılmaz
 
-## Aynı Tag'i Yeniden Göndermek
+Yayınlanmış bir etiket (`vX.Y.Z`) asla silinip yeniden gönderilmez; Ro-Repo ve kullanıcılar aynı sürüm
+numarasının hep aynı paketi göstermesine güvenir (Ro-Theme-Docs 23 · PKG-07). Yayında bir hata varsa yeni
+bir sürüm çıkarılır (`v1.1.1` gibi). Etiket atmadan önce CI'ın yeşil olduğunu ve `VERSION`, spec ve
+değişiklik notlarının aynı sürümü gösterdiğini kontrol et.
 
-İlk denemede workflow eksikse, release yanlış oluştuysa veya aynı sürümü yeniden
-build etmek gerekiyorsa tag yenilenebilir.
-
-Kullandığımız komutlar:
-
-```bash
-git tag -d v1.0.0
-git push origin :refs/tags/v1.0.0
-
-git tag -a v1.0.0 -m "Ro Theme 1.0.0"
-git push origin v1.0.0
-```
-
-Bu komutların anlamı:
-
-- `git tag -d v1.0.0`: Yereldeki eski `v1.0.0` tag'ini siler.
-- `git push origin :refs/tags/v1.0.0`: GitHub'daki eski `v1.0.0` tag'ini siler.
-- `git tag -a v1.0.0 -m "Ro Theme 1.0.0"`: Mevcut commit üzerine açıklamalı yeni tag oluşturur.
-- `git push origin v1.0.0`: Yeni tag'i GitHub'a gönderir ve workflow'u tekrar başlatır.
-
-Bu yöntem özellikle ilk sürümde veya henüz kimse kullanmadan önce uygundur. Yayına
-çıkmış ve kullanıcıya gitmiş sürümlerde aynı tag'i değiştirmek yerine `v1.0.1`
-gibi yeni sürüm çıkarmak daha temizdir.
+Eski bir örnek: `v1.0.1` sürüm sayfasında sonradan yüklenmiş `ro-theme-1.0.5` paketleri de duruyor.
+Böyle karışıklıkları önlemek için kural budur.
 
 ## Release ve Artifact Farkı
 

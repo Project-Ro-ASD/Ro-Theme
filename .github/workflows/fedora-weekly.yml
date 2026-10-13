@@ -1,0 +1,76 @@
+name: Fedora 44 weekly check
+
+# PKG-16: Fedora araya Plasma/Qt güncellemesi yayımlarsa bir sonraki PR'ı beklemeden haber ver.
+# Her pazartesi güncel fedora:44 ile temayı üretir, doğrular, RPM derler ve paket sürümlerini
+# tools/dev/fedora-baseline.txt ile karşılaştırır. Derleme başarısızsa ya da sürüm değiştiyse issue açar.
+
+on:
+  schedule:
+    - cron: "37 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  weekly:
+    name: Fedora 44 weekly check
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:44
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install dependencies
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            aurorae bash coreutils diffutils dracut findutils grubby gzip grep jq kf6-kconfig \
+            kwin plasma-desktop plasma-workspace plasma-login-manager plymouth plymouth-plugin-script \
+            python3 qt6-qtbase rpm rpm-build sed tar util-linux
+
+      - name: Build and validate RPM
+        id: build
+        continue-on-error: true
+        run: ./tools/dev/build-rpm.sh
+
+      - name: Compare package versions with the baseline
+        id: versions
+        run: |
+          set -euo pipefail
+          changes=""
+          while read -r name expected; do
+            [[ -z "$name" || "$name" == \#* ]] && continue
+            actual="$(rpm -q --qf '%{VERSION}' "$name" 2>/dev/null || echo missing)"
+            echo "$name: baseline $expected, now $actual"
+            [[ "$actual" == "$expected" ]] || changes+="- \`$name\`: $expected → $actual"$'\n'
+          done < tools/dev/fedora-baseline.txt
+          {
+            echo "changes<<EOF"
+            printf '%s' "$changes"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open an issue when something changed or failed
+        if: steps.build.outcome != 'success' || steps.versions.outputs.changes != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD: ${{ steps.build.outcome }}
+          CHANGES: ${{ steps.versions.outputs.changes }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          title="Fedora 44 weekly check: action needed"
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          open="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "$api/issues?state=open&per_page=100" \
+            | jq --arg t "$title" '[.[] | select(.title == $t)] | length')"
+          body="Build/validate: **$BUILD**"$'\n\n'"Package versions changed since the last verified baseline:"$'\n'"${CHANGES:-none}"$'\n\n'"Run: $RUN_URL"$'\n\n'"Check the theme against the new versions (Ro-Theme-Docs 00 §10.4–§10.5), then update tools/dev/fedora-baseline.txt in a PR."
+          if [[ "$open" == "0" ]]; then
+            jq -n --arg t "$title" --arg b "$body" '{title: $t, body: $b}' \
+              | curl -fsSL -X POST -H "Authorization: Bearer $GH_TOKEN" "$api/issues" -d @- >/dev/null
+            echo "Issue opened."
+          else
+            echo "An open issue already exists; not opening another."
+          fi
