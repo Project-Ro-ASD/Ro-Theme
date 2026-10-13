@@ -54,6 +54,8 @@ QtObject {
     readonly property real opacityTaskAttention: 0.3
     readonly property real opacityTaskProgress: 0.35
     readonly property real opacityTabActive: 0.15
+    readonly property real opacityFrameEdge: 0.15
+    readonly property real opacityListSection: 0.05
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170
