@@ -782,6 +782,74 @@ def plasma_plasmoidheading_svg(tokens):
     out = frame('header', 0, 'bottom') + frame('footer', 2 * R + e + 8, 'top')
     return _ctl_svg(out, R, 2, tokens)
 
+def plasma_tasks_svg(tokens):
+    # PST-16 (B3): KDE'nin görev göstergesi dilinden türetildi (Breeze SVG'si kopyalanmadı): durum başına renkli blok,
+    # köşe sm (8) yuvarlak, panel kenarı tarafında 3 px çizgi. Etkin/üzerinde vurgu, dikkat uyarı, ilerleme başarı
+    # rengi; açık ve küçültülmüş nötr. Renkler ColorScheme-* sınıflarından (kullanıcı vurgusuna uyar).
+    # Önek yok = alt panel; north-/east-/west- = üst/sağ/sol panel; çizgi panelin dayandığı ekran kenarı tarafında.
+    br = radius['sm']; R = br + 2 * spacing['borderWidth']; e = FRAME_EDGE; t = spacing['taskLine']
+    T, A, N, P = 'ColorScheme-Text', 'ColorScheme-Highlight', 'ColorScheme-NeutralText', 'ColorScheme-PositiveText'
+    states = {
+        'normal': (T, opacity['taskNormal'], T, opacity['taskNormalLine']),
+        'focus': (A, opacity['taskFocus'], A, 1),
+        'hover': (A, opacity['taskHover'], A, opacity['taskHoverLine']),
+        'minimized': (T, opacity['taskMinimized'], T, opacity['taskMinimizedLine']),
+        'attention': (N, opacity['taskAttention'], N, 1),
+        'progress': (P, opacity['taskProgress'], None, 0),
+    }
+    boxes = {'topleft': (0, 0, R, R), 'top': (R, 0, e, R), 'topright': (R + e, 0, R, R),
+             'left': (0, R, R, e), 'center': (R, R, e, e), 'right': (R + e, R, R, e),
+             'bottomleft': (0, R + e, R, R), 'bottom': (R, R + e, e, R), 'bottomright': (R + e, R + e, R, R)}
+    def op_(v):
+        return '' if v >= 1 else f' fill-opacity="{fmt(v)}"'
+    def corner(x, y, name):
+        L, Tp = name.endswith('left'), name.startswith('top')
+        ox, oy = (x + R if L else x), (y + R if Tp else y)
+        dx, dy = (-1 if L else 1), (-1 if Tp else 1)
+        sw = 1 if dx * dy > 0 else 0
+        return (f'M {fmt(ox)},{fmt(oy)} L {fmt(ox + dx * R)},{fmt(oy)} L {fmt(ox + dx * R)},{fmt(oy + dy * (R - br))} '
+                f'A {fmt(br)},{fmt(br)} 0 0 {sw} {fmt(ox + dx * (R - br))},{fmt(oy + dy * R)} L {fmt(ox)},{fmt(oy + dy * R)} Z')
+    def line(name, x, y, w, h, side):
+        # Çizgi panel kenarı tarafında; yuvarlak köşede eğrinin içinde kalır (köşe parçasında br kadar içeriden).
+        if side == 'bottom' and name.startswith('bottom'):
+            x0 = x + (br if name == 'bottomleft' else 0); w0 = w - (0 if name == 'bottom' else br)
+            return (x0, y + h - t, w0, t)
+        if side == 'top' and name.startswith('top'):
+            x0 = x + (br if name == 'topleft' else 0); w0 = w - (0 if name == 'top' else br)
+            return (x0, y, w0, t)
+        if side == 'left' and name.endswith('left'):
+            y0 = y + (br if name == 'topleft' else 0); h0 = h - (0 if name == 'left' else br)
+            return (x, y0, t, h0)
+        if side == 'right' and name.endswith('right'):
+            y0 = y + (br if name == 'topright' else 0); h0 = h - (0 if name == 'right' else br)
+            return (x + w - t, y0, t, h0)
+        return None
+    out, y = '', 0
+    for dir_prefix, side in (('', 'bottom'), ('north-', 'top'), ('west-', 'left'), ('east-', 'right')):
+        for state, (bc, bo, lc, lo) in states.items():
+            prefix = dir_prefix + state
+            for name, (x, yy, w, h) in boxes.items():
+                yy += y
+                body = f'    <rect x="{fmt(x)}" y="{fmt(yy)}" width="{fmt(w)}" height="{fmt(h)}" fill-opacity="0"/>\n'
+                if name in ('topleft', 'topright', 'bottomleft', 'bottomright'):
+                    body += f'    <path d="{corner(x, yy, name)}" class="{bc}" fill="currentColor"{op_(bo)}/>\n'
+                else:
+                    body += f'    <rect x="{fmt(x)}" y="{fmt(yy)}" width="{fmt(w)}" height="{fmt(h)}" class="{bc}" fill="currentColor"{op_(bo)}/>\n'
+                ln = line(name, x, yy, w, h, side) if lc else None
+                if ln:
+                    lx, ly, lw, lh = ln
+                    body += f'    <rect x="{fmt(lx)}" y="{fmt(ly)}" width="{fmt(lw)}" height="{fmt(lh)}" class="{lc}" fill="currentColor"{op_(lo)}/>\n'
+                out += f'  <g id="{prefix}-{name}">\n{body}  </g>\n'
+            if state == 'normal':
+                hx = 2 * R + e + 20; m = spacing['xs']
+                for i, side_name in enumerate(('top', 'bottom', 'left', 'right')):
+                    w_, h_ = (1, m) if side_name in ('top', 'bottom') else (m, 1)
+                    out += f'  <rect id="{prefix}-hint-{side_name}-margin" x="{fmt(hx + 4 * i)}" y="{fmt(y)}" width="{fmt(w_)}" height="{fmt(h_)}" fill-opacity="0"/>\n'
+            y += 2 * R + e + 8
+    svg = _ctl_svg(out, R, 24, tokens)
+    return svg.replace('    .ColorScheme-Text', f'    .ColorScheme-NeutralText {{ color:{tokens["neutral"].lower()}; }}\n'
+                       f'    .ColorScheme-PositiveText {{ color:{tokens["positive"].lower()}; }}\n    .ColorScheme-Text', 1)
+
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
@@ -807,6 +875,7 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/switch.svg': plasma_switch_svg(light if theme_name == 'RoLight' else dark),
         'widgets/slider.svg': plasma_slider_svg(light if theme_name == 'RoLight' else dark),
         'widgets/plasmoidheading.svg': plasma_plasmoidheading_svg(light if theme_name == 'RoLight' else dark),
+        'widgets/tasks.svg': plasma_tasks_svg(light if theme_name == 'RoLight' else dark),
         # PST-18 (T5): araç ipucu bir ton koyu zemin (surfaceAlt) + popup ailesinin opak çerçeve kenarlığı (COL-32),
         # köşe sm, iç boşluk sm, gölge yok (TOK-09). Ro'nun kendi dosyası yokken Breeze'in gölgeye dayanan çerçevesi
         # kullanılıyordu.

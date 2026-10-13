@@ -44,6 +44,15 @@ QtObject {
     readonly property real opacitySliderGroove: 0.2
     readonly property real opacitySliderHover: 0.12
     readonly property real opacitySeparator: 0.15
+    readonly property real opacityTaskNormal: 0.1
+    readonly property real opacityTaskNormalLine: 0.3
+    readonly property real opacityTaskFocus: 0.3
+    readonly property real opacityTaskHover: 0.18
+    readonly property real opacityTaskHoverLine: 0.6
+    readonly property real opacityTaskMinimized: 0.05
+    readonly property real opacityTaskMinimizedLine: 0.15
+    readonly property real opacityTaskAttention: 0.3
+    readonly property real opacityTaskProgress: 0.35
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170
