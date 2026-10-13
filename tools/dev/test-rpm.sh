@@ -135,6 +135,7 @@ required_paths=(
   /usr/libexec/ro-theme/check-plasma-runtime
   /etc/xdg/kdeglobals
   /etc/xdg/kcmfonts
+  /usr/share/ro-theme/qml/RoTokens.qml
   /etc/xdg/breezerc
   /etc/xdg/plasmarc
   /etc/xdg/ksplashrc

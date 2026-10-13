@@ -27,8 +27,10 @@ bar.height = 44;
 bar.hiding = "none";
 try { bar.floating = true; } catch (e) {}
 
-// PAN-08/24: launcher; Kickoff with the distribution logo.
-var launcher = safeAdd(bar, "org.kde.plasma.kickoff");
+// PAN-08/24, WGT-14: ro-launcher (ro-widgets package) when installed, otherwise Kickoff;
+// the bar never stays without a launcher. Both get the distribution logo.
+var launcherId = knownWidgetTypes.indexOf("org.ro.launcher") >= 0 ? "org.ro.launcher" : "org.kde.plasma.kickoff";
+var launcher = safeAdd(bar, launcherId) || safeAdd(bar, "org.kde.plasma.kickoff");
 if (launcher) { launcher.currentConfigGroup = ["General"]; launcher.writeConfig("icon", "start-here"); }
 safeAdd(bar, "org.kde.plasma.panelspacer");
 
