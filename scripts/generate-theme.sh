@@ -76,8 +76,10 @@ def panel_layout_js(mode):
             'bar.hiding = "none";',
             'try { bar.floating = true; } catch (e) {}',
             '',
-            '// PAN-08/24: launcher; Kickoff with the distribution logo.',
-            'var launcher = safeAdd(bar, "org.kde.plasma.kickoff");',
+            '// PAN-08/24, WGT-14: ro-launcher (ro-widgets package) when installed, otherwise Kickoff;',
+            '// the bar never stays without a launcher. Both get the distribution logo.',
+            'var launcherId = knownWidgetTypes.indexOf("org.ro.launcher") >= 0 ? "org.ro.launcher" : "org.kde.plasma.kickoff";',
+            'var launcher = safeAdd(bar, launcherId) || safeAdd(bar, "org.kde.plasma.kickoff");',
             'if (launcher) { launcher.currentConfigGroup = ["General"]; launcher.writeConfig("icon", "start-here"); }',
             'safeAdd(bar, "org.kde.plasma.panelspacer");',
             '',
@@ -224,7 +226,8 @@ qml_tokens = (
     'pragma Singleton\n'
     'import QtQuick\n\n'
     '// Ro tasarım token\'ları (QML). scripts/generate-theme.sh tarafından core/tokens\'tan ÜRETİLİR, elle düzenlenmez.\n'
-    '// Kullanım: widget paketine bu dosyayı kopyala ve qmldir\'e şunu ekle: singleton RoTokens 1.0 RoTokens.qml\n'
+    '// WGT-02: ro-theme paketi bu dosyayı /usr/share/ro-theme/qml/RoTokens.qml olarak kurar. ro-widgets derlenirken\n'
+    '// oradan alır (elle kopyalama yok, TOK-16); widget qmldir: singleton RoTokens 1.0 RoTokens.qml\n'
     '// Renkler bu dosyada yok: Kirigami.Theme kullan, böylece her renk şemasıyla uyumlu kalır.\n'
     '// Süreler taban değerdir (ms); Plasma animasyon hızı çarpanını (AnimationDurationFactor) uygulamak widget\'ın işidir.\n'
     'QtObject {\n'
