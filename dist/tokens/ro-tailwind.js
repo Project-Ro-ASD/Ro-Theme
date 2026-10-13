@@ -134,7 +134,8 @@ module.exports = {
         "busyArc": 3,
         "busyArc22": 2.5,
         "busyArc16": 2,
-        "busySweep": 270
+        "busySweep": 270,
+        "tabLine": 3
       },
       "opacity": {
         "glass": 0.68,
@@ -166,7 +167,8 @@ module.exports = {
         "taskMinimized": 0.05,
         "taskMinimizedLine": 0.15,
         "taskAttention": 0.3,
-        "taskProgress": 0.35
+        "taskProgress": 0.35,
+        "tabActive": 0.15
       }
     }
   }
