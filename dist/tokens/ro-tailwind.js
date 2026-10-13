@@ -23,7 +23,6 @@ module.exports = {
             "bgAlt": "#E7E8EB",
             "surface": "#FFFFFF",
             "surfaceAlt": "#E7E8EB",
-            "glass": "rgba(255,255,255,0.78)",
             "border": "#C8C9CD",
             "controlBorder": "#86858B",
             "frameBorder": "#9E9FA4",
@@ -46,7 +45,8 @@ module.exports = {
               "negative": "#EDCBC9",
               "neutral": "#DFD2BA",
               "positive": "#C0DACB"
-            }
+            },
+            "glass": "rgba(255,255,255,0.85)"
           },
           "dark": {
             "name": "Ro Dark",
@@ -68,7 +68,6 @@ module.exports = {
             "bgAlt": "#37393C",
             "surface": "#2B2D2F",
             "surfaceAlt": "#37393C",
-            "glass": "rgba(43,45,47,0.74)",
             "border": "#4B4D52",
             "controlBorder": "#86858B",
             "frameBorder": "#707276",
@@ -91,7 +90,8 @@ module.exports = {
               "negative": "#542E2A",
               "neutral": "#443616",
               "positive": "#213F2B"
-            }
+            },
+            "glass": "rgba(43,45,47,0.85)"
           }
         }
       },
@@ -142,8 +142,8 @@ module.exports = {
         "windowShadow": 32
       },
       "opacity": {
-        "glass": 0.68,
-        "glassStrong": 0.82,
+        "glass": 0.85,
+        "glassStrong": 0.92,
         "hover": 0.08,
         "disabled": 0.42,
         "solid": 1.0,
