@@ -75,6 +75,7 @@ cp -a platform/plasma/look-and-feel/org.ro.dark %{buildroot}%{_datadir}/plasma/l
 cp -a platform/plasma/layout-templates/org.ro.desktop %{buildroot}%{_datadir}/plasma/layout-templates/
 
 # Wallpaper dosyaları.
+install -Dm0644 dist/qml/RoTokens.qml %{buildroot}%{_datadir}/ro-theme/qml/RoTokens.qml
 install -Dm0644 assets/wallpapers/light.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/light.jpg
 install -Dm0644 assets/wallpapers/dark.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/dark.jpg
 install -Dm0644 assets/wallpapers/loginv2.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/login.jpg
@@ -179,6 +180,8 @@ exit 0
 %{_datadir}/plasma/layout-templates/org.ro.desktop
 %dir %{_datadir}/ro-theme
 %dir %{_datadir}/ro-theme/wallpapers
+%dir %{_datadir}/ro-theme/qml
+%{_datadir}/ro-theme/qml/RoTokens.qml
 %{_datadir}/ro-theme/wallpapers/light.jpg
 %{_datadir}/ro-theme/wallpapers/dark.jpg
 %{_datadir}/ro-theme/wallpapers/login.jpg
