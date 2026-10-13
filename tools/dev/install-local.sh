@@ -83,15 +83,11 @@ cp -r platform/plasma/desktoptheme/RoDark "$HOME/.local/share/plasma/desktopthem
 cp -r platform/plasma/look-and-feel/org.ro.light "$HOME/.local/share/plasma/look-and-feel/"
 cp -r platform/plasma/look-and-feel/org.ro.dark "$HOME/.local/share/plasma/look-and-feel/"
 cp -r platform/plasma/layout-templates/org.ro.desktop "$HOME/.local/share/plasma/layout-templates/"
-cp -r platform/kwin/effects/ro-smooth-motion "$HOME/.local/share/kwin/effects/"
 cp -r platform/kwin/aurorae/RoLight "$HOME/.local/share/aurorae/themes/"
 cp -r platform/kwin/aurorae/RoDark "$HOME/.local/share/aurorae/themes/"
 cp -r platform/gtk/Ro-GTK "$HOME/.themes/"
 cp -r platform/icons/ro-icons "$HOME/.local/share/icons/" || true
 cp -r platform/cursor/ro-cursor "$HOME/.local/share/icons/" || true
-
-# KWin JavaScript efekti crash riskinden dolayı varsayılan olarak kayıt edilmez.
-# Denemek gerekirse apply-theme.sh --enable-kwin-effect ile ayrı test edilir.
 
 chmod +x scripts/*.sh tools/dev/*.sh
 

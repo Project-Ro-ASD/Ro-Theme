@@ -6,7 +6,3 @@ library=org.kde.kwin.aurorae.v2
 theme=__aurorae__svg__RoDark
 ButtonsOnLeft=M
 ButtonsOnRight=IAX
-
-[Plugins]
-ro-smooth-motionEnabled=false
-magiclampEnabled=false

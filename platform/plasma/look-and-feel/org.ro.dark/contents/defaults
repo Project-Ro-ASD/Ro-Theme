@@ -23,15 +23,5 @@ name=RoDark
 library=org.kde.kwin.aurorae.v2
 theme=__aurorae__svg__RoDark
 
-[kwinrc][Plugins]
-ro-smooth-motionEnabled=false
-kwin4_effect_scaleEnabled=false
-kwin4_effect_squashEnabled=false
-kwin4_effect_glideEnabled=false
-kwin4_effect_magiclampEnabled=false
-magiclampEnabled=false
-kwin4_effect_windowapertureEnabled=false
-kwin4_effect_frozenappEnabled=false
-
 [kdeglobals][WM]
 activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0

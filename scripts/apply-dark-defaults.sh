@@ -23,6 +23,8 @@ LEGACY_KEYS=(
   "kwinrc|[Plugins]|kwin4_effect_magiclampEnabled"
   "kwinrc|[Plugins]|kwin4_effect_windowapertureEnabled"
   "kwinrc|[Plugins]|kwin4_effect_frozenappEnabled"
+  "kwinrc|[Plugins]|ro-smooth-motionEnabled"
+  "kwinrc|[Plugins]|magiclampEnabled"
 )
 DRY_RUN=0
 

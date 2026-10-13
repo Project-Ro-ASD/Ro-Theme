@@ -57,7 +57,6 @@ install -d \
   %{buildroot}%{_datadir}/plasma/layout-templates \
   %{buildroot}%{_datadir}/ro-theme/wallpapers \
   %{buildroot}%{_datadir}/wallpapers \
-  %{buildroot}%{_datadir}/kwin/effects \
   %{buildroot}%{_datadir}/aurorae/themes \
   %{buildroot}%{_datadir}/themes \
   %{buildroot}%{_datadir}/icons \
@@ -83,7 +82,6 @@ install -Dm0644 assets/wallpapers/light.jpg "%{buildroot}%{_datadir}/wallpapers/
 install -Dm0644 assets/wallpapers/dark.jpg "%{buildroot}%{_datadir}/wallpapers/Ro Dark.jpg"
 
 # KWin, GTK, icon ve cursor paketleri.
-cp -a platform/kwin/effects/ro-smooth-motion %{buildroot}%{_datadir}/kwin/effects/
 # Pencere dekorasyonu (Aurorae).
 cp -a platform/kwin/aurorae/RoLight %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/kwin/aurorae/RoDark %{buildroot}%{_datadir}/aurorae/themes/
@@ -186,7 +184,6 @@ exit 0
 %{_datadir}/ro-theme/wallpapers/login.jpg
 "%{_datadir}/wallpapers/Ro Light.jpg"
 "%{_datadir}/wallpapers/Ro Dark.jpg"
-%{_datadir}/kwin/effects/ro-smooth-motion
 %{_datadir}/aurorae/themes/RoLight
 %{_datadir}/aurorae/themes/RoDark
 %{_datadir}/themes/Ro-GTK

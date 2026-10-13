@@ -203,7 +203,7 @@ check_global_theme() {
   check_contains "$defaults" "Theme=$look" "$package KSplash theme"
   check_contains "$defaults" "library=org.kde.kwin.aurorae.v2" "$package Ro Aurorae decoration library (WD-02/03)"
   check_contains "$defaults" "theme=__aurorae__svg__$scheme" "$package Ro Aurorae decoration theme"
-  check_contains "$defaults" "ro-smooth-motionEnabled=false" "$package safe KWin effect default"
+  check_not_contains "$defaults" "[kwinrc][Plugins]" "$package leaves KWin effects at KDE defaults (FX-02/23)"
 }
 
 check_plasma_surface_svg() {
@@ -633,8 +633,12 @@ check_file platform/plasma/layout-templates/org.ro.desktop/contents/layout.js
 check_not_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'writeConfig("Image"' "layout template wallpaper-free"
 check_not_contains tools/dev/test-layout.sh "plasma-apply-wallpaperimage" "layout test wallpaper-free"
 check_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'org.kde.plasma.icontasks' "layout template creates the Ro bar"
-check_json platform/kwin/effects/ro-smooth-motion/metadata.json
-check_file platform/kwin/effects/ro-smooth-motion/contents/code/main.js
+if [ -e platform/kwin/effects ]; then fail "platform/kwin/effects must not exist (FX-03: ro-smooth-motion removed)"; else ok "no custom KWin effect (FX-03)"; fi
+if grep -rIl -e "kwin4_effect_" -e "ro-smooth-motion" platform packaging scripts/generate-theme.sh tools/dev/test-rpm.sh scripts/diagnose.sh >/dev/null 2>&1; then
+  fail "obsolete KWin effect keys or ro-smooth-motion referenced (FX-23)"
+else
+  ok "no obsolete KWin effect keys (FX-23)"
+fi
 
 section "GTK, Icons, Cursor"
 check_file platform/gtk/Ro-GTK/gtk-3.0/gtk.css
@@ -755,7 +759,7 @@ check_contains "$XDG_DEFAULTS/kscreenlockerrc" "Blur=false" "system lock screen 
 check_contains "$XDG_DEFAULTS/kwinrc" "library=org.kde.kwin.aurorae.v2" "system Ro Aurorae decoration default (WD-02)"
 check_contains "$XDG_DEFAULTS/kwinrc" "theme=__aurorae__svg__RoDark" "system Ro Dark decoration theme"
 check_contains packaging/ro-theme.spec "Requires:       aurorae" "RPM requires the Aurorae decoration plugin"
-check_contains "$XDG_DEFAULTS/kwinrc" "ro-smooth-motionEnabled=false" "system safe KWin effect default"
+check_not_contains "$XDG_DEFAULTS/kwinrc" "[Plugins]" "system kwinrc leaves KWin effects at KDE defaults (FX-02/23)"
 check_not_contains packaging/ro-theme.spec "kwin4_effect_" "RPM has no obsolete Plasma 5 effect keys"
 check_not_contains packaging/ro-theme.spec "--all-users" "RPM never applies settings to all users"
 check_not_contains packaging/ro-theme.spec "xdg/autostart" "RPM ships no autostart that writes user files"

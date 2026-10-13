@@ -6,7 +6,6 @@ import QtQuick 2.15
 // sonra bu yüzeyi yavaşça azaltıp masaüstünü sakin şekilde ortaya çıkarmak.
 // Not: KWin başlamadan önce gerçek masaüstü arkasına blur verilemez.
 // Bu yüzden burada login wallpaper'ın önceden blur'lanmış hali kullanılır.
-// KWin açıldıktan sonra ro-smooth-motion efekti pencere geçişlerini sakinleştirir.
 Item {
     id: root
     width: 1920

@@ -7,14 +7,12 @@ set -euo pipefail
 # Doğru kullanım:
 #   ./tools/dev/apply-theme.sh light
 #   ./tools/dev/apply-theme.sh dark
-#   ./tools/dev/apply-theme.sh dark --enable-kwin-effect
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
 MODE="dark"
 WARNINGS=0
-ENABLE_KWIN_EFFECT="${RO_THEME_ENABLE_KWIN_EFFECT:-0}"
 LIVE_PLASMASHELL="${RO_THEME_LIVE_PLASMASHELL:-0}"
 
 for arg in "$@"; do
@@ -22,18 +20,15 @@ for arg in "$@"; do
     light|dark)
       MODE="$arg"
       ;;
-    --enable-kwin-effect)
-      ENABLE_KWIN_EFFECT=1
-      ;;
     --live-plasmashell)
       LIVE_PLASMASHELL=1
       ;;
     -h|--help)
-      echo "Usage: $0 [light|dark] [--enable-kwin-effect] [--live-plasmashell]"
+      echo "Usage: $0 [light|dark] [--live-plasmashell]"
       exit 0
       ;;
     *)
-      echo "Usage: $0 [light|dark] [--enable-kwin-effect] [--live-plasmashell]" >&2
+      echo "Usage: $0 [light|dark] [--live-plasmashell]" >&2
       exit 2
       ;;
   esac
@@ -170,34 +165,12 @@ else
   warn "lock screen login wallpaper not found: $LOCK_WALL"
 fi
 
-# KDE stok animasyonları Ro geçiş hissiyle çakışır.
-for key in \
-  kwin4_effect_scaleEnabled \
-  kwin4_effect_glideEnabled \
-  kwin4_effect_squashEnabled \
-  kwin4_effect_magiclampEnabled \
-  magiclampEnabled \
-  kwin4_effect_windowapertureEnabled \
-  kwin4_effect_frozenappEnabled; do
-  write_config_or_warn "KWin plugin $key" --file kwinrc --group Plugins --key "$key" false
+# 19 FX-02/23: efektler KDE varsayılanı. Eski sürümün yazdığı Plasma 5 adlı ve Ro efekti anahtarları silinir.
+for key in kwin4_effect_scaleEnabled kwin4_effect_glideEnabled kwin4_effect_squashEnabled \
+  kwin4_effect_magiclampEnabled magiclampEnabled kwin4_effect_windowapertureEnabled \
+  kwin4_effect_frozenappEnabled ro-smooth-motionEnabled; do
+  write_config_or_warn "Remove old KWin key $key" --file kwinrc --group Plugins --key "$key" --delete
 done
-
-if [[ "$ENABLE_KWIN_EFFECT" = "1" ]]; then
-  write_config_or_warn "KWin Ro effect" --file kwinrc --group Plugins --key ro-smooth-motionEnabled true
-else
-  write_config_or_warn "KWin Ro effect" --file kwinrc --group Plugins --key ro-smooth-motionEnabled false
-fi
-
-if [[ "$ENABLE_KWIN_EFFECT" = "1" ]]; then
-  # KWin paketini Plasma'nın paket sistemine yalnızca açıkça istenirse tanıt.
-  if command -v kpackagetool6 >/dev/null 2>&1; then
-    kpackagetool6 --type KWin/Effect --upgrade platform/kwin/effects/ro-smooth-motion >/dev/null 2>&1 || \
-    kpackagetool6 --type KWin/Effect --install platform/kwin/effects/ro-smooth-motion >/dev/null 2>&1 || true
-  elif command -v kpackagetool5 >/dev/null 2>&1; then
-    kpackagetool5 --type KWin/Effect --upgrade platform/kwin/effects/ro-smooth-motion >/dev/null 2>&1 || \
-    kpackagetool5 --type KWin/Effect --install platform/kwin/effects/ro-smooth-motion >/dev/null 2>&1 || true
-  fi
-fi
 
 call_dbus org.kde.KWin /KWin reconfigure || warn "KWin reconfigure DBus call failed"
 if [[ "$LIVE_PLASMASHELL" = "1" ]]; then
@@ -206,9 +179,6 @@ fi
 
 echo "Ro $MODE theme applied."
 echo "KDE stock splash disabled; Ro blur splash enabled."
-if [[ "$ENABLE_KWIN_EFFECT" != "1" ]]; then
-  echo "Ro KWin JavaScript effect is disabled for safe local testing."
-fi
 if [[ "$LIVE_PLASMASHELL" != "1" ]]; then
   echo "Live PlasmaShell DBus refresh is disabled for crash-safe testing."
 fi
