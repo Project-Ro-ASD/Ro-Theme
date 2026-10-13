@@ -724,6 +724,54 @@ for g in "[Colors:Window]" "[Colors:View]" "[Colors:Button]" "[Colors:Selection]
 done
 check_contains "$XDG_DEFAULTS/kdeglobals" "ColorScheme=RoDark" "system kdeglobals selects RoDark"
 check_contains "$XDG_DEFAULTS/kdeglobals" "DefaultLightLookAndFeel=org.ro.light" "automatic light/dark pair is Ro (GT-03)"
+# 22 SYS-05: global tema defaults ile /etc/xdg aynı değeri vermeli; yoksa global temayı uygulayan ve uygulamayan
+# kullanıcı farklı görünüm görür. Koyu paket varsayılanla birebir; açık pakette yalnız moda bağlı adlar farklı olabilir.
+if report="$(python3 - <<'PY'
+import re
+import sys
+from pathlib import Path
+
+xdg = Path('platform/plasma/defaults/xdg')
+
+def groups(path):
+    out, cur = {}, None
+    for line in path.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        if line.startswith('['):
+            cur = line
+            out.setdefault(cur, {})
+            continue
+        k, _, v = line.partition('=')
+        out[cur][k.strip()] = v.strip()
+    return out
+
+mode_keys = {'ColorScheme', 'theme', 'name', 'Theme'}
+errors = []
+for mode in ('dark', 'light'):
+    d = groups(Path(f'platform/plasma/look-and-feel/org.ro.{mode}/contents/defaults'))
+    for head, kv in d.items():
+        m = re.match(r'^\[([^\]]+)\]((?:\[[^\]]+\])+)$', head)
+        if not m:
+            errors.append(f'org.ro.{mode}: {head} has no file prefix')
+            continue
+        fname, group = m.group(1), m.group(2)
+        target = xdg / fname
+        if not target.exists():
+            continue
+        tg = groups(target).get(group, {})
+        for k, v in kv.items():
+            if k in tg and tg[k] != v and not (mode == 'light' and k in mode_keys):
+                errors.append(f'org.ro.{mode} {fname}{group} {k}={v} but /etc/xdg has {tg[k]}')
+print('; '.join(errors))
+sys.exit(1 if errors else 0)
+PY
+)"; then
+  ok "global theme defaults agree with /etc/xdg (SYS-05)"
+else
+  fail "global theme and /etc/xdg disagree (SYS-05): $report"
+fi
 check_contains "$XDG_DEFAULTS/kwinrc" "ButtonsOnRight=IAX" "system kwinrc button layout (WD-16)"
 check_file core/tokens/fonts.json
 check_json core/tokens/fonts.json
