@@ -357,7 +357,8 @@ xdg_defaults = {
     },
     # Plasma 5 kimlikli kwin4_effect_* satırları etkisiz olduğu için yazılmaz (FX-23).
     'kwinrc': {
-        '[org.kde.kdecoration2]': ['library=org.kde.breeze', 'theme=Breeze'],
+        # WD-16: solda pencere menüsü, sağda küçült/büyüt/kapat (KDE: MSE / HIAX).
+        '[org.kde.kdecoration2]': ['library=org.kde.breeze', 'theme=Breeze', 'ButtonsOnLeft=M', 'ButtonsOnRight=IAX'],
         '[Plugins]': ['ro-smooth-motionEnabled=false', 'magiclampEnabled=false'],
     },
 }
@@ -1281,7 +1282,7 @@ def aurorae_button_svg(kind, tokens):
         ('hover', hover[0], hover[1], hover[2], 1),
         ('pressed', pressed[0], pressed[1], pressed[2], 1),
         ('deactivated', text, 0, muted, 0.35),
-        ('inactive', text, 0, muted, 0.55),
+        ('inactive', text, 0, muted, 1),  # WD-11: pasifte de tıklanabilir, sönük değil
         ('hover-inactive', hover[0], hover[1], hover[2], 1),
         ('pressed-inactive', pressed[0], pressed[1], pressed[2], 1),
         ('deactivated-inactive', text, 0, muted, 0.25),
@@ -1306,7 +1307,7 @@ def aurorae_rc(tokens):
         'TitleAlignment=Center',
         'TitleVerticalAlignment=Center',
         'UseTextShadow=false',
-        f"Animation={motion.get('windowCloseMs', 150)}",
+        f"Animation={motion['fastMs']}",  # WD-20
         '',
         '[Layout]',
         f'PaddingTop={window_shadow}',
@@ -1316,9 +1317,6 @@ def aurorae_rc(tokens):
         f'BorderLeft={window_border}',
         f'BorderRight={window_border}',
         f'BorderBottom={window_border}',
-        'BorderLeftMaximized=0',
-        'BorderRightMaximized=0',
-        'BorderBottomMaximized=0',
         f'TitleEdgeTop={edge_v}',
         f'TitleEdgeBottom={edge_v}',
         'TitleEdgeLeft=10',
@@ -1346,6 +1344,7 @@ for theme_name, (tokens, visible_name) in aurorae_modes.items():
     metadata = '\n'.join([
         '[Desktop Entry]',
         f'Name={visible_name}',
+        f"Name[tr]={visible_name.replace('Light', 'Açık').replace('Dark', 'Koyu')}",
         'Comment=Ro Desktop window decoration',
         f'X-KDE-PluginInfo-Name={theme_name}',
         'X-KDE-PluginInfo-Author=Project Ro-ASD',

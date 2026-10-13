@@ -453,6 +453,8 @@ check_aurorae_theme() {
     ok "$name maximized window has no shadow"
   fi
   check_contains "$dir/close.svg" "rx=" "$name buttons are rounded squares (WD-06 B)"
+  check_not_contains "$dir/${name}rc" "BorderLeftMaximized" "$name has no dead Border*Maximized keys (WD-17)"
+  check_contains "$dir/metadata.desktop" "Name[tr]=" "$name Turkish display name (WD-04)"
   check_file "$dir/decoration.svg"
   for prefix in decoration decoration-inactive decoration-maximized decoration-maximized-inactive; do
     check_contains "$dir/decoration.svg" "id=\"$prefix-topleft\"" "$name $prefix frame"
@@ -698,6 +700,7 @@ for g in "[Colors:Window]" "[Colors:View]" "[Colors:Button]" "[Colors:Selection]
   check_contains "$XDG_DEFAULTS/kdeglobals" "$g" "system kdeglobals has $g (new users get Ro colors from /etc/xdg)"
 done
 check_contains "$XDG_DEFAULTS/kdeglobals" "ColorScheme=RoDark" "system kdeglobals selects RoDark"
+check_contains "$XDG_DEFAULTS/kwinrc" "ButtonsOnRight=IAX" "system kwinrc button layout (WD-16)"
 check_file core/tokens/fonts.json
 check_json core/tokens/fonts.json
 if python3 - <<'PY'
