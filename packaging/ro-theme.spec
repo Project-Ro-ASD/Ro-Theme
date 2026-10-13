@@ -38,7 +38,7 @@ Requires:       grubby
 
 %description
 Ro Desktop theme for KDE Plasma: Ro Light and Ro Dark global themes, Plasma
-styles, colour schemes, the Ro Aurorae window decoration, the panel layout,
+styles, color schemes, the Ro Aurorae window decoration, the panel layout,
 the Plymouth boot theme, the Ro GTK style, icon and cursor definitions, system
 appearance defaults and diagnostic tools.
 
