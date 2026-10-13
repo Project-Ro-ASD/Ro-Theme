@@ -440,14 +440,19 @@ check_aurorae_theme() {
   check_contains "$dir/metadata.desktop" "X-KDE-PluginInfo-Name=$name" "$name Aurorae plugin name"
   check_file "$dir/${name}rc"
   check_contains "$dir/${name}rc" "[Layout]" "$name Aurorae layout group"
+  # WD-18: pencereler TOK-09 istisnası; gölge alanı spacing.windowShadow, büyütülmüş pencerede gölge yok.
+  local pad
+  pad="$(python3 -c "import json; print(json.load(open('core/tokens/spacing.json'))['windowShadow'])")"
   for side in Top Bottom Left Right; do
-    check_contains "$dir/${name}rc" "Padding${side}=0" "$name no shadow padding $side"
+    check_contains "$dir/${name}rc" "Padding${side}=$pad" "$name window shadow padding $side = $pad"
   done
-  if grep -Eq 'id="ro-.*-shadow"' "$dir/decoration.svg"; then
-    fail "$name must not contain Aurorae shadow gradients (TOK-09/10)"
+  check_contains "$dir/decoration.svg" 'id="ro-decoration-topleft-shadow"' "$name active window shadow"
+  if grep -Eq 'id="ro-decoration-maximized.*-shadow"' "$dir/decoration.svg"; then
+    fail "$name maximized window must not have a shadow"
   else
-    ok "$name no Aurorae shadow gradients"
+    ok "$name maximized window has no shadow"
   fi
+  check_contains "$dir/close.svg" "rx=" "$name buttons are rounded squares (WD-06 B)"
   check_file "$dir/decoration.svg"
   for prefix in decoration decoration-inactive decoration-maximized decoration-maximized-inactive; do
     check_contains "$dir/decoration.svg" "id=\"$prefix-topleft\"" "$name $prefix frame"

@@ -105,6 +105,7 @@ module.exports = {
         "widget": 18,
         "window": 12,
         "xs": 4,
+        "titleButton": 6,
         "dock": 24.0
       },
       "spacing": {
@@ -137,7 +138,8 @@ module.exports = {
         "busySweep": 270,
         "tabLine": 3,
         "progressBar": 6,
-        "arrowSize": 16
+        "arrowSize": 16,
+        "windowShadow": 32
       },
       "opacity": {
         "glass": 0.68,
@@ -172,7 +174,8 @@ module.exports = {
         "taskProgress": 0.35,
         "tabActive": 0.15,
         "frameEdge": 0.15,
-        "listSection": 0.05
+        "listSection": 0.05,
+        "windowShadow": 0.35
       }
     }
   }

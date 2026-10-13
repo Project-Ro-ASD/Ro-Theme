@@ -15,6 +15,7 @@ QtObject {
     readonly property real radiusWidget: 18
     readonly property real radiusWindow: 12
     readonly property real radiusXs: 4
+    readonly property real radiusTitleButton: 6
     readonly property real radiusDock: 24.0
     readonly property real spaceXs: 4
     readonly property real spaceSm: 8
@@ -56,6 +57,7 @@ QtObject {
     readonly property real opacityTabActive: 0.15
     readonly property real opacityFrameEdge: 0.15
     readonly property real opacityListSection: 0.05
+    readonly property real opacityWindowShadow: 0.35
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170
