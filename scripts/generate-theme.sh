@@ -358,7 +358,9 @@ xdg_defaults = {
     # Plasma 5 kimlikli kwin4_effect_* satırları etkisiz olduğu için yazılmaz (FX-23).
     'kwinrc': {
         # WD-16: solda pencere menüsü, sağda küçült/büyüt/kapat (KDE: MSE / HIAX).
-        '[org.kde.kdecoration2]': ['library=org.kde.breeze', 'theme=Breeze', 'ButtonsOnLeft=M', 'ButtonsOnRight=IAX'],
+        # WD-02/WD-03: Ro Aurorae (v2 eklentisi) varsayılan dekorasyon; global tema da aynısını seçer.
+        '[org.kde.kdecoration2]': ['library=org.kde.kwin.aurorae.v2', f'theme=__aurorae__svg__{default_scheme}',
+                                   'ButtonsOnLeft=M', 'ButtonsOnRight=IAX'],
         '[Plugins]': ['ro-smooth-motionEnabled=false', 'magiclampEnabled=false'],
     },
 }

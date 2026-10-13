@@ -201,8 +201,8 @@ check_global_theme() {
   check_contains "$defaults" "name=$plasma" "$package Plasma style"
   check_contains "$defaults" "Engine=KSplashQML" "$package KSplash engine"
   check_contains "$defaults" "Theme=$look" "$package KSplash theme"
-  check_contains "$defaults" "library=org.kde.breeze" "$package Breeze decoration library"
-  check_contains "$defaults" "theme=Breeze" "$package Breeze decoration theme"
+  check_contains "$defaults" "library=org.kde.kwin.aurorae.v2" "$package Ro Aurorae decoration library (WD-02/03)"
+  check_contains "$defaults" "theme=__aurorae__svg__$scheme" "$package Ro Aurorae decoration theme"
   check_contains "$defaults" "ro-smooth-motionEnabled=false" "$package safe KWin effect default"
 }
 
@@ -749,7 +749,9 @@ else
 fi
 check_contains "$XDG_DEFAULTS/kscreenlockerrc" "contents/lockscreen/assets/login.jpg" "system lock screen login wallpaper default"
 check_contains "$XDG_DEFAULTS/kscreenlockerrc" "Blur=false" "system lock screen wallpaper blur disabled"
-check_contains "$XDG_DEFAULTS/kwinrc" "library=org.kde.breeze" "system Breeze decoration default"
+check_contains "$XDG_DEFAULTS/kwinrc" "library=org.kde.kwin.aurorae.v2" "system Ro Aurorae decoration default (WD-02)"
+check_contains "$XDG_DEFAULTS/kwinrc" "theme=__aurorae__svg__RoDark" "system Ro Dark decoration theme"
+check_contains packaging/ro-theme.spec "Requires:       aurorae" "RPM requires the Aurorae decoration plugin"
 check_contains "$XDG_DEFAULTS/kwinrc" "ro-smooth-motionEnabled=false" "system safe KWin effect default"
 check_not_contains packaging/ro-theme.spec "kwin4_effect_" "RPM has no obsolete Plasma 5 effect keys"
 check_not_contains packaging/ro-theme.spec "--all-users" "RPM never applies settings to all users"

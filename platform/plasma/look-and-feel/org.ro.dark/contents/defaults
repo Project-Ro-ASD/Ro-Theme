@@ -20,8 +20,8 @@ menuFont=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
 name=RoDark
 
 [kwinrc][org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
+library=org.kde.kwin.aurorae.v2
+theme=__aurorae__svg__RoDark
 
 [kwinrc][Plugins]
 ro-smooth-motionEnabled=false

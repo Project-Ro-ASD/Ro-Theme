@@ -15,6 +15,7 @@ Requires:       coreutils
 Requires:       kf6-kconfig
 Requires:       kf6-kpackage
 Requires:       kf6-kservice
+Requires:       aurorae
 Requires:       plasma-desktop
 Requires:       plasma-workspace
 Requires:       plasma-workspace-libs
