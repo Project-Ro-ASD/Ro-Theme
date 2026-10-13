@@ -27,21 +27,92 @@ spacing = read_json('core/tokens/spacing.json')
 fonts = read_json('core/tokens/fonts.json')
 dock_radius = spacing['dockHeight'] / 2  # TOK-02d: bağımsız token değil, tam hap geometrisi.
 
-# Yerleşimlerin diğer davranışları kendi dosyalarında kalır; yüksekliklerin tek kaynağı token'dır.
-layout_paths = [
-    'platform/plasma/layout-templates/org.ro.desktop/contents/layout.js',
-    'platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js',
-    'platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js',
-]
-for path in layout_paths:
-    layout_path = root / path
-    layout = layout_path.read_text(encoding='utf-8')
-    for panel, token in [('top', 'panelHeight'), ('dock', 'dockHeight')]:
-        pattern = rf'(?m)^(\s*{panel}\.height\s*=\s*)[0-9]+(?:\.[0-9]+)?(\s*;[^\n]*)$'
-        layout, count = re.subn(pattern, lambda m: f'{m[1]}{spacing[token]}{m[2]}', layout)
-        if count != 1:
-            raise SystemExit(f'{path}: expected exactly one {panel}.height assignment, found {count}')
-    layout_path.write_text(layout, encoding='utf-8')
+# 07 PAN-01 B (2026-10-13): altta tek bar; başlatıcı solda, ikon görev yöneticisi ortada, tepsi + saat sağda.
+# Üç betik (iki global tema, yerleşim şablonu) buradan üretilir (PAN-22, PAN-25); elle düzenlenmez.
+PANEL_TRAY_SHOWN = ['org.kde.plasma.networkmanagement', 'org.kde.plasma.bluetooth', 'org.kde.plasma.volume',
+                    'org.kde.plasma.notifications', 'org.kde.plasma.battery']
+# PAN-18 (ekip, ro-asd-desktop-standard): Fedora'da kurulu olanlar; Plasma 6 Sistem Ayarları adı systemsettings.desktop.
+PANEL_LAUNCHERS = ['org.kde.dolphin.desktop', 'org.kde.konsole.desktop', 'org.mozilla.firefox.desktop',
+                   'systemsettings.desktop']
+
+def panel_layout_js(mode):
+    # mode: 'light' | 'dark' (global tema: panelleri yeniler, duvar kâğıdını seçer) ya da None (şablon: yalnız ekler).
+    clock = fonts['panelClock']
+    # Plasma 6.7 dijital saati fontWeight'ı yüklemede sıfırlıyor; kalınlık fontconfig'in ağırlıklı aile adıyla verilir.
+    clock_family = f"{clock['family']} {clock['styleName']}"
+    head = ['// Ro desktop layout. Generated from core/tokens by scripts/generate-theme.sh; do not edit.',
+            '// 07 PAN-01 B: single bottom bar; launcher left, icon task manager centred, tray and clock right.',
+            '',
+            'function safeAdd(panel, pluginId) {',
+            '    try { return panel.addWidget(pluginId); } catch (e) { print("Ro layout: could not add " + pluginId + ": " + e); return null; }',
+            '}',
+            '']
+    if mode:
+        name = 'Ro ' + mode.title()
+        head += [f'// PAN-23 A: RPM installs the wallpaper system-wide; tools/dev/install-local.sh uses the user data dir.',
+                 f'var systemWallpaper = "/usr/share/wallpapers/{name}.jpg";',
+                 f'var userWallpaper = userDataPath("data") + "/wallpapers/{name}.jpg";',
+                 'var wallpaperPath = fileExists(systemWallpaper) ? systemWallpaper : userWallpaper;',
+                 'var ds = desktops();',
+                 'for (var i = 0; i < ds.length; i++) {',
+                 '    ds[i].wallpaperPlugin = "org.kde.image";',
+                 '    ds[i].currentConfigGroup = ["Wallpaper", "org.kde.image", "General"];',
+                 '    ds[i].writeConfig("Image", "file://" + wallpaperPath);',
+                 '    ds[i].writeConfig("FillMode", 2);',
+                 '}',
+                 '',
+                 '// The global theme layout replaces the panels; the layout template (Add Panel) only adds one.',
+                 'var oldPanels = panels();',
+                 'for (var i = 0; i < oldPanels.length; i++) { oldPanels[i].remove(); }',
+                 '']
+    body = ['var bar = new Panel();',
+            'bar.location = "bottom";',
+            f"bar.height = {spacing['panelHeight']};",
+            'bar.hiding = "none";',
+            'try { bar.floating = true; } catch (e) {}',
+            '',
+            '// PAN-08/24: launcher; Kickoff with the distribution logo.',
+            'var launcher = safeAdd(bar, "org.kde.plasma.kickoff");',
+            'if (launcher) { launcher.currentConfigGroup = ["General"]; launcher.writeConfig("icon", "start-here"); }',
+            'safeAdd(bar, "org.kde.plasma.panelspacer");',
+            '',
+            'var tasks = safeAdd(bar, "org.kde.plasma.icontasks");',
+            'if (tasks) {',
+            '    tasks.currentConfigGroup = ["General"];',
+            '    tasks.writeConfig("launchers", "' + ','.join('applications:' + a for a in PANEL_LAUNCHERS) + '");',
+            '    tasks.writeConfig("showOnlyCurrentScreen", true);',
+            '    tasks.writeConfig("showOnlyCurrentDesktop", false);',
+            '    tasks.writeConfig("groupingStrategy", 1);',
+            '    tasks.writeConfig("sortingStrategy", 1);',
+            '    tasks.writeConfig("highlightWindows", true);',
+            '}',
+            'safeAdd(bar, "org.kde.plasma.panelspacer");',
+            '',
+            '// PAN-10: network, bluetooth, volume, notifications and battery visible; the expander arrow on the left.',
+            '// Plasma 6.7 keeps tray settings in the tray applet\'s own [General] group.',
+            'var tray = safeAdd(bar, "org.kde.plasma.systemtray");',
+            'if (tray) {',
+            '    tray.currentConfigGroup = ["General"];',
+            '    tray.writeConfig("shownItems", "' + ','.join(PANEL_TRAY_SHOWN) + '");',
+            '    tray.writeConfig("reverseIconOrder", true);',
+            '}',
+            '',
+            f"// PAN-09: time only, {clock['family']} {clock['styleName']} {clock['pointSize']} pt (fonts.panelClock).",
+            'var clock = safeAdd(bar, "org.kde.plasma.digitalclock");',
+            'if (clock) {',
+            '    clock.currentConfigGroup = ["Appearance"];',
+            '    clock.writeConfig("showDate", false);',
+            '    clock.writeConfig("showSeconds", false);',
+            '    clock.writeConfig("autoFontAndSize", false);',
+            f'    clock.writeConfig("fontFamily", "{clock_family}");',
+            f"    clock.writeConfig(\"fontSize\", {clock['pointSize']});",
+            '}']
+    return '\n'.join(head + body) + '\n'
+
+for path, mode in [('platform/plasma/layout-templates/org.ro.desktop/contents/layout.js', None),
+                   ('platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js', 'light'),
+                   ('platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js', 'dark')]:
+    (root / path).write_text(panel_layout_js(mode), encoding='utf-8')
 
 for path in [
     'platform/plasma/color-schemes',

@@ -30,7 +30,10 @@ if ! pgrep -x plasmashell >/dev/null 2>&1; then
   sleep 3
 fi
 
-SCRIPT_CONTENT="$(cat "$LAYOUT")"
+# Şablon kullanıcının panellerini silmez (PAN-22). Bu geliştirici aracı açıkça çalıştırıldığında mevcut
+# panelleri kaldırıp Ro barını temiz kurar.
+SCRIPT_CONTENT="var roOld = panels(); for (var roI = 0; roI < roOld.length; roI++) { roOld[roI].remove(); }
+$(cat "$LAYOUT")"
 LAST_ERROR=""
 
 try_qdbus() {

@@ -3,7 +3,7 @@
   "KPlugin": {
     "Id": "org.ro.desktop",
     "Name": "Ro Desktop Layout",
-    "Description": "Ro glass top bar and centered slim dock layout",
+    "Description": "Ro single bottom bar: launcher, centred tasks, tray and clock",
     "Icon": "preferences-desktop",
     "Version": "1.0.1",
     "License": "GPL-3.0-or-later"
