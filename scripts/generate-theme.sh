@@ -219,6 +219,8 @@ def _qml_props(prefix, values, kind='real'):
     return '\n'.join(lines)
 
 qml_tokens = (
+    '// SPDX-FileCopyrightText: Project Ro-ASD\n'
+    '// SPDX-License-Identifier: GPL-3.0-or-later\n'
     'pragma Singleton\n'
     'import QtQuick\n\n'
     '// Ro tasarım token\'ları (QML). scripts/generate-theme.sh tarafından core/tokens\'tan ÜRETİLİR, elle düzenlenmez.\n'
