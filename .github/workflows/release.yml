@@ -48,6 +48,8 @@ jobs:
           set -euo pipefail
           VERSION="$(tr -d '[:space:]' < VERSION)"
           [[ "${GITHUB_REF_NAME}" == "v${VERSION}" ]]
+          # Konteynerde depo başka kullanıcıya ait görünür; git "dubious ownership" der.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           [[ "$(git rev-parse HEAD)" == "${GITHUB_SHA}" ]]
 
           FEDORA_RELEASE=44 ./tools/dev/build-rpm.sh

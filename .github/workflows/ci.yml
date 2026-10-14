@@ -35,6 +35,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Konteynerde depo başka kullanıcıya ait görünür; git "dubious ownership" der.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           [[ "$(git rev-parse HEAD)" == "${GITHUB_SHA}" ]]
           echo "git rev-parse HEAD == GITHUB_SHA"
 
