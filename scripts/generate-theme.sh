@@ -1258,6 +1258,12 @@ for rel in ['platform/gtk/Ro-GTK/gtk-3.0/gtk.css', 'platform/gtk/Ro-GTK/gtk-4.0/
 # kırpılmaz. Dış hattın yuvarlak görünmesi için yan/alt kenarlık en az ~0.3 * yarıçap olmalı
 # (içeriğin köşesi dış kavisin altında kalır).
 version = (root / 'VERSION').read_text(encoding='utf-8').strip()
+# Plasma stili meta verisindeki sürüm de VERSION'dan (elle güncellenince eskiyordu).
+for _theme in ('RoLight', 'RoDark'):
+    _meta_path = root / f'platform/plasma/desktoptheme/{_theme}/metadata.json'
+    _meta = json.loads(_meta_path.read_text(encoding='utf-8'))
+    _meta['KPlugin']['Version'] = version
+    _meta_path.write_text(json.dumps(_meta, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 window_radius = radius.get('window', radius['md'])
 window_border = spacing.get('windowBorder', 4)
 titlebar_height = spacing.get('titlebarHeight', 36)
