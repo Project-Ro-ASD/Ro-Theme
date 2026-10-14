@@ -124,8 +124,10 @@ jobs:
             gh api -X DELETE "repos/${GITHUB_REPOSITORY}/releases/${EXISTING_ID}"
           fi
 
-          gh release create "$TAG" --draft --target "$GITHUB_SHA" --title "$TAG" --generate-notes
-          RELEASE_ID="$(gh api "repos/${GITHUB_REPOSITORY}/releases" --paginate --jq ".[] | select(.tag_name == \"${TAG}\" and .draft == true) | .id" | head -n1)"
+          # Yeni taslak API listesinde ilk anda etiketsiz görünür (untagged-…); kimlik aranmaz, oluşturma yanıtından alınır.
+          RELEASE_ID="$(gh api -X POST "repos/${GITHUB_REPOSITORY}/releases" \
+            -f tag_name="$TAG" -f target_commitish="$GITHUB_SHA" -f name="$TAG" \
+            -F draft=true -F generate_release_notes=true --jq '.id')"
           test -n "$RELEASE_ID"
           echo "release_id=${RELEASE_ID}" >> "$GITHUB_OUTPUT"
 
@@ -194,10 +196,16 @@ jobs:
             bundle/component-artifact-manifest-v1.json
 
       - name: Upload complete bundle to draft release
+        env:
+          RELEASE_ID: ${{ steps.draft.outputs.release_id }}
         shell: bash
         run: |
           set -euo pipefail
-          gh release upload "$TAG" bundle/*.rpm bundle/SHA256SUMS bundle/component-artifact-manifest-v1.json
+          # Taslak etiket adıyla hemen bulunamayabildiği için yükleme sürüm kimliğine yapılır.
+          for f in bundle/*.rpm bundle/SHA256SUMS bundle/component-artifact-manifest-v1.json; do
+            gh api -X POST "https://uploads.github.com/repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}/assets?name=$(basename "$f")" \
+              -H "Content-Type: application/octet-stream" --input "$f" --jq '.name'
+          done
 
       - name: Verify draft assets and publish
         env:
@@ -211,4 +219,4 @@ jobs:
           mapfile -t ACTUAL < <(gh api "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}/assets" --paginate --jq '.[].name' | sort)
           [[ "${#EXPECTED[@]}" -eq 4 ]]
           diff -u <(printf '%s\n' "${EXPECTED[@]}") <(printf '%s\n' "${ACTUAL[@]}")
-          gh release edit "$TAG" --draft=false
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" -F draft=false --jq '.html_url'
