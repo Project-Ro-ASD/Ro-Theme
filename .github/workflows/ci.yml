@@ -24,8 +24,21 @@ jobs:
     timeout-minutes: 45
 
     steps:
+      # release.yml ile aynı sıra: git önce kurulur ki checkout .git'i oluştursun ve etiket doğrulaması çalışsın.
+      - name: Install git
+        run: dnf install -y --setopt=install_weak_deps=False git-core
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Git metadata available (release.yml tag check)
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Konteynerde depo başka kullanıcıya ait görünür; git "dubious ownership" der.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          [[ "$(git rev-parse HEAD)" == "${GITHUB_SHA}" ]]
+          echo "git rev-parse HEAD == GITHUB_SHA"
 
       - name: Install build and validation dependencies
         run: |
