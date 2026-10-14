@@ -27,6 +27,10 @@ jobs:
       image: fedora:44
 
     steps:
+      # actions/checkout git yoksa depoyu .git olmadan indirir; etiket doğrulaması (git rev-parse) için git önce kurulur.
+      - name: Install git
+        run: dnf install -y --setopt=install_weak_deps=False git-core
+
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
