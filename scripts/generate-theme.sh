@@ -30,7 +30,6 @@ for _tokens in (light, dark):
     _tokens['glass'] = f"rgba({_r},{_g},{_b},{opacity['glass']})"
 spacing = read_json('core/tokens/spacing.json')
 fonts = read_json('core/tokens/fonts.json')
-dock_radius = spacing['dockHeight'] / 2  # TOK-02d: bağımsız token değil, tam hap geometrisi.
 
 # 07 PAN-01 B (2026-10-13): altta tek bar; başlatıcı solda, ikon görev yöneticisi ortada, tepsi + saat sağda.
 # Üç betik (iki global tema, yerleşim şablonu) buradan üretilir (PAN-22, PAN-25); elle düzenlenmez.
@@ -156,15 +155,12 @@ css = f''':root,
   --ro-radius-lg: {radius['lg']}px;
   --ro-radius-xl: {radius['xl']}px;
   --ro-radius-panel: {radius['panel']}px;
-  --ro-radius-dock: {dock_radius:g}px;
   --ro-space-xs: {spacing['xs']}px;
   --ro-space-sm: {spacing['sm']}px;
   --ro-space-md: {spacing['md']}px;
   --ro-space-lg: {spacing['lg']}px;
   --ro-space-xl: {spacing['xl']}px;
   --ro-panel-height: {spacing['panelHeight']}px;
-  --ro-dock-height: {spacing['dockHeight']}px;
-  --ro-dock-icon-size: {spacing['dockIconSize']}px;
   --ro-opacity-glass: {opacity['glass']};
   --ro-opacity-glass-strong: {opacity['glassStrong']};
   --ro-opacity-hover: {opacity['hover']};
@@ -200,7 +196,7 @@ tailwind = {
                     'dark': dark,
                 }
             },
-            'borderRadius': {**radius, 'dock': dock_radius},
+            'borderRadius': radius,
             'spacing': spacing,
             'opacity': opacity,
         }
@@ -223,6 +219,8 @@ def _qml_props(prefix, values, kind='real'):
     return '\n'.join(lines)
 
 qml_tokens = (
+    '// SPDX-FileCopyrightText: Project Ro-ASD\n'
+    '// SPDX-License-Identifier: GPL-3.0-or-later\n'
     'pragma Singleton\n'
     'import QtQuick\n\n'
     '// Ro tasarım token\'ları (QML). scripts/generate-theme.sh tarafından core/tokens\'tan ÜRETİLİR, elle düzenlenmez.\n'
@@ -231,7 +229,7 @@ qml_tokens = (
     '// Renkler bu dosyada yok: Kirigami.Theme kullan, böylece her renk şemasıyla uyumlu kalır.\n'
     '// Süreler taban değerdir (ms); Plasma animasyon hızı çarpanını (AnimationDurationFactor) uygulamak widget\'ın işidir.\n'
     'QtObject {\n'
-    + _qml_props('radius', {**radius, 'dock': dock_radius}) + '\n'
+    + _qml_props('radius', radius) + '\n'
     + _qml_props('space', {k: v for k, v in spacing.items() if k in ('xs', 'sm', 'md', 'lg', 'xl')}) + '\n'
     + '    readonly property real borderWidth: ' + str(spacing.get('borderWidth', 1)) + '\n'
     + '    readonly property real popupPadding: ' + str(spacing.get('popupPadding', 12)) + '\n'

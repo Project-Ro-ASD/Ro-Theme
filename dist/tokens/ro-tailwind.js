@@ -105,8 +105,7 @@ module.exports = {
         "widget": 18,
         "window": 12,
         "xs": 4,
-        "titleButton": 6,
-        "dock": 24.0
+        "titleButton": 6
       },
       "spacing": {
         "xs": 4,
@@ -115,8 +114,6 @@ module.exports = {
         "lg": 16,
         "xl": 24,
         "panelHeight": 44,
-        "dockHeight": 48,
-        "dockIconSize": 28,
         "panelMargin": 8,
         "popupPadding": 12,
         "titlebarHeight": 36,

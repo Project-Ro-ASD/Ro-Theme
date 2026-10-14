@@ -93,7 +93,7 @@ Project Ro-ASD. Hangi dosyanın hangi lisansta olduğu ve tasarımcılar: [`LICE
 ## Notlar
 
 Color scheme sadece uygulama/klasör/pencere renk paletini değiştirir. Plasma style
-panel, dock, popup ve widget yüzeylerinin görünümünü belirler. Global theme ise
+panel, popup ve widget yüzeylerinin görünümünü belirler. Global theme ise
 color scheme + Plasma style + layout + wallpaper bağlantısını beraber uygular.
 
 Kilit ekranı için özel `LockScreen.qml` kullanılmaz. Bu, KDE'nin güvenli screen
