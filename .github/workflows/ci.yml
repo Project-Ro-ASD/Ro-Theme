@@ -50,6 +50,7 @@ jobs:
             python3 \
             rpm \
             rpm-build \
+            rpmlint \
             sed \
             tar \
             util-linux
@@ -95,3 +96,10 @@ jobs:
 
           echo "Validated: $(basename "$BIN_RPM")"
           echo "Validated: $(basename "$SRC_RPM")"
+
+      - name: rpmlint report (advisory, like Ro-Repo)
+        run: |
+          set -uo pipefail
+          # PKG-06: Ro-Repo rpmlint'i bilgi amaçlı çalıştırır, kabulü engellemez; burada da yalnızca rapor.
+          rpmlint build/rpmbuild/RPMS/noarch/ro-theme-*.noarch.rpm build/rpmbuild/SRPMS/ro-theme-*.src.rpm || true
+

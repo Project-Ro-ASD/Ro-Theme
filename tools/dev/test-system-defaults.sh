@@ -8,6 +8,8 @@ set -euo pipefail
 #   2. Kendi kdeglobals'ı olan kullanıcı: kurulum dosyasını değiştirmez.
 #   3. Yöneticinin değiştirdiği /etc/xdg/kdeglobals yeniden kurulumda korunur.
 #   4. Eski sürümden yükseltme (SYS-08): autostart kalkar, yeni varsayılanlar gelir, kullanıcı dosyası değişmez.
+#   5. Kaldırma (PKG-13): dosyalar gider, yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak kalır.
+#   6. Bağımlılık çözümü (PKG-13, Ro-Repo dependency-solve): Fedora 44 depolarından, kurmadan.
 #
 # Paketler bağımlılıksız (--nodeps) kurulur: test yalnızca dosya ve betik davranışına bakar. Ayar okumak için
 # test imajına kf6-kconfig kurulur (eski sürümün %post'u da kwriteconfig6 kullanıyordu).
@@ -83,6 +85,28 @@ case "$1" in
     fi
     [[ "$(cat /home/eski/.config/kdeglobals 2>/dev/null | sha256sum)" == "$user_before" ]] && pass "user files untouched by the upgrade" || fail "upgrade changed user files"
     ;;
+  remove)
+    # PKG-13: kaldırma. Paket dosyaları gider; yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak korunur.
+    rpm -i --nodeps /work/new.rpm >/dev/null 2>&1 || fail "install new package"
+    printf '\n[Ro-Test]\nAdminKey=1\n' >> /etc/xdg/kdeglobals
+    rpm -e --nodeps ro-theme >/dev/null 2>&1 || fail "remove package"
+    rpm -q ro-theme >/dev/null 2>&1 && fail "package still installed" || pass "package removed"
+    left="$(find /usr/share/plasma/look-and-feel/org.ro.dark /usr/share/plasma/desktoptheme/RoDark /usr/share/aurorae/themes/RoDark -type f 2>/dev/null | wc -l)"
+    [[ "$left" == "0" ]] && pass "theme files removed" || fail "$left theme files left behind"
+    [[ -f /etc/xdg/kdeglobals.rpmsave ]] && grep -q '^AdminKey=1$' /etc/xdg/kdeglobals.rpmsave \
+      && pass "admin-edited /etc/xdg/kdeglobals kept as .rpmsave" || fail "admin-edited /etc/xdg/kdeglobals lost on removal"
+    [[ ! -e /etc/xdg/kwinrc ]] && pass "unmodified /etc/xdg files removed" || fail "unmodified /etc/xdg/kwinrc left behind"
+    ;;
+  deps)
+    # PKG-13 / Ro-Repo dependency-solve: bütün bağımlılıklar Fedora 44 depolarından çözülebilir (kurmadan).
+    out="$(dnf -y install --assumeno /work/new.rpm 2>&1)"
+    if grep -qiE "nothing provides|conflicting requests|problem:" <<<"$out"; then
+      fail "dependencies do not resolve: $(grep -iE 'nothing provides|problem' <<<"$out" | head -3)"
+    else
+      pass "all dependencies resolve from the Fedora 44 repositories"
+    fi
+    grep -qE "rsms-inter-fonts" <<<"$out" && pass "weak dependency rsms-inter-fonts offered" || echo "  [INFO] rsms-inter-fonts not in the transaction"
+    ;;
 esac
 exit "$fails"
 EOS
@@ -96,7 +120,7 @@ if ! podman image exists "$IMAGE" || [[ "${RO_THEME_TEST_REBUILD:-0}" == "1" ]];
 fi
 
 total=0
-for scenario in clean user-own admin-edit upgrade; do
+for scenario in clean user-own admin-edit upgrade remove deps; do
   if [[ "$scenario" == "upgrade" && -z "$OLD_RPM" ]]; then
     echo "== $scenario: skipped (no OLD.rpm given)"
     continue

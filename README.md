@@ -75,6 +75,21 @@ makinede aynı işi kolaylaştıran `tools/dev/build-rpm.sh` yardımcısıdır.
 Sürüm artırma, tag atma ve GitHub build akışı için: `docs/release-build.md`.
 Günlük bakım ve pratik proje notları için: `docs/project-notes.md`.
 
+## Pakete Giren Araçlar
+
+`tools/dev/` pakete girmez. RPM'le gelen araçlar:
+
+| Komut | Ne yapar |
+|---|---|
+| `ro-theme-diagnose [--system\|--local]` | Ro dosyalarının kurulu olup olmadığını ve kullanıcının etkin tema ayarlarını raporlar; hiçbir şeyi değiştirmez |
+| `/usr/libexec/ro-theme/apply-dark-defaults [--dry-run]` | Kullanıcının **kendisi çalıştırdığında**, `~/.config` içindeki Ro'nun yönettiği görünüm anahtarlarını siler; sistem varsayılanı (`/etc/xdg`) geçerli olur. Önce `~/.config/ro-theme/backup-<tarih>/` altına yedek alır; başka kullanıcılara dokunmaz |
+| `/usr/libexec/ro-theme/check-plasma-runtime` | Panel yerleşimini uygulamadan önce gerekli Plasma widget'larının kurulu olduğunu denetler |
+
+## Lisans
+
+Kod ve üretilen dosyalar `GPL-3.0-or-later`; elle hazırlanmış görseller ve logo `CC-BY-SA-4.0`. Telif sahibi
+Project Ro-ASD. Hangi dosyanın hangi lisansta olduğu ve tasarımcılar: [`LICENSES/ASSETS.md`](LICENSES/ASSETS.md).
+
 ## Notlar
 
 Color scheme sadece uygulama/klasör/pencere renk paletini değiştirir. Plasma style

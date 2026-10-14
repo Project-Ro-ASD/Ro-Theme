@@ -29,7 +29,7 @@ trap 'rm -rf "$STAGE_ROOT"' EXIT
 STAGE="$STAGE_ROOT/$NAME-$VERSION"
 mkdir -p "$STAGE"
 
-for item in .github assets core dist docs platform scripts tools packaging README.md LICENSE VERSION; do
+for item in .github assets core dist docs platform scripts tools packaging README.md LICENSE LICENSES VERSION; do
   cp -a "$item" "$STAGE/"
 done
 

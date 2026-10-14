@@ -2,8 +2,9 @@ Name:           ro-theme
 Version:        1.0.1
 Release:        2%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
-License:        GPL-3.0-or-later
-URL:            https://ro-theme.local
+# PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
+License:        GPL-3.0-or-later AND CC-BY-SA-4.0
+URL:            https://github.com/Project-Ro-ASD/Ro-Theme
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 
@@ -12,18 +13,18 @@ BuildRequires:  python3
 
 Requires:       bash
 Requires:       coreutils
+# PKG-05: kf6-kpackage, kf6-kservice ve plasma-workspace-libs plasma-workspace ile zaten geliyor.
+# kf6-kconfig: paketteki apply-dark-defaults ve diagnose kwriteconfig6/kreadconfig6 kullanıyor.
 Requires:       kf6-kconfig
-Requires:       kf6-kpackage
-Requires:       kf6-kservice
 Requires:       aurorae
 Requires:       plasma-desktop
 Requires:       plasma-workspace
-Requires:       plasma-workspace-libs
 Requires:       plasma-login-manager
+# FNT-04: pencere başlığı Inter SemiBold; yoksa Noto Sans'a düşer (FNT-08).
+Recommends:     rsms-inter-fonts
 Requires:       util-linux
 Requires(post): bash
 Requires(post): coreutils
-Requires(post): kf6-kconfig
 Requires(post): util-linux
 Requires(post): plymouth
 Requires(post): plymouth-plugin-script
@@ -36,9 +37,16 @@ Requires:       dracut
 Requires:       grubby
 
 %description
-Ro Desktop için KDE Plasma global theme, Plasma style, color scheme,
-KWin efekti, Plymouth boot teması, GTK stili,
-icon/cursor tanımları ve tanı araçlarını içeren tema paketi.
+Ro Desktop theme for KDE Plasma: Ro Light and Ro Dark global themes, Plasma
+styles, color schemes, the Ro Aurorae window decoration, the panel layout,
+the Plymouth boot theme, the Ro GTK style, icon and cursor definitions, system
+appearance defaults and diagnostic tools.
+
+%description -l tr
+KDE Plasma için Ro masaüstü teması: Ro Açık ve Ro Koyu global temaları, Plasma
+stilleri, renk şemaları, Ro Aurorae pencere dekorasyonu, panel yerleşimi,
+Plymouth açılış teması, Ro GTK stili, ikon ve imleç tanımları, sistem görünüm
+varsayılanları ve tanı araçları.
 
 %prep
 %autosetup -n %{name}-%{version}
@@ -100,8 +108,8 @@ install -Dm0755 scripts/apply-dark-defaults.sh %{buildroot}%{_libexecdir}/ro-the
 install -Dm0755 scripts/check-plasma-runtime.sh %{buildroot}%{_libexecdir}/ro-theme/check-plasma-runtime
 install -Dm0755 scripts/diagnose.sh %{buildroot}%{_bindir}/ro-theme-diagnose
 
-# Sistem varsayılanları üreticiden gelir (platform/plasma/defaults/xdg); %config(noreplace) ile kurulur.
-# %post bu dosyalara ve kullanıcı dosyalarına yazmaz (DEFAULTS-OWNERSHIP-V1).
+# Sistem varsayılanları üreticiden gelir (platform/plasma/defaults/xdg); %%config(noreplace) ile kurulur.
+# %%post bu dosyalara ve kullanıcı dosyalarına yazmaz (DEFAULTS-OWNERSHIP-V1).
 for f in kdeglobals kcmfonts breezerc plasmarc ksplashrc kscreenlockerrc kwinrc; do
   install -Dm0644 "platform/plasma/defaults/xdg/$f" "%{buildroot}%{_sysconfdir}/xdg/$f"
 done
@@ -169,8 +177,8 @@ exit 0
 
 %files
 %defattr(-,root,root,-)
-%license LICENSE
-%doc README.md docs
+%license LICENSE LICENSES/CC-BY-SA-4.0.txt LICENSES/ASSETS.md
+%doc README.md
 %{_datadir}/color-schemes/RoLight.colors
 %{_datadir}/color-schemes/RoDark.colors
 %{_datadir}/plasma/desktoptheme/RoLight
