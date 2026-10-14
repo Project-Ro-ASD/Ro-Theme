@@ -1,6 +1,6 @@
 Name:           ro-theme
-Version:        1.0.1
-Release:        2%{?dist}
+Version:        1.1.0
+Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
 License:        GPL-3.0-or-later AND CC-BY-SA-4.0
@@ -215,6 +215,29 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Wed Oct 14 2026 Project Ro-ASD <contact@roasd.org> - 1.1.0-1
+- Defaults: /etc/xdg files shipped as %%config(noreplace); the package no longer writes user
+  or system configuration in scriptlets; global themes and /etc/xdg are checked to agree.
+- Colors: Ro palette from the logo hue, per-set roles, visible inactive selection and
+  alternate rows; glass opacity 85% from a single token.
+- Plasma style: Ro-drawn line edit, buttons, list highlight, scrollbar, checkbox, radio,
+  switch, slider, popup header/footer, tooltip, task indicators, busy indicator, tab bar,
+  progress bar, separators, frames, arrows and the panel background (solid variant too).
+- Window decoration: Ro Aurorae (v2) is the default; soft window shadow, rounded-square
+  buttons, red close; Turkish names; button layout M / IAX.
+- Panel: single floating bottom bar from tokens (launcher, centred tasks, tray, clock in
+  Noto Sans SemiBold); ro-launcher when installed, Kickoff otherwise; the layout template
+  no longer removes panels; wallpaper path works for RPM installs.
+- Application style: Breeze settings (no tree lines, no toolbar separators, no slider ticks,
+  120 ms animations), no icons on push buttons.
+- KWin: KDE default effects; the custom JavaScript window effect is removed; adaptive
+  transparency on.
+- Fonts: Noto Sans roles, Inter SemiBold window titles (Recommends rsms-inter-fonts), DPI.
+- Global themes: previews, Turkish metadata, automatic light/dark pair.
+- Ro Icons for Dolphin; RoTokens.qml for Ro widgets.
+- Packaging: License GPL-3.0-or-later AND CC-BY-SA-4.0, repository URL, fewer
+  dependencies, README-only docs, rpmlint report, weekly Fedora 44 check.
+
 * Fri Aug 28 2026 Project Ro-ASD <contact@roasd.org> - 1.0.1-2
 - Rebuild for Fedora 44 and Plasma Login Manager.
 - Remove the legacy SDDM theme and provide only the Ro login wallpaper default.

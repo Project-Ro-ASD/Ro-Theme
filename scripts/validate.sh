@@ -559,8 +559,8 @@ check_json platform/plasma/desktoptheme/RoLight/metadata.json
 check_json platform/plasma/desktoptheme/RoDark/metadata.json
 check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"Id": "RoLight"' "RoLight desktoptheme id"
 check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"Id": "RoDark"' "RoDark desktoptheme id"
-check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"Version": "1.0.1"' "RoLight desktoptheme version"
-check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"Version": "1.0.1"' "RoDark desktoptheme version"
+check_contains platform/plasma/desktoptheme/RoLight/metadata.json "\"Version\": \"$(tr -d '[:space:]' < VERSION)\"" "RoLight desktoptheme version matches VERSION"
+check_contains platform/plasma/desktoptheme/RoDark/metadata.json "\"Version\": \"$(tr -d '[:space:]' < VERSION)\"" "RoDark desktoptheme version matches VERSION"
 check_contains platform/plasma/desktoptheme/RoLight/metadata.json '"License": "GPL-3.0-or-later"' "RoLight desktoptheme license"
 check_contains platform/plasma/desktoptheme/RoDark/metadata.json '"License": "GPL-3.0-or-later"' "RoDark desktoptheme license"
 check_file platform/plasma/desktoptheme/RoLight/colors
