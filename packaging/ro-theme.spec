@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.1
+Version:        1.1.2
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -215,6 +215,11 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Wed Oct 14 2026 Project Ro-ASD <contact@roasd.org> - 1.1.2-1
+- Release workflow: create the draft release through the API and use its id for asset
+  upload and publishing; a new draft is listed without its tag at first, so v1.1.1 stopped
+  before publishing. No theme changes since 1.1.0.
+
 * Wed Oct 14 2026 Project Ro-ASD <contact@roasd.org> - 1.1.1-1
 - Release workflow: install git and mark the workspace safe before the tag check in the
   Fedora container; v1.1.0 was tagged but never published because of this.
