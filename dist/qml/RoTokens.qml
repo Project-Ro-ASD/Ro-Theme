@@ -17,7 +17,6 @@ QtObject {
     readonly property real radiusWindow: 12
     readonly property real radiusXs: 4
     readonly property real radiusTitleButton: 6
-    readonly property real radiusDock: 24.0
     readonly property real spaceXs: 4
     readonly property real spaceSm: 8
     readonly property real spaceMd: 12

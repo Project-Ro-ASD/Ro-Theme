@@ -285,9 +285,10 @@ def positive(values, key):
     return value
 
 try:
-    for values, key in [(radius, 'dock'), (spacing, 'shadowSize'), (opacity, 'shadow')]:
+    # 07 PAN-01 B: dock yok, tek bar (spacing.panelHeight); TOK-09/10: popup gölgesi yok.
+    for values, key in [(radius, 'dock'), (spacing, 'dockHeight'), (spacing, 'dockIconSize'), (spacing, 'shadowSize'), (opacity, 'shadow')]:
         if key in values:
-            errors.append(f'obsolete token {key}: dock radius is derived and shadows are disabled (TOK-02d/09/10)')
+            errors.append(f'obsolete token {key} (no dock since PAN-01 B; no popup shadows, TOK-09/10)')
     minimum = positive(radius, 'sm')
     popup = positive(radius, 'popup')
     padding = positive(spacing, 'popupPadding')
@@ -309,14 +310,9 @@ try:
     hover = positive(opacity, 'hover')
     if not 0.08 <= hover <= 0.14:
         errors.append(f'opacity.hover ({hover}) must be a neutral overlay intensity between 0.08 and 0.14')
-    dock_radius = positive(spacing, 'dockHeight') / 2
-    css = Path('dist/tokens/ro-colors.css').read_text()
-    qml = Path('dist/qml/RoTokens.qml').read_text()
-    tailwind = Path('dist/tokens/ro-tailwind.js').read_text().removeprefix('module.exports = ').removesuffix(';\n')
-    derived = json.loads(tailwind)['theme']['extend']['borderRadius']['dock']
-    if (f'--ro-radius-dock: {dock_radius:g}px;' not in css
-            or f'readonly property real radiusDock: {dock_radius}\n' not in qml or derived != dock_radius):
-        errors.append('CSS/QML/Tailwind dock radius must equal spacing.dockHeight / 2; run scripts/generate-theme.sh')
+    for path in ('dist/tokens/ro-colors.css', 'dist/qml/RoTokens.qml', 'dist/tokens/ro-tailwind.js'):
+        if re.search(r'(?i)dock', Path(path).read_text()):
+            errors.append(f'{path} still exports dock tokens; run scripts/generate-theme.sh')
 
     paths = [
         Path('platform/plasma/layout-templates/org.ro.desktop/contents/layout.js'),
@@ -337,7 +333,7 @@ PY
 )"; then
     fail "token geometry and layout: $report"
   else
-    ok "token geometry, neutral hover and generated panel/dock heights"
+    ok "token geometry, neutral hover and generated panel height"
   fi
 }
 
