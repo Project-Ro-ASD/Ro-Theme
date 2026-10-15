@@ -114,6 +114,28 @@ for f in kdeglobals kcmfonts breezerc plasmarc ksplashrc kscreenlockerrc kwinrc;
   install -Dm0644 "platform/plasma/defaults/xdg/$f" "%{buildroot}%{_sysconfdir}/xdg/$f"
 done
 
+# Aynı görselin uyumluluk yollarını koru; yalnızca birebir aynı dosyaları buildroot'ta bağla.
+# Kaynak görseller değişmez. Farklı açık/koyu içerikler ve sembolik bağlantılar birleştirilmez.
+python3 - "%{buildroot}%{_datadir}" <<'PY'
+import hashlib
+import os
+from pathlib import Path
+import sys
+
+root = Path(sys.argv[1])
+seen = {}
+for folder in ('wallpapers', 'ro-theme/wallpapers', 'plasma/look-and-feel'):
+    for path in sorted((root / folder).rglob('*')):
+        if path.is_symlink() or not path.is_file() or path.suffix not in ('.jpg', '.png'):
+            continue
+        key = (path.stat().st_mode, hashlib.sha256(path.read_bytes()).digest())
+        if key in seen:
+            path.unlink()
+            os.link(seen[key], path)
+        else:
+            seen[key] = path
+PY
+
 %post
 set +e
 
