@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.3
+Version:        1.1.4
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -250,6 +250,14 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Thu Oct 15 2026 Project Ro-ASD <contact@roasd.org> - 1.1.4-1
+- Task manager: group indicator (accent circle with a plus) for applications
+  with several windows.
+- Developer tools: local theme switching keeps the Ro window decoration;
+  diagnose checks it against the global theme defaults; safer appearance
+  reset backups, local install and system preview error handling; RPM build
+  output selection and paths validated.
+
 * Thu Oct 15 2026 Project Ro-ASD <contact@roasd.org> - 1.1.3-1
 - Boot splash: two-step Plymouth theme with the Ro animation; password prompt,
   Caps Lock warning, update progress and the firmware logo now shown.
