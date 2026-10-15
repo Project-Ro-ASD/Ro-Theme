@@ -669,6 +669,11 @@ else
 fi
 
 section "GTK, Icons, Cursor"
+if python3 scripts/validate-assets.py; then
+  ok "asset syntax, symlink targets and icon directories"
+else
+  fail "invalid packaged assets"
+fi
 check_file platform/gtk/Ro-GTK/gtk-3.0/gtk.css
 check_file platform/gtk/Ro-GTK/gtk-4.0/gtk.css
 check_file platform/icons/ro-icons/index.theme
