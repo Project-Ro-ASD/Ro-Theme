@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Yerel uygulama ve tanının üretilmiş dekorasyon kararını izlemesini sınar."""
+"""Yerel uygulama/tanı uyumunu ve gerekli bileşen dosyalarının denetimini sınar."""
 import json
 import os
 from pathlib import Path
@@ -59,6 +59,23 @@ class ThemeDecoration(unittest.TestCase):
                 path = self.home / ".local/share" / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.touch()
+        self.component_files = [self.home / relative for relative in (
+            ".local/share/ro-theme/qml/RoTokens.qml",
+            ".local/share/plasma/layout-templates/org.ro.desktop/metadata.json",
+            ".local/share/plasma/layout-templates/org.ro.desktop/contents/layout.js",
+            ".themes/Ro-GTK/gtk-3.0/gtk.css", ".themes/Ro-GTK/gtk-4.0/gtk.css",
+            ".local/share/icons/ro-icons/index.theme",
+            ".local/share/icons/ro-icons/apps/scalable/org.kde.dolphin.svg",
+            ".local/share/icons/ro-icons/places/16/folder.svg",
+            ".local/share/icons/ro-cursor/index.theme",
+        )]
+        for name in ("RoLight", "RoDark"):
+            self.component_files.extend(self.home / f".local/share/aurorae/themes/{name}/{file}"
+                                        for file in ("metadata.desktop", f"{name}rc", "decoration.svg",
+                                                     "close.svg", "minimize.svg", "maximize.svg", "restore.svg"))
+        for path in self.component_files:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("fixture\n")
         self.stub("kreadconfig6", '''
 import configparser
 args = sys.argv[1:]
@@ -191,6 +208,69 @@ with open(os.environ["RO_TEST_CALLS"], "a") as log:
         self.env["RO_TEST_READER_FAIL"] = "1"
         result = self.run_script("scripts/diagnose.sh", "--local")
         self.assertIn("cannot read KWin decoration defaults", result.stderr)
+
+    def test_diagnosis_reports_each_missing_component_file(self):
+        self.set_active("dark")
+        for path in self.component_files:
+            with self.subTest(path=path.relative_to(self.home)):
+                content = path.read_bytes()
+                path.unlink()
+                try:
+                    result = self.run_script("scripts/diagnose.sh", "--local")
+                    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                    self.assertIn(f"[FAIL] missing or unreadable file: {path}", result.stderr)
+                finally:
+                    path.write_bytes(content)
+        self.assertEqual(self.calls.read_text(), "")
+
+    def test_diagnosis_rejects_directory_instead_of_required_file(self):
+        self.set_active("dark")
+        path = self.home / ".local/share/color-schemes/RoDark.colors"
+        path.unlink()
+        path.mkdir()
+        result = self.run_script("scripts/diagnose.sh", "--local")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(f"[FAIL] missing or unreadable file: {path}", result.stderr)
+
+    def test_diagnosis_rejects_broken_component_link(self):
+        self.set_active("dark")
+        path = self.component_files[0]
+        path.unlink()
+        path.symlink_to("not-installed.qml")
+        result = self.run_script("scripts/diagnose.sh", "--local")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(str(path), result.stderr)
+
+    def test_diagnosis_accepts_readable_component_link(self):
+        self.set_active("dark")
+        path = self.component_files[0]
+        target = path.with_name("real-tokens.qml")
+        path.rename(target)
+        path.symlink_to(target.name)
+        result = self.run_script("scripts/diagnose.sh", "--local")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_diagnosis_rejects_dangling_forbidden_override(self):
+        self.set_active("dark")
+        path = self.home / ".local/share/plasma/look-and-feel/org.ro.light/contents/lockscreen/LockScreen.qml"
+        path.symlink_to("not-installed.qml")
+        result = self.run_script("scripts/diagnose.sh", "--local")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(f"Unsafe custom light lockscreen override still exists: {path}", result.stderr)
+
+    def test_diagnosis_leaves_files_and_settings_unchanged(self):
+        self.set_active("dark")
+        config = self.home / ".config/kdeglobals"
+        config.parent.mkdir()
+        config.write_text("[Personal]\nKeep=1\n")
+        def snapshot():
+            return {str(path.relative_to(self.home)): (path.read_bytes(), path.stat().st_mode, path.stat().st_mtime_ns)
+                    for path in self.home.rglob("*") if path.is_file()}
+        before = snapshot()
+        result = self.run_script("scripts/diagnose.sh", "--local")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(snapshot(), before)
+        self.assertEqual(self.calls.read_text(), "")
 
 
 if __name__ == "__main__":

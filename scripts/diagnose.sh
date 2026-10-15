@@ -81,17 +81,17 @@ check_any_command() {
 
 check_file() {
   local path="$1"
-  if [[ -e "$path" ]]; then
+  if [[ -f "$path" && -r "$path" ]]; then
     ok "$path"
   else
-    fail "missing: $path"
+    fail "missing or unreadable file: $path"
   fi
 }
 
 check_absent() {
   local path="$1"
   local reason="$2"
-  if [[ -e "$path" ]]; then
+  if [[ -e "$path" || -L "$path" ]]; then
     fail "$reason still exists: $path"
   else
     ok "$reason removed: $path"
@@ -100,13 +100,36 @@ check_absent() {
 
 check_system_preview_file() {
   local path="$1"
-  if [[ -e "$path" ]]; then
+  if [[ -f "$path" && -r "$path" ]]; then
     ok "$path"
   elif [[ "$MODE" = "system" ]]; then
-    fail "missing: $path"
+    fail "missing or unreadable file: $path"
   else
-    warn "missing system preview file: $path"
+    warn "missing or unreadable system preview file: $path"
   fi
+}
+
+check_component_files() {
+  local share_dir="$1"
+  local gtk_dir="$2"
+  local theme file
+
+  # Yerel kurulum ve RPM aynı bileşen dosyalarını sağlar; yalnız kurulum kökleri farklıdır.
+  check_file "$share_dir/ro-theme/qml/RoTokens.qml"
+  check_file "$share_dir/plasma/layout-templates/org.ro.desktop/metadata.json"
+  check_file "$share_dir/plasma/layout-templates/org.ro.desktop/contents/layout.js"
+  for theme in RoLight RoDark; do
+    for file in metadata.desktop "${theme}rc" decoration.svg close.svg minimize.svg maximize.svg restore.svg; do
+      check_file "$share_dir/aurorae/themes/$theme/$file"
+    done
+  done
+  check_file "$gtk_dir/Ro-GTK/gtk-3.0/gtk.css"
+  check_file "$gtk_dir/Ro-GTK/gtk-4.0/gtk.css"
+  check_file "$share_dir/icons/ro-icons/index.theme"
+  check_file "$share_dir/icons/ro-icons/apps/scalable/org.kde.dolphin.svg"
+  check_file "$share_dir/icons/ro-icons/places/16/folder.svg"
+  # CUR-01/02 kararı açık: mevcut pakette yalnız tanım var; yeni imleç varlıkları zorunlu tutulmaz.
+  check_file "$share_dir/icons/ro-cursor/index.theme"
 }
 
 check_same_file_if_present() {
@@ -180,6 +203,7 @@ if [[ "$MODE" = "local" ]]; then
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg"
   check_file "$HOME/.local/share/ro-theme/wallpapers/dark.jpg"
   check_file "$HOME/.local/share/ro-theme/wallpapers/light.jpg"
+  check_component_files "$HOME/.local/share" "$HOME/.themes"
   check_absent "$HOME/.local/share/plasma/desktoptheme/Ro" "Old Ro compatibility desktoptheme"
   check_absent "$HOME/.local/share/plasma/look-and-feel/org.ro.global" "Old Ro compatibility global theme"
 
@@ -215,6 +239,9 @@ else
   check_file /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
   check_file /usr/share/plymouth/themes/ro-theme/ro-theme.plymouth
   check_file /usr/bin/ro-theme-diagnose
+  check_file /usr/libexec/ro-theme/apply-dark-defaults
+  check_file /usr/libexec/ro-theme/check-plasma-runtime
+  check_component_files /usr/share /usr/share/themes
   check_absent /usr/share/plasma/desktoptheme/Ro "Old Ro compatibility desktoptheme"
   check_absent /usr/share/plasma/look-and-feel/org.ro.global "Old Ro compatibility global theme"
 fi
