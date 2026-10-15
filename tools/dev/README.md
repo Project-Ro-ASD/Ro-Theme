@@ -11,7 +11,9 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `build-rpm.sh`: Kaynak arşivi ve RPM üretir; spec'in bildirdiği yeni noarch çıktıyı test eder.
   `RPMBUILD_TOPDIR` göreli verilirse depo köküne göre mutlaklaştırılır. `FEDORA_RELEASE` sorgu
   ve derlemeye aynı şekilde aktarılır; başka sürümdeki eski RPM'ler çıktı olarak seçilmez.
-- `test-rpm.sh`: Oluşan RPM dosyasını kurmadan önce denetler.
+- `test-rpm.sh [RPM_PATH] [--verify-installed]`: Oluşan RPM dosyasını kurmadan önce denetler.
+  Yol verilmezse depo `build/rpmbuild/RPMS` ve `~/rpmbuild/RPMS` içindeki en yeni
+  `ro-theme-*.noarch.rpm` seçilir; göreli yol çağıranın çalışma dizinine göre yorumlanır.
 - `test-system-defaults.sh NEW.rpm [OLD.rpm]`: Fedora konteynerlerinde kurulum, kullanıcı/yönetici ayarı,
   yükseltme (`.rpmnew` dahil), kaldırma, Plymouth ve bağımlılık senaryolarını çalıştırır.
 - `check-rpm-dependencies.sh NEW.rpm`: Temiz Fedora test konteynerinde bağımlılıkları kurmadan çözer;
@@ -28,6 +30,9 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
   Root çalıştırılan CI'da betik yetkisiz UID ile denenir; canlı kullanıcı ayarlarına dokunmaz.
 - `test-local-install.py`: Yerel kurulumun zorunlu dosya kopyalama/tema uygulama hatalarını
   başarısız saymasını ve `--files-only` seçeneğinin uygulama adımını atlamasını sınar.
+- `test-rpm-selection.py`: İki derleme dizini arasında en yeni noarch paket seçimini,
+  boşluk içeren/göreli yolları ve komut seçeneklerini geçici RPM komut taklidiyle sınar.
+  Gerçek RPM içeriği ve işlem kontrolü CI'ın derleme adımında ayrıca çalışır.
 - `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesi yapar.
 
 Kısa yerel test:

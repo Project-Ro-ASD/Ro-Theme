@@ -5,17 +5,35 @@ set -euo pipefail
 # Hata olursa komut, çıkış kodu ve yakalanan çıktı birlikte gösterilir.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-cd "$ROOT"
-
-RPM_PATH="${1:-}"
+RPM_PATH=""
 VERIFY_INSTALLED=0
 
-if [[ "${2:-}" = "--verify-installed" || "${1:-}" = "--verify-installed" ]]; then
-  VERIFY_INSTALLED=1
-  if [[ "$RPM_PATH" = "--verify-installed" ]]; then
-    RPM_PATH=""
-  fi
+usage() {
+  echo "Usage: $0 [RPM_PATH] [--verify-installed]"
+  echo "Without RPM_PATH, test the newest ro-theme noarch RPM across build/rpmbuild/RPMS and ~/rpmbuild/RPMS."
+}
+
+for arg in "$@"; do
+  case "$arg" in
+    --verify-installed) VERIFY_INSTALLED=1 ;;
+    -h|--help) usage; exit 0 ;;
+    -*) echo "Unknown argument: $arg" >&2; usage >&2; exit 2 ;;
+    *)
+      if [[ -n "$RPM_PATH" ]]; then
+        echo "Only one RPM path may be supplied." >&2
+        usage >&2
+        exit 2
+      fi
+      RPM_PATH="$arg"
+      ;;
+  esac
+done
+
+# Göreli yol çağıranın çalışma dizinine aittir; depoya cd edildikten sonra yorumlanmaz.
+if [[ -n "$RPM_PATH" && "$RPM_PATH" != /* ]]; then
+  RPM_PATH="$PWD/$RPM_PATH"
 fi
+cd "$ROOT"
 
 errors=0
 
@@ -33,17 +51,18 @@ fail() {
 }
 
 latest_rpm() {
-  local candidate=""
+  local dirs=()
   local dir
 
   for dir in "$ROOT/build/rpmbuild/RPMS" "$HOME/rpmbuild/RPMS"; do
-    [[ -d "$dir" ]] || continue
-    while IFS= read -r path; do
-      candidate="$path"
-    done < <(find "$dir" -type f -name 'ro-theme-*.rpm' -printf '%T@ %p\n' 2>/dev/null | sort -n | sed 's/^[^ ]* //')
+    [[ ! -d "$dir" ]] || dirs+=("$dir")
   done
 
-  echo "$candidate"
+  if (( ${#dirs[@]} )); then
+    # İki dizinin adaylarını birlikte sırala; kaynak RPM'leri ve başka mimarileri seçme.
+    find "${dirs[@]}" -type f -name 'ro-theme-*.noarch.rpm' -printf '%T@ %p\n' \
+      | sort -n | tail -n 1 | sed 's/^[^ ]* //'
+  fi
 }
 
 run_capture() {
@@ -84,8 +103,8 @@ if [[ -z "$RPM_PATH" ]]; then
 fi
 
 if [[ -z "$RPM_PATH" || ! -f "$RPM_PATH" ]]; then
-  echo "Usage: $0 /path/to/ro-theme.rpm [--verify-installed]" >&2
-  echo "No RPM path was given and no built ro-theme RPM was found under build/rpmbuild/RPMS or ~/rpmbuild/RPMS." >&2
+  usage >&2
+  echo "RPM file not found. Supply a path or build a ro-theme noarch RPM under build/rpmbuild/RPMS or ~/rpmbuild/RPMS." >&2
   exit 2
 fi
 
