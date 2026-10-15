@@ -15,6 +15,9 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
   DNF işlem özetini ve beklenen `--assumeno` iptalini doğrular. Ağ/depo hataları başarı sayılmaz.
 - `test-asset-validation.py`, `test-dependency-check.py`: Bozuk varlıklar ve DNF hata durumları için
   CI'da da çalıştırılan regresyon testleri. `python3 tools/dev/<dosya>` ile çalışır.
+- `test-theme-decoration.py`: Yerel açık/koyu geçişinin ve tanı aracının üretilmiş global tema
+  dekorasyonunu izlemesini sınar. Eksik defaults/okuyucu durumunda uygulama ayar yazmadan durur.
+  Testler geçici kullanıcı dizinleri ve yalıtılmış komut taklitleri kullanır; canlı oturuma erişmez.
 - `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesi yapar.
 
 Kısa yerel test:
