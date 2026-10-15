@@ -10,7 +10,9 @@ cd "$ROOT"
 
 NAME="ro-theme"
 VERSION="$(tr -d '[:space:]' < VERSION)"
-TOPDIR="${RPMBUILD_TOPDIR:-$ROOT/build/rpmbuild}"
+# rpmbuild hazırlık sırasında kendi dizinlerine cd eder; _topdir mutlak olmalıdır.
+# Göreli özelleştirme, önceki davranış gibi depo köküne göre değerlendirilir.
+TOPDIR="$(realpath -m -- "${RPMBUILD_TOPDIR:-$ROOT/build/rpmbuild}")"
 SOURCE_DIR="$TOPDIR/SOURCES"
 SPEC_FILE="$ROOT/packaging/ro-theme.spec"
 FEDORA_RELEASE="${FEDORA_RELEASE:-44}"
@@ -36,23 +38,30 @@ done
 tar -czf "$SOURCE_DIR/$NAME-$VERSION.tar.gz" -C "$STAGE_ROOT" "$NAME-$VERSION"
 echo "Source tarball ready: $SOURCE_DIR/$NAME-$VERSION.tar.gz"
 
-if ! command -v rpmbuild >/dev/null 2>&1; then
-  echo "rpmbuild command not found. Fedora/RHEL için: sudo dnf install -y rpm-build dracut plymouth plymouth-plugin-two-step" >&2
-  echo "After installing rpm-build, rerun: ./tools/dev/build-rpm.sh" >&2
-  exit 2
+for rpm_tool in rpmbuild rpmspec; do
+  if ! command -v "$rpm_tool" >/dev/null 2>&1; then
+    echo "$rpm_tool command not found. Install Fedora build tools: sudo dnf install -y rpm-build dracut plymouth plymouth-plugin-two-step" >&2
+    echo "After installing rpm-build, rerun: ./tools/dev/build-rpm.sh" >&2
+    exit 2
+  fi
+done
+
+RPM_MACROS=(--define "_topdir $TOPDIR" --define "_tmppath ${TMPDIR:-/tmp}" --define "dist .fc${FEDORA_RELEASE}")
+# Test edilecek çıktı aynı makrolarla spec'ten belirlenir; dosya tarihi eski bir Fedora
+# veya başka mimari paketini yeni derlemenin sonucu gibi göstermemelidir.
+RPM_FILENAME="$(rpmspec "${RPM_MACROS[@]}" --query --rpms \
+  --queryformat '%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}.rpm\n' "$SPEC_FILE")"
+if [[ "$RPM_FILENAME" == *$'\n'* || "$RPM_FILENAME" == */* || "$RPM_FILENAME" != "$NAME-$VERSION-"*.noarch.rpm ]]; then
+  echo "Expected exactly one ro-theme $VERSION noarch package from $SPEC_FILE; got: $RPM_FILENAME" >&2
+  exit 1
 fi
 
 echo "Building Fedora ${FEDORA_RELEASE} RPM..."
-rpmbuild \
-  --define "_topdir $TOPDIR" \
-  --define "_tmppath ${TMPDIR:-/tmp}" \
-  --define "dist .fc${FEDORA_RELEASE}" \
-  -ba "$SPEC_FILE"
+rpmbuild "${RPM_MACROS[@]}" -ba "$SPEC_FILE"
 
-RPM_PATH="$(find "$TOPDIR/RPMS" -type f -name "$NAME-$VERSION-*.rpm" -printf '%T@ %p\n' | sort -n | tail -n 1 | sed 's/^[^ ]* //')"
-
-if [[ -z "$RPM_PATH" || ! -f "$RPM_PATH" ]]; then
-  echo "Build finished but no RPM file was found under $TOPDIR/RPMS." >&2
+RPM_PATH="$TOPDIR/RPMS/noarch/$RPM_FILENAME"
+if [[ ! -f "$RPM_PATH" ]]; then
+  echo "Build finished but the expected RPM file was not found: $RPM_PATH" >&2
   exit 1
 fi
 
