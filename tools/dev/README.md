@@ -33,7 +33,13 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-rpm-selection.py`: İki derleme dizini arasında en yeni noarch paket seçimini,
   boşluk içeren/göreli yolları ve komut seçeneklerini geçici RPM komut taklidiyle sınar.
   Gerçek RPM içeriği ve işlem kontrolü CI'ın derleme adımında ayrıca çalışır.
-- `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesi yapar.
+- `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesini kurar;
+  masaüstü varsayılanlarını değiştirmez. Kaynak dosyalar sistem dosyalarına dokunmadan kontrol
+  edilir. Plymouth etkinleştirme hatası başarısız döner; araç yoksa yalnız dosya kurulumu bildirilir.
+  `--help` bilgi gösterir; bilinmeyen seçenekler kuruluma geçmeden reddedilir.
+- `test-system-preview.py --require-container`: Gerçek önizleme yollarında dosya korumasını ve
+  hata durumlarını sınar; root yetkili geçici Fedora konteyneri gerektirir, host üzerinde çalışmaz.
+  Plymouth komutu taklittir; gerçek initramfs/boot testi yapmaz. Önceki dosyalar test sonunda geri yüklenir.
 
 Kısa yerel test:
 
@@ -48,6 +54,11 @@ Yalnız dosyaları incelemek için `./tools/dev/install-local.sh --files-only` k
 uygulama betiği başarısız çıkarsa kurulum da başarısız döner ve komut çıktısını gösterir.
 Kopyalama sırasında hata oluşursa dosyaların bir kısmı kurulmuş olabilir; kurulum başarı mesajı
 vermez, etkin temayı uygulamaya geçmez. Hata giderildikten sonra yeniden çalıştırılabilir.
+
+Sistem önizlemesinde eksik kaynak girdisi kurulumu başlamadan durdurur. Kurulum başladıktan
+sonraki kopyalama/etkinleştirme hataları çok dosyalı geri alma yapmaz; dosyalar kurulmuş olabilir.
+Plymouth etkinleştirme hatasında tamamlandı/yeniden başlat mesajı verilmez; hata giderilip tekrar
+çalıştırılmalıdır. Gerçek açılış kabulü VM'de ayrıca yapılır.
 
 RPM derlemesi için `rpm-build` paketindeki `rpmbuild` ve `rpmspec` gerekir. Örneğin
 `RPMBUILD_TOPDIR=build/custom-rpmbuild ./tools/dev/build-rpm.sh` çıktıları repo altındaki bu

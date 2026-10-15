@@ -770,7 +770,7 @@ check_contains packaging/ro-theme.spec "plasmalogin/plasmalogin.conf.d/20-ro-the
 check_contains packaging/ro-theme.spec "wallpapers/login.jpg" "RPM Plasma Login Manager wallpaper"
 check_not_contains packaging/ro-theme.spec "tools/dev" "RPM package excludes developer tools"
 check_not_contains packaging/ro-theme.spec "%{_datadir}/sddm" "RPM excludes SDDM payload"
-check_contains tools/dev/install-system-preview.sh "--group KDE --key ColorScheme --delete" "system preview removes stale KDE ColorScheme fallback"
+check_not_contains tools/dev/install-system-preview.sh "/etc/xdg/" "system preview leaves desktop defaults untouched"
 
 section "System Defaults (/etc/xdg, DEFAULTS-OWNERSHIP-V1)"
 # 22 SYS-01/06/07/11: varsayılanlar üreticiden gelir, %config(noreplace) ile kurulur; %post ve araçlar

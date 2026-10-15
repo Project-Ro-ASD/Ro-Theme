@@ -73,6 +73,7 @@ jobs:
           python3 tools/dev/test-theme-decoration.py
           python3 tools/dev/test-asset-validation.py
           python3 tools/dev/test-dependency-check.py
+          python3 tools/dev/test-system-preview.py --require-container
           python3 tools/dev/test-appearance-reset.py
           python3 tools/dev/test-local-install.py
           python3 tools/dev/test-rpm-selection.py
