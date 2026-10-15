@@ -686,8 +686,10 @@ def _ctl_svg(content, r, rows, tokens):
 def plasma_lineedit_svg(tokens):
     # PST-22: base = View zemini + kenarlık (metin %50, >= 3:1 COL-16); hover kenar %70; focus vurgu kenarı;
     # focusframe = vurgu halkası (klavye odağı, Ro imzası, 2 × kenarlık).
-    r, b = radius['md'], spacing['borderWidth']
-    m = (spacing['xs'], spacing['xs'], spacing['sm'] + spacing['xs'], spacing['sm'] + spacing['xs'])
+    # PST-22 revize (2026-10-15): köşe düğmeyle aynı (radius.sm); üst/alt iç pay spacing.fieldPadding (Breeze yüksekliği).
+    # Kilit ve giriş ekranı şifre alanının yanına alan yüksekliğinde kare düğme koyar; iki biçim uyumlu olmalı.
+    r, b = radius['sm'], spacing['borderWidth']
+    m = (spacing['fieldPadding'], spacing['fieldPadding'], spacing['sm'] + spacing['xs'], spacing['sm'] + spacing['xs'])
     size, out, y = 2 * r + FRAME_EDGE, '', 0
     for prefix, border, bw, margins in (
         ('base', ('ColorScheme-Text', 0.5), b, m),
