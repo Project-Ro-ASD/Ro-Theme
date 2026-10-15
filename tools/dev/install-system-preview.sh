@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+  echo "Usage: $0"
+  echo "Install the Plasma Login Manager/Plymouth preview; run with sudo inside a test VM."
+}
+for arg in "$@"; do
+  case "$arg" in
+    -h|--help) usage; exit 0 ;;
+    *) echo "Unknown argument: $arg" >&2; usage >&2; exit 2 ;;
+  esac
+done
 
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run with sudo: sudo ./tools/dev/install-system-preview.sh"

@@ -36,6 +36,7 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesini kurar;
   masaüstü varsayılanlarını değiştirmez. Kaynak dosyalar sistem dosyalarına dokunmadan kontrol
   edilir. Plymouth etkinleştirme hatası başarısız döner; araç yoksa yalnız dosya kurulumu bildirilir.
+  `--help` bilgi gösterir; bilinmeyen seçenekler kuruluma geçmeden reddedilir.
 - `test-system-preview.py --require-container`: Gerçek önizleme yollarında dosya korumasını ve
   hata durumlarını sınar; root yetkili geçici Fedora konteyneri gerektirir, host üzerinde çalışmaz.
   Plymouth komutu taklittir; gerçek initramfs/boot testi yapmaz. Önceki dosyalar test sonunda geri yüklenir.

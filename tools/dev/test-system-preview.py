@@ -92,8 +92,8 @@ class SystemPreview(unittest.TestCase):
                     result[str(path)] = (path.read_bytes(), path.stat().st_mode, path.stat().st_mtime_ns)
         return result
 
-    def run_preview(self):
-        return subprocess.run([str(self.bin / "bash"), str(self.script)], env=self.env,
+    def run_preview(self, *args):
+        return subprocess.run([str(self.bin / "bash"), str(self.script), *args], env=self.env,
                               capture_output=True, text=True)
 
     def assert_desktop_defaults_preserved(self):
@@ -148,6 +148,20 @@ class SystemPreview(unittest.TestCase):
         self.assertIn("Plymouth activation was skipped", result.stdout)
         self.assertNotIn("Reboot to test", result.stdout)
         self.assert_desktop_defaults_preserved()
+        self.assertEqual(self.log.read_text(), "")
+
+    def test_help_runs_no_installation(self):
+        result = self.run_preview("--help")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Usage:", result.stdout)
+        self.assertEqual(self.snapshot(), self.before)
+        self.assertEqual(self.log.read_text(), "")
+
+    def test_unknown_option_runs_no_installation(self):
+        result = self.run_preview("--dry-run")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("Unknown argument", result.stderr)
+        self.assertEqual(self.snapshot(), self.before)
         self.assertEqual(self.log.read_text(), "")
 
 
