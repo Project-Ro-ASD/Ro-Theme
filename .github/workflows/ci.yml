@@ -72,6 +72,7 @@ jobs:
           python3 tools/dev/test-asset-validation.py
           python3 tools/dev/test-dependency-check.py
           python3 tools/dev/test-appearance-reset.py
+          python3 tools/dev/test-local-install.py
 
       - name: Build and validate RPM
         run: |
