@@ -69,6 +69,7 @@ jobs:
 
       - name: Validation regression tests
         run: |
+          python3 tools/dev/test-rpm-build.py
           python3 tools/dev/test-theme-decoration.py
           python3 tools/dev/test-asset-validation.py
           python3 tools/dev/test-dependency-check.py
