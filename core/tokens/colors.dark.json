@@ -40,5 +40,6 @@
     "negative": "#542E2A",
     "neutral": "#443616",
     "positive": "#213F2B"
-  }
+  },
+  "bootBackground": "#000000"
 }

@@ -54,7 +54,7 @@ Tam global theme layout testinde mevcut Plasma panel yerleşimi resetlenir:
 Fedora üzerinde yerel RPM almak için:
 
 ```bash
-sudo dnf install -y rpm-build dracut grubby plymouth plymouth-plugin-script
+sudo dnf install -y rpm-build dracut plymouth plymouth-plugin-two-step
 ./tools/dev/build-rpm.sh
 ```
 

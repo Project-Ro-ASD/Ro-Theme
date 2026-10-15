@@ -37,10 +37,10 @@ jobs:
       - name: Install build dependencies
         run: |
           dnf install -y --setopt=install_weak_deps=False \
-            bash coreutils diffutils dracut findutils grubby gzip grep \
+            bash coreutils diffutils dracut findutils gzip grep \
             kf6-kconfig kf6-kpackage kf6-kservice \
             plasma-desktop plasma-workspace plasma-workspace-libs plasma-login-manager \
-            plymouth plymouth-plugin-script python3 rpm rpm-build sed tar util-linux
+            plymouth plymouth-plugin-two-step python3 rpm rpm-build sed tar util-linux
 
       - name: Validate tag and build RPMs
         shell: bash

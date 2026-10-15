@@ -26,15 +26,15 @@ Requires:       util-linux
 Requires(post): bash
 Requires(post): coreutils
 Requires(post): util-linux
-Requires(post): plymouth
-Requires(post): plymouth-plugin-script
-Requires(post): dracut
-Requires(post): grubby
 Requires(postun): bash
+# 16 · PLY-01 C: açılış teması Plymouth two-step modülüyle çizilir. Çekirdek parametreleri (rhgb quiet) ve
+# initramfs üretimi kurulum programının işidir (PLY-09); paket initramfs'i yalnız gerektiğinde bir kez yeniler.
 Requires:       plymouth
-Requires:       plymouth-plugin-script
-Requires:       dracut
-Requires:       grubby
+Requires:       plymouth-plugin-two-step
+Requires(post): plymouth
+Requires(posttrans): plymouth
+Requires(posttrans): coreutils
+Requires(preun): plymouth
 
 %description
 Ro Desktop theme for KDE Plasma: Ro Light and Ro Dark global themes, Plasma
@@ -142,30 +142,43 @@ elif command -v kbuildsycoca5 >/dev/null 2>&1; then
   ro_theme_try "KDE service cache refresh" kbuildsycoca5 --noincremental || true
 fi
 
-if command -v plymouth-set-default-theme >/dev/null 2>&1; then
-  ro_theme_try "plymouth theme activation" plymouth-set-default-theme ro-theme -R || true
-elif [ -x /usr/libexec/plymouth/plymouth-set-default-theme ]; then
-  ro_theme_try "plymouth theme activation" /usr/libexec/plymouth/plymouth-set-default-theme ro-theme -R || true
-else
-  ro_theme_warn "plymouth-set-default-theme not found; Plymouth files were installed but not activated"
-fi
-
-if command -v grubby >/dev/null 2>&1; then
-  ro_theme_try "grubby rhgb quiet update" grubby --update-kernel=ALL --args="rhgb quiet" || true
-else
-  ro_theme_warn "grubby not found; rhgb quiet was not written automatically"
-fi
-
-if command -v dracut >/dev/null 2>&1; then
-  ro_theme_try "dracut initramfs regeneration" dracut -f --regenerate-all || true
-else
-  ro_theme_warn "dracut not found; initramfs was not regenerated automatically"
+# PLY-08 B: Ro açılış teması yalnız ilk kurulumda seçilir; kullanıcının sonradan seçtiği tema güncellemede ezilmez.
+# initramfs burada değil, %%posttrans'ta ve yalnız gerekiyorsa üretilir.
+if [ "$1" -eq 1 ]; then
+  ro_theme_try "plymouth theme selection" plymouth-set-default-theme ro-theme || true
 fi
 
 exit 0
 
+%posttrans
+set +e
+# PLY-08 B / PLY-10: Ro teması seçiliyse ve tema dosyaları değiştiyse initramfs bir kez (çalışan çekirdek) yenilenir.
+# Her güncellemede değil; dosyalar aynıysa hiçbir şey yapılmaz. Kurulum programı kendi initramfs'ini zaten üretir.
+if [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
+  stamp=%{_sharedstatedir}/ro-theme/plymouth.sha256
+  sum="$(cat %{_datadir}/plymouth/themes/ro-theme/* 2>/dev/null | sha256sum | cut -d' ' -f1)"
+  if [ "$sum" != "$(cat "$stamp" 2>/dev/null)" ]; then
+    if plymouth-set-default-theme -R ro-theme >/dev/null 2>&1; then
+      mkdir -p "${stamp%%/*}" && echo "$sum" > "$stamp"
+    else
+      echo "ro-theme posttrans: warning: initramfs rebuild for the Plymouth theme failed" >&2
+    fi
+  fi
+fi
+exit 0
+
+%preun
+set +e
+# Paket kaldırılırken Ro açılış teması seçiliyse dağıtım varsayılanına dönülür (tek initramfs üretimi).
+# %%postun'da değil: tema dosyaları silindikten sonra plymouth-set-default-theme seçili temayı göremez.
+if [ "$1" -eq 0 ] && [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
+  plymouth-set-default-theme --reset --rebuild-initrd >/dev/null 2>&1 || true
+fi
+exit 0
+
 %postun
 set +e
+[ "$1" -eq 0 ] && rm -rf %{_sharedstatedir}/ro-theme
 
 if command -v kbuildsycoca6 >/dev/null 2>&1; then
   kbuildsycoca6 --noincremental >/dev/null 2>&1 || true

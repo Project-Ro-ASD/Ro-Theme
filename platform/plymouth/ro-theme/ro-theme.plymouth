@@ -1,8 +1,65 @@
 [Plymouth Theme]
-Name=Ro Theme
-Description=Ro boot theme with firmware logo and small loading animation
-ModuleName=script
+Name=Ro
+Description=Ro boot splash: Ro animation under the firmware logo
+ModuleName=two-step
 
-[script]
+# scripts/generate-theme.sh tarafından üretilir (16 · PLY-01 C). Düzen Fedora spinner temasıyla aynı.
+[two-step]
+Font=Noto Sans 12
+TitleFont=Noto Sans Light 30
 ImageDir=/usr/share/plymouth/themes/ro-theme
-ScriptFile=/usr/share/plymouth/themes/ro-theme/ro-theme.script
+DialogHorizontalAlignment=.5
+DialogVerticalAlignment=.382
+TitleHorizontalAlignment=.5
+TitleVerticalAlignment=.382
+HorizontalAlignment=.5
+VerticalAlignment=.75
+WatermarkHorizontalAlignment=.5
+WatermarkVerticalAlignment=.96
+Transition=none
+TransitionDuration=0.0
+BackgroundStartColor=0x000000
+BackgroundEndColor=0x000000
+ProgressBarBackgroundColor=0x37393c
+ProgressBarForegroundColor=0x7da2e8
+MessageBelowAnimation=true
+
+[boot-up]
+UseEndAnimation=false
+UseFirmwareBackground=true
+
+[shutdown]
+UseEndAnimation=false
+UseFirmwareBackground=true
+
+[reboot]
+UseEndAnimation=false
+UseFirmwareBackground=true
+
+[updates]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Güncellemeler yükleniyor…
+SubTitle=Bilgisayarınızı kapatmayın
+
+[system-upgrade]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Sistem yükseltiliyor…
+SubTitle=Bilgisayarınızı kapatmayın
+
+[firmware-upgrade]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Donanım yazılımı güncelleniyor…
+SubTitle=Bilgisayarınızı kapatmayın
+
+[system-reset]
+SuppressMessages=true
+ProgressBarShowPercentComplete=true
+UseProgressBar=true
+Title=Sistem sıfırlanıyor…
+SubTitle=Bilgisayarınızı kapatmayın

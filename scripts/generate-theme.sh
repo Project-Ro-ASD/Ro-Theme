@@ -1472,6 +1472,123 @@ for theme_name, (tokens, visible_name) in aurorae_modes.items():
     for kind in BUTTON_GLYPHS:
         (base / f'{kind}.svg').write_text(aurorae_button_svg(kind, tokens), encoding='utf-8')
 
+# --- Plymouth (16): two-step modülü, Ro animasyonu, görseller ve renkler token'dan (PLY-01 C) ---
+import struct, zlib
+
+def write_png(path, w, h, shapes, ss=4):
+    """Kenarları yumuşatılmış PNG (RGBA); PIL gerekmez. shapes: [(inside(x, y), (r, g, b))], sonraki üstte."""
+    rows = bytearray()
+    step = 1 / ss
+    offs = [(i + 0.5) * step for i in range(ss)]
+    for py in range(h):
+        rows.append(0)
+        for px in range(w):
+            r = g = b = a = 0.0
+            for inside, (cr, cg, cb) in shapes:
+                hit = sum(1 for oy in offs for ox in offs if inside(px + ox, py + oy))
+                cov = hit / (ss * ss)
+                if cov:
+                    r, g, b = (r * a * (1 - cov) + cr * cov) / (a * (1 - cov) + cov), (g * a * (1 - cov) + cg * cov) / (a * (1 - cov) + cov), (b * a * (1 - cov) + cb * cov) / (a * (1 - cov) + cov)
+                    a = a * (1 - cov) + cov
+            rows += bytes((round(r), round(g), round(b), round(a * 255)))
+    chunk = lambda t, d: struct.pack('>I', len(d)) + t + d + struct.pack('>I', zlib.crc32(t + d) & 0xffffffff)
+    data = b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', w, h, 8, 6, 0, 0, 0))
+    data += chunk(b'IDAT', zlib.compress(bytes(rows), 9)) + chunk(b'IEND', b'')
+    path.write_bytes(data)
+
+def rrect(x0, y0, x1, y1, rad):
+    def inside(x, y):
+        if not (x0 <= x <= x1 and y0 <= y <= y1):
+            return False
+        cx = min(max(x, x0 + rad), x1 - rad)
+        cy = min(max(y, y0 + rad), y1 - rad)
+        return (x - cx) ** 2 + (y - cy) ** 2 <= rad * rad
+    return inside
+
+def polygon(pts):
+    def inside(x, y):
+        hit = False
+        for (ax, ay), (bx, by) in zip(pts, pts[1:] + pts[:1]):
+            if (ay > y) != (by > y) and x < ax + (y - ay) * (bx - ax) / (by - ay):
+                hit = not hit
+        return hit
+    return inside
+
+def rgb_of(value):
+    value = value.lstrip('#')
+    return tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+
+ply = root / 'platform/plymouth/ro-theme'
+ply.mkdir(parents=True, exist_ok=True)
+# Parola alanı: çizgisiz yüzey (00 §4.4), köşe radius.md.
+write_png(ply / 'entry.png', 320, 40, [(rrect(0, 0, 320, 40, radius['md']), rgb_of(dark['surface']))])
+write_png(ply / 'bullet.png', 10, 10, [(lambda x, y: (x - 5) ** 2 + (y - 5) ** 2 <= 25, rgb_of(dark['text']))])
+lock_color = rgb_of(dark['textSecondary'])
+write_png(ply / 'lock.png', 34, 34, [
+    (lambda x, y: y <= 12 and 25 <= (x - 17) ** 2 + (y - 12) ** 2 <= 64, lock_color),  # halka
+    (lambda x, y: 12 <= y <= 16 and (9 <= x <= 12 or 22 <= x <= 25), lock_color),
+    (rrect(6, 15, 28, 31, 4), lock_color),
+])
+caps_color = rgb_of(dark['neutral'])
+write_png(ply / 'capslock.png', 24, 28, [
+    (polygon([(12, 2), (22, 13), (16, 13), (16, 19), (8, 19), (8, 13), (2, 13)]), caps_color),
+    (rrect(8, 22, 16, 26, 1), caps_color),
+])
+
+def ply_hex(value):
+    return '0x' + value.lstrip('#').lower()
+
+def ply_progress_mode(title):
+    return (f'SuppressMessages=true\nProgressBarShowPercentComplete=true\nUseProgressBar=true\n'
+            f'Title={title}\nSubTitle=Bilgisayarınızı kapatmayın\n')
+
+(ply / 'ro-theme.plymouth').write_text(f"""[Plymouth Theme]
+Name=Ro
+Description=Ro boot splash: Ro animation under the firmware logo
+ModuleName=two-step
+
+# scripts/generate-theme.sh tarafından üretilir (16 · PLY-01 C). Düzen Fedora spinner temasıyla aynı.
+[two-step]
+Font=Noto Sans 12
+TitleFont=Noto Sans Light 30
+ImageDir=/usr/share/plymouth/themes/ro-theme
+DialogHorizontalAlignment=.5
+DialogVerticalAlignment=.382
+TitleHorizontalAlignment=.5
+TitleVerticalAlignment=.382
+HorizontalAlignment=.5
+VerticalAlignment=.75
+WatermarkHorizontalAlignment=.5
+WatermarkVerticalAlignment=.96
+Transition=none
+TransitionDuration=0.0
+BackgroundStartColor={ply_hex(dark['bootBackground'])}
+BackgroundEndColor={ply_hex(dark['bootBackground'])}
+ProgressBarBackgroundColor={ply_hex(dark['surfaceAlt'])}
+ProgressBarForegroundColor={ply_hex(dark['accent'])}
+MessageBelowAnimation=true
+
+[boot-up]
+UseEndAnimation=false
+UseFirmwareBackground=true
+
+[shutdown]
+UseEndAnimation=false
+UseFirmwareBackground=true
+
+[reboot]
+UseEndAnimation=false
+UseFirmwareBackground=true
+
+[updates]
+{ply_progress_mode('Güncellemeler yükleniyor…')}
+[system-upgrade]
+{ply_progress_mode('Sistem yükseltiliyor…')}
+[firmware-upgrade]
+{ply_progress_mode('Donanım yazılımı güncelleniyor…')}
+[system-reset]
+{ply_progress_mode('Sistem sıfırlanıyor…')}""", encoding='utf-8')
+
 PY
 
 echo "generated: token outputs updated"
