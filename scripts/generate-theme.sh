@@ -693,11 +693,15 @@ def plasma_lineedit_svg(tokens):
     size, out, y = 2 * r + FRAME_EDGE, '', 0
     for prefix, border, bw, margins in (
         ('base', ('ColorScheme-Text', 0.5), b, m),
-        ('hover', ('ColorScheme-Text', 0.7), b, m),
-        ('focus', ('ColorScheme-ViewFocus', 1), b, m),
-        ('focusframe', ('ColorScheme-ViewFocus', 1), 2 * b, (0, 0, 0, 0)),
+        # hover/focus/focusframe yalnız halka. Plasma (TextFieldFocus.qml) bu katmanı kendi payı kadar alanın DIŞINA taşırır;
+        # metin payı verilirse halka giriş ekranında yandaki düğmenin üstüne biner (2026-10-15). Pay 0 "tanımsız" sayılıp
+        # köşe boyutuna düşüyor; Breeze gibi 0.001 (taşma yok) ve klavye odak halkası için halka kalınlığı (dışta 2 px).
+        ('hover', ('ColorScheme-Text', 0.7), b, (0.001,) * 4),
+        ('focus', ('ColorScheme-ViewFocus', 1), b, (0.001,) * 4),
+        ('focusframe', ('ColorScheme-ViewFocus', 1), 2 * b, (2 * b,) * 4),
     ):
-        fills = [] if prefix == 'focusframe' else [('ColorScheme-ViewBackground', 1)]
+        # Halka katmanlarında orta parça saydam ama boş değil: boş grup olunca KSvg çerçevenin tamamını çizmez (AB2'deki gibi).
+        fills = [('ColorScheme-ViewBackground', 1 if prefix == 'base' else 0)]
         out += _ctl_block(prefix, y, r, fills, border, bw, margins)
         y += size + 8
     out += '  <rect id="hint-focus-over-base" x="0" y="0" width="1" height="1" fill-opacity="0"/>\n'

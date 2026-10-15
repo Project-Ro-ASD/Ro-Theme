@@ -51,113 +51,122 @@
   <rect id="base-hint-left-margin" x="64" y="0" width="12" height="1" fill-opacity="0"/>
   <rect id="base-hint-right-margin" x="64" y="4" width="12" height="1" fill-opacity="0"/>
   <g id="hover-topleft">
-    <path d="M 8,64 L 0,64 A 8,8 0 0 1 8,56 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 8,64 L 0,64 A 8,8 0 0 1 8,56 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,64 A 8,8 0 0 1 8,56 L 8,57 A 7,7 0 0 0 1,64 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-topright">
-    <path d="M 40,64 L 48,64 A 8,8 0 0 0 40,56 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 40,64 L 48,64 A 8,8 0 0 0 40,56 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,64 A 8,8 0 0 0 40,56 L 40,57 A 7,7 0 0 1 47,64 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-bottomleft">
-    <path d="M 8,96 L 0,96 A 8,8 0 0 0 8,104 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 8,96 L 0,96 A 8,8 0 0 0 8,104 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,96 A 8,8 0 0 0 8,104 L 8,103 A 7,7 0 0 1 1,96 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-bottomright">
-    <path d="M 40,96 L 48,96 A 8,8 0 0 1 40,104 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 40,96 L 48,96 A 8,8 0 0 1 40,104 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,96 A 8,8 0 0 1 40,104 L 40,103 A 7,7 0 0 0 47,96 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-top">
-    <rect x="8" y="56" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="8" y="56" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="56" width="32" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-bottom">
-    <rect x="8" y="96" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="8" y="96" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="103" width="32" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-left">
-    <rect x="0" y="64" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="0" y="64" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="0" y="64" width="1" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-right">
-    <rect x="40" y="64" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="40" y="64" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="47" y="64" width="1" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.7"/>
   </g>
   <g id="hover-center">
-    <rect x="8" y="64" width="32" height="32" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="8" y="64" width="32" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
   </g>
-  <rect id="hover-hint-top-margin" x="56" y="56" width="1" height="6" fill-opacity="0"/>
-  <rect id="hover-hint-bottom-margin" x="60" y="56" width="1" height="6" fill-opacity="0"/>
-  <rect id="hover-hint-left-margin" x="64" y="56" width="12" height="1" fill-opacity="0"/>
-  <rect id="hover-hint-right-margin" x="64" y="60" width="12" height="1" fill-opacity="0"/>
+  <rect id="hover-hint-top-margin" x="56" y="56" width="1" height="0.001" fill-opacity="0"/>
+  <rect id="hover-hint-bottom-margin" x="60" y="56" width="1" height="0.001" fill-opacity="0"/>
+  <rect id="hover-hint-left-margin" x="64" y="56" width="0.001" height="1" fill-opacity="0"/>
+  <rect id="hover-hint-right-margin" x="64" y="60" width="0.001" height="1" fill-opacity="0"/>
   <g id="focus-topleft">
-    <path d="M 8,120 L 0,120 A 8,8 0 0 1 8,112 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 8,120 L 0,120 A 8,8 0 0 1 8,112 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,120 A 8,8 0 0 1 8,112 L 8,113 A 7,7 0 0 0 1,120 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-topright">
-    <path d="M 40,120 L 48,120 A 8,8 0 0 0 40,112 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 40,120 L 48,120 A 8,8 0 0 0 40,112 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,120 A 8,8 0 0 0 40,112 L 40,113 A 7,7 0 0 1 47,120 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-bottomleft">
-    <path d="M 8,152 L 0,152 A 8,8 0 0 0 8,160 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 8,152 L 0,152 A 8,8 0 0 0 8,160 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,152 A 8,8 0 0 0 8,160 L 8,159 A 7,7 0 0 1 1,152 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-bottomright">
-    <path d="M 40,152 L 48,152 A 8,8 0 0 1 40,160 Z" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <path d="M 40,152 L 48,152 A 8,8 0 0 1 40,160 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,152 A 8,8 0 0 1 40,160 L 40,159 A 7,7 0 0 0 47,152 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-top">
-    <rect x="8" y="112" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="8" y="112" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="112" width="32" height="1" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-bottom">
-    <rect x="8" y="152" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="8" y="152" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="159" width="32" height="1" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-left">
-    <rect x="0" y="120" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="0" y="120" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="0" y="120" width="1" height="32" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-right">
-    <rect x="40" y="120" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="40" y="120" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="47" y="120" width="1" height="32" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focus-center">
-    <rect x="8" y="120" width="32" height="32" class="ColorScheme-ViewBackground" fill="currentColor"/>
+    <rect x="8" y="120" width="32" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
   </g>
-  <rect id="focus-hint-top-margin" x="56" y="112" width="1" height="6" fill-opacity="0"/>
-  <rect id="focus-hint-bottom-margin" x="60" y="112" width="1" height="6" fill-opacity="0"/>
-  <rect id="focus-hint-left-margin" x="64" y="112" width="12" height="1" fill-opacity="0"/>
-  <rect id="focus-hint-right-margin" x="64" y="116" width="12" height="1" fill-opacity="0"/>
+  <rect id="focus-hint-top-margin" x="56" y="112" width="1" height="0.001" fill-opacity="0"/>
+  <rect id="focus-hint-bottom-margin" x="60" y="112" width="1" height="0.001" fill-opacity="0"/>
+  <rect id="focus-hint-left-margin" x="64" y="112" width="0.001" height="1" fill-opacity="0"/>
+  <rect id="focus-hint-right-margin" x="64" y="116" width="0.001" height="1" fill-opacity="0"/>
   <g id="focusframe-topleft">
+    <path d="M 8,176 L 0,176 A 8,8 0 0 1 8,168 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,176 A 8,8 0 0 1 8,168 L 8,170 A 6,6 0 0 0 2,176 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-topright">
+    <path d="M 40,176 L 48,176 A 8,8 0 0 0 40,168 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,176 A 8,8 0 0 0 40,168 L 40,170 A 6,6 0 0 1 46,176 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-bottomleft">
+    <path d="M 8,208 L 0,208 A 8,8 0 0 0 8,216 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,208 A 8,8 0 0 0 8,216 L 8,214 A 6,6 0 0 1 2,208 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-bottomright">
+    <path d="M 40,208 L 48,208 A 8,8 0 0 1 40,216 Z" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,208 A 8,8 0 0 1 40,216 L 40,214 A 6,6 0 0 0 46,208 Z" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-top">
+    <rect x="8" y="168" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="168" width="32" height="2" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-bottom">
+    <rect x="8" y="208" width="32" height="8" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="214" width="32" height="2" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-left">
+    <rect x="0" y="176" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="0" y="176" width="2" height="32" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-right">
+    <rect x="40" y="176" width="8" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="46" y="176" width="2" height="32" class="ColorScheme-ViewFocus" fill="currentColor"/>
   </g>
   <g id="focusframe-center">
+    <rect x="8" y="176" width="32" height="32" class="ColorScheme-ViewBackground" fill="currentColor" fill-opacity="0"/>
   </g>
-  <rect id="focusframe-hint-top-margin" x="56" y="168" width="1" height="0" fill-opacity="0"/>
-  <rect id="focusframe-hint-bottom-margin" x="60" y="168" width="1" height="0" fill-opacity="0"/>
-  <rect id="focusframe-hint-left-margin" x="64" y="168" width="0" height="1" fill-opacity="0"/>
-  <rect id="focusframe-hint-right-margin" x="64" y="172" width="0" height="1" fill-opacity="0"/>
+  <rect id="focusframe-hint-top-margin" x="56" y="168" width="1" height="2" fill-opacity="0"/>
+  <rect id="focusframe-hint-bottom-margin" x="60" y="168" width="1" height="2" fill-opacity="0"/>
+  <rect id="focusframe-hint-left-margin" x="64" y="168" width="2" height="1" fill-opacity="0"/>
+  <rect id="focusframe-hint-right-margin" x="64" y="172" width="2" height="1" fill-opacity="0"/>
   <rect id="hint-focus-over-base" x="0" y="0" width="1" height="1" fill-opacity="0"/>
   <rect id="hint-tile-center" x="0" y="0" width="1" height="1" fill-opacity="0"/>
 </svg>
