@@ -37,10 +37,10 @@ jobs:
       - name: Install build dependencies
         run: |
           dnf install -y --setopt=install_weak_deps=False \
-            bash coreutils diffutils dracut findutils gzip grep \
+            bash coreutils diffutils dracut findutils gzip grep gtk3 gtk4 \
             kf6-kconfig kf6-kpackage kf6-kservice \
             plasma-desktop plasma-workspace plasma-workspace-libs plasma-login-manager \
-            plymouth plymouth-plugin-two-step python3 rpm rpm-build sed tar util-linux
+            plymouth plymouth-plugin-two-step python3 python3-gobject rpm rpm-build sed tar util-linux
 
       - name: Validate tag and build RPMs
         shell: bash
@@ -53,6 +53,7 @@ jobs:
           [[ "$(git rev-parse HEAD)" == "${GITHUB_SHA}" ]]
 
           FEDORA_RELEASE=44 ./tools/dev/build-rpm.sh
+          python3 tools/dev/check-gtk-css.py
 
           mkdir -p release-rpms
           BINARY_RPM="$(find build/rpmbuild/RPMS -type f -name 'ro-theme-*.noarch.rpm' -print -quit)"

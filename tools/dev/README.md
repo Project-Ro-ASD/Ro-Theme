@@ -41,6 +41,17 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-system-preview.py --require-container`: Gerçek önizleme yollarında dosya korumasını ve
   hata durumlarını sınar; root yetkili geçici Fedora konteyneri gerektirir, host üzerinde çalışmaz.
   Plymouth komutu taklittir; gerçek initramfs/boot testi yapmaz. Önceki dosyalar test sonunda geri yüklenir.
+- `check-gtk-css.py [--root KAYNAK_DIZINI]`: Ro-GTK'nin GTK3 ve GTK4 CSS dosyalarını ayrı süreçlerde
+  gerçek `Gtk.CssProvider` ile ayrıştırır. Ayrıştırma hatası/uyarısı, eksik dosya veya eksik bağımlılık
+  başarısız sonuç verir; sessizce atlanmaz. Ekran/oturum gerektirmez, geçici HOME/XDG kullanır.
+  Fedora'da `gtk3`, `gtk4`, `python3-gobject` geliştirme kontrolü için gerekir; RPM çalışma zamanı
+  bağımlılıklarına eklenmez. CI ve sürüm iş akışı üretilmiş CSS'i kontrol eder.
+- `test-gtk-css.py`: Geçerli/bozuk/eksik CSS, göreli içe aktarma ve eksik ayrıştırıcı davranışını sınar.
+  `python3 tools/dev/test-gtk-css.py` ile çalışır; aynı GTK bağımlılıkları gerekir.
+
+GTK CSS kontrolü yalnızca sözdizimi kapısıdır; GTK3/GTK4/libadwaita görünümü, KDE ayar aktarımı ve
+Flatpak içindeki tema erişimi için görsel/oturum kabulünün yerini tutmaz. Mevcut Ro-GTK yer tutucusunun
+temel tema seçimi ve kaldırılma kararı (GTK-01/02) bu araçla değiştirilmez.
 
 Kısa yerel test:
 
