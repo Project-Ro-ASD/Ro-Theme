@@ -137,7 +137,8 @@ module.exports = {
         "tabLine": 3,
         "progressBar": 6,
         "arrowSize": 16,
-        "windowShadow": 32
+        "windowShadow": 32,
+        "fieldPadding": 6
       },
       "opacity": {
         "glass": 0.85,

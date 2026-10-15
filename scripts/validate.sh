@@ -594,6 +594,22 @@ for theme in RoLight RoDark; do
   for control in lineedit button viewitem; do
     check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
   done
+  # PST-22 revize: kilit/giriş ekranı şifre alanının yanına alan yüksekliğinde kare düğme koyar; köşeler aynı,
+  # alan Breeze yüksekliğinde (üst/alt pay spacing.fieldPadding).
+  if python3 - "$theme" <<'PYC'
+import json, re, sys
+from pathlib import Path
+w = Path('platform/plasma/desktoptheme') / sys.argv[1] / 'widgets'
+arc = lambda f, g: re.search(r'<g id="' + g + r'">\s*<path d="[^"]*A ([0-9.]+),', (w / f).read_text()).group(1)
+pad = json.loads(Path('core/tokens/spacing.json').read_text())['fieldPadding']
+top = re.search(r'id="base-hint-top-margin"[^>]*height="([0-9.]+)"', (w / 'lineedit.svg').read_text()).group(1)
+sys.exit(0 if arc('lineedit.svg', 'base-topleft') == arc('button.svg', 'normal-topleft') and float(top) == pad else 1)
+PYC
+  then
+    ok "$theme lineedit corner matches button, padding spacing.fieldPadding (PST-22)"
+  else
+    fail "$theme lineedit corner/padding differs from button or spacing.fieldPadding (PST-22); run scripts/generate-theme.sh"
+  fi
   check_plasma_scrollbar_svg "platform/plasma/desktoptheme/$theme/widgets/scrollbar.svg" "$theme scrollbar (Ro-drawn, not Breeze fallback)"
   check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/checkmarks.svg" "$theme checkmarks" "checkbox radiobutton"
   check_plasma_indicator_svg "platform/plasma/desktoptheme/$theme/widgets/radiobutton.svg" "$theme radiobutton" "hint-size normal shadow checked symbol hover focus"
