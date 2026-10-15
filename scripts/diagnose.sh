@@ -170,6 +170,8 @@ if [[ "$MODE" = "local" ]]; then
   check_file "$HOME/.local/share/plasma/desktoptheme/RoDark/plasmarc"
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.light/metadata.json"
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.dark/metadata.json"
+  check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.light/contents/defaults"
+  check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.dark/contents/defaults"
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js"
   check_file "$HOME/.local/share/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js"
   check_absent "$HOME/.local/share/plasma/look-and-feel/org.ro.light/contents/lockscreen/LockScreen.qml" "Unsafe custom light lockscreen override"
@@ -199,6 +201,8 @@ else
   check_file /usr/share/plasma/desktoptheme/RoDark/plasmarc
   check_file /usr/share/plasma/look-and-feel/org.ro.light/metadata.json
   check_file /usr/share/plasma/look-and-feel/org.ro.dark/metadata.json
+  check_file /usr/share/plasma/look-and-feel/org.ro.light/contents/defaults
+  check_file /usr/share/plasma/look-and-feel/org.ro.dark/contents/defaults
   check_file /usr/share/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js
   check_file /usr/share/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js
   check_absent /usr/share/plasma/look-and-feel/org.ro.light/contents/lockscreen/LockScreen.qml "Unsafe custom light lockscreen override"
@@ -303,14 +307,27 @@ if [[ "$active_plasma" = "Ro" ]]; then
   warn "old removed Plasma theme is still active: Ro"
 fi
 
-if [[ "$decoration_theme" = __aurorae__svg__Breeze* ]]; then
-  warn "KWin decoration points to a missing local Aurorae Breeze theme; reapply RoDark/RoLight from System Settings or run ./tools/dev/apply-theme.sh dark/light in a source checkout"
-elif [[ -n "$decoration_theme" && "$decoration_theme" != "Breeze" ]]; then
-  warn "KWin decoration theme is not Breeze: $decoration_theme"
-fi
-
-if [[ -n "$decoration_library" && "$decoration_library" != "org.kde.breeze" ]]; then
-  warn "KWin decoration library is not org.kde.breeze: $decoration_library"
+# Etkin Ro temasını kendi kurulu defaults dosyasıyla karşılaştır; Breeze'e sabitleme.
+if [[ -n "$expected_plasma" ]]; then
+  if [[ "$MODE" = "local" ]]; then
+    decoration_defaults="$HOME/.local/share/plasma/look-and-feel/$active_look/contents/defaults"
+  else
+    decoration_defaults="/usr/share/plasma/look-and-feel/$active_look/contents/defaults"
+  fi
+  if [[ -f "$decoration_defaults" ]]; then
+    expected_library="$(read_kde_config "$decoration_defaults" kwinrc org.kde.kdecoration2 library)"
+    expected_theme="$(read_kde_config "$decoration_defaults" kwinrc org.kde.kdecoration2 theme)"
+    if [[ -z "$expected_library" || -z "$expected_theme" ]]; then
+      warn "cannot read KWin decoration defaults from $decoration_defaults"
+    else
+      if [[ "$decoration_library" != "$expected_library" ]]; then
+        warn "KWin decoration library mismatch: expected $expected_library for $active_look, got ${decoration_library:-empty}"
+      fi
+      if [[ "$decoration_theme" != "$expected_theme" ]]; then
+        warn "KWin decoration theme mismatch: expected $expected_theme for $active_look, got ${decoration_theme:-empty}"
+      fi
+    fi
+  fi
 fi
 
 section "System Config"
