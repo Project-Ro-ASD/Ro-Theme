@@ -157,8 +157,6 @@ check_command plasma-apply-colorscheme
 check_command plasma-apply-wallpaperimage
 check_any_command "Plasma DBus helper" qdbus6 qdbus qdbus-qt6 qdbus-qt5 gdbus
 check_command plymouth-set-default-theme
-check_command dracut
-check_command grubby
 
 if [[ "$MODE" = "local" ]]; then
   section "Local User Files"

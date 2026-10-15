@@ -91,6 +91,7 @@ module.exports = {
               "neutral": "#443616",
               "positive": "#213F2B"
             },
+            "bootBackground": "#000000",
             "glass": "rgba(43,45,47,0.85)"
           }
         }

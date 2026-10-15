@@ -33,7 +33,6 @@ jobs:
                 diffutils \
                 dracut \
                 findutils \
-                grubby \
                 gzip \
                 grep \
                 kf6-kconfig \
@@ -44,7 +43,7 @@ jobs:
                 plasma-workspace-libs \
                 plasma-login-manager \
                 plymouth \
-                plymouth-plugin-script \
+                plymouth-plugin-two-step \
                 python3 \
                 rpm \
                 rpm-build \

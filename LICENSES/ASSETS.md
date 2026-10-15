@@ -18,7 +18,7 @@ Atıf: "© Project Ro-ASD, CC-BY-SA-4.0". Tasarımcılar "Designed by" sütunund
 | `platform/plasma/look-and-feel/*/contents/splash/*.jpg` | Açılış ekranı görselleri | — |
 | `platform/plasma/look-and-feel/*/contents/lockscreen/assets/` | Kilit ekranı görseli | — |
 | `platform/plasma/look-and-feel/*/contents/previews/` | Global tema önizlemeleri (Ro masaüstü ekran görüntüsü) | — |
-| `platform/plymouth/ro-theme/` (görseller) | Açılış animasyonu kareleri ve logosu | — |
+| `platform/plymouth/ro-theme/throbber-*.png` | Açılış animasyonu kareleri (parola alanı görselleri üreticiden, GPL) | — |
 | `platform/icons/ro-icons/` | Ro ikon teması (Dolphin seti) | — |
 | `platform/cursor/ro-cursor/` | Ro imleci | — |
 

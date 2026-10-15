@@ -27,8 +27,8 @@ jobs:
       - name: Install dependencies
         run: |
           dnf install -y --setopt=install_weak_deps=False \
-            aurorae bash coreutils diffutils dracut findutils grubby gzip grep jq kf6-kconfig \
-            kwin plasma-desktop plasma-workspace plasma-login-manager plymouth plymouth-plugin-script \
+            aurorae bash coreutils diffutils dracut findutils gzip grep jq kf6-kconfig \
+            kwin plasma-desktop plasma-workspace plasma-login-manager plymouth plymouth-plugin-two-step \
             python3 qt6-qtbase rpm rpm-build sed tar util-linux
 
       - name: Build and validate RPM

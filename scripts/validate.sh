@@ -668,17 +668,42 @@ check_not_contains platform/plasma/look-and-feel/org.ro.light/contents/splash/Sp
 check_not_contains platform/plasma/look-and-feel/org.ro.dark/contents/splash/Splash.qml "#30C7E0" "RoDark splash old cyan accent removed"
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/lockscreen/README.md "saat alanı" "RoLight lockscreen keeps KDE clock"
 check_contains platform/plasma/look-and-feel/org.ro.dark/contents/lockscreen/README.md "saat alanı" "RoDark lockscreen keeps KDE clock"
+# 16 · Plymouth: two-step modülü, Ro animasyonu (throbber), görseller ve renkler token'dan (PLY-01…07).
 check_file platform/plymouth/ro-theme/ro-theme.plymouth
-check_file platform/plymouth/ro-theme/ro-theme.script
+check_contains platform/plymouth/ro-theme/ro-theme.plymouth "ModuleName=two-step" "Plymouth uses two-step (password, progress, firmware logo; PLY-01 C)"
+check_contains platform/plymouth/ro-theme/ro-theme.plymouth "UseFirmwareBackground=true" "Plymouth keeps the firmware logo (PLY-04)"
+for img in entry bullet lock capslock; do check_file "platform/plymouth/ro-theme/${img}.png"; done
+check_absent_file platform/plymouth/ro-theme/ro-theme.script "Plymouth script theme removed (PLY-01 C)"
+check_absent_file platform/plymouth/ro-theme/roasd-logo.png "unused Plymouth logo copy removed (PLY-07)"
 plymouth_frame_errors=0
 for frame in $(seq -f "%04g" 1 86); do
-  if [[ ! -f "platform/plymouth/ro-theme/frames/animation/frame_${frame}.png" ]]; then
-    fail "missing Plymouth animation frame: frame_${frame}.png"
+  if [[ ! -f "platform/plymouth/ro-theme/throbber-${frame}.png" ]]; then
+    fail "missing Plymouth animation frame: throbber-${frame}.png"
     plymouth_frame_errors=$((plymouth_frame_errors + 1))
   fi
 done
 if [[ "$plymouth_frame_errors" -eq 0 ]]; then
   ok "Plymouth animation frame sequence 0001-0086"
+fi
+if report="$(python3 - <<'PYC'
+import json, re
+from pathlib import Path
+d = json.loads(Path('core/tokens/colors.dark.json').read_text())
+t = Path('platform/plymouth/ro-theme/ro-theme.plymouth').read_text()
+h = lambda k: '0x' + d[k].lstrip('#').lower()
+want = {'BackgroundStartColor': h('bootBackground'), 'BackgroundEndColor': h('bootBackground'),
+        'ProgressBarBackgroundColor': h('surfaceAlt'), 'ProgressBarForegroundColor': h('accent')}
+errs = [f'{k}={v}' for k, v in want.items() if f'{k}={v}' not in t]
+size = sum(f.stat().st_size for f in Path('platform/plymouth/ro-theme').iterdir())
+if size > 2 * 1024 * 1024:
+    errs.append(f'theme is {size // 1024} KB (> 2 MB, PLY-05)')
+print('; '.join(errs))
+raise SystemExit(1 if errs else 0)
+PYC
+)"; then
+  ok "Plymouth colors from tokens and theme <= 2 MB (PLY-03/05)"
+else
+  fail "Plymouth theme: $report; run scripts/generate-theme.sh"
 fi
 
 section "Packaging"
@@ -698,10 +723,12 @@ check_contains packaging/ro-theme.spec "URL:            https://github.com/Proje
 check_contains packaging/ro-theme.spec "%doc README.md" "RPM ships only user-facing docs (PKG-15)"
 check_not_contains packaging/ro-theme.spec "%doc README.md docs" "RPM does not ship developer docs (PKG-15)"
 check_contains packaging/ro-theme.spec "Requires:       plasma-login-manager" "RPM Plasma Login Manager dependency"
-check_contains packaging/ro-theme.spec "Requires:       plymouth-plugin-script" "RPM Plymouth script plugin dependency"
-check_contains .github/workflows/rpm-build.yml "plymouth-plugin-script" "GitHub workflow installs Plymouth test deps"
-check_contains .github/workflows/rpm-build.yml "grubby" "GitHub workflow installs grubby test dep"
-check_contains packaging/ro-theme.spec "Requires(post): dracut" "RPM dracut post dependency"
+check_contains packaging/ro-theme.spec "Requires:       plymouth-plugin-two-step" "RPM Plymouth two-step plugin dependency (PLY-01 C)"
+check_contains .github/workflows/rpm-build.yml "plymouth-plugin-two-step" "GitHub workflow installs Plymouth test deps"
+# PLY-09/10: çekirdek parametreleri kurulum programının; initramfs yalnız tema değişince ve bir kez üretilir.
+check_not_contains packaging/ro-theme.spec "grubby" "RPM does not change kernel parameters (PLY-09)"
+check_not_contains packaging/ro-theme.spec "regenerate-all" "RPM does not rebuild every initramfs (PLY-10)"
+check_contains packaging/ro-theme.spec 'if [ "$1" -eq 1 ]; then' "RPM selects the Plymouth theme only on first install (PLY-08 B)"
 check_contains packaging/ro-theme.spec "Requires:       kf6-kconfig" "RPM KDE config dependency"
 check_contains packaging/ro-theme.spec "%dir %{_datadir}/ro-theme" "RPM owns Ro data directory"
 check_contains packaging/ro-theme.spec "%dir %{_libexecdir}/ro-theme" "RPM owns Ro libexec directory"

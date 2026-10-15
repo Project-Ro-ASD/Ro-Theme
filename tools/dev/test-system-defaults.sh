@@ -10,6 +10,9 @@ set -euo pipefail
 #   4. Eski sürümden yükseltme (SYS-08): autostart kalkar, yeni varsayılanlar gelir, kullanıcı dosyası değişmez.
 #   5. Kaldırma (PKG-13): dosyalar gider, yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak kalır.
 #   6. Bağımlılık çözümü (PKG-13, Ro-Repo dependency-solve): Fedora 44 depolarından, kurmadan.
+#   7. Plymouth (16 · PLY-08/10): tema yalnız ilk kurulumda seçilir, initramfs yalnız tema dosyaları değişince ve bir
+#      kez üretilir, kullanıcının seçtiği tema güncellemede korunur, kaldırınca varsayılana dönülür. initramfs
+#      üretimi gerçek değil; plymouth-update-initrd yerine çağrıları sayan bir yer tutucu konur.
 #
 # Paketler bağımlılıksız (--nodeps) kurulur: test yalnızca dosya ve betik davranışına bakar. Ayar okumak için
 # test imajına kf6-kconfig kurulur (eski sürümün %post'u da kwriteconfig6 kullanıyordu).
@@ -39,6 +42,9 @@ fails=0
 pass() { printf '  [PASS] %s\n' "$1"; }
 fail() { printf '  [FAIL] %s\n' "$1"; fails=$((fails + 1)); }
 as_user() { local u="$1"; shift; runuser -u "$u" -- env HOME="/home/$u" XDG_CONFIG_DIRS=/etc/xdg "$@"; }
+rebuilds() { wc -l < /tmp/initrd.log 2>/dev/null || echo 0; }
+# Test imajında plymouth-update-initrd gerçek dracut yerine çağrıyı /tmp/initrd.log'a yazar.
+stub_initrd() { : > /tmp/initrd.log; }
 sysval() { awk -v g="[$1]" -v k="$2" '$0 == g { s = 1; next } /^\[/ { s = 0 } s && index($0, k "=") == 1 { print substr($0, length(k) + 2); exit }' /etc/xdg/kdeglobals; }
 
 
@@ -73,7 +79,9 @@ case "$1" in
     ;;
   upgrade)
     useradd -m eski
+    stub_initrd
     rpm -i --nodeps /work/old.rpm >/dev/null 2>&1 || fail "install old package"
+    : > /tmp/initrd.log
     echo "  [INFO] old package files modified by its own %post: $(rpm -V ro-theme 2>/dev/null | grep -c '/etc/xdg/')"
     user_before="$(cat /home/eski/.config/kdeglobals 2>/dev/null | sha256sum)"
     rpm -Uvh --nodeps /work/new.rpm >/dev/null 2>&1 || fail "upgrade to new package"
@@ -84,6 +92,25 @@ case "$1" in
       fail "upgraded /etc/xdg/kdeglobals kept the old content (new one: $(ls /etc/xdg/kdeglobals.rpmnew 2>/dev/null || echo none))"
     fi
     [[ "$(cat /home/eski/.config/kdeglobals 2>/dev/null | sha256sum)" == "$user_before" ]] && pass "user files untouched by the upgrade" || fail "upgrade changed user files"
+    [[ "$(plymouth-set-default-theme)" == "ro-theme" ]] && pass "Plymouth theme still ro-theme after upgrade" || fail "Plymouth theme changed by upgrade"
+    [[ "$(rebuilds)" == "1" ]] && pass "upgrade with new Plymouth files rebuilds initramfs once" || fail "upgrade rebuilt initramfs $(rebuilds) times (want 1)"
+    ;;
+  plymouth)
+    stub_initrd
+    rpm -i --nodeps /work/new.rpm >/dev/null 2>&1 || fail "install new package"
+    [[ "$(plymouth-set-default-theme)" == "ro-theme" ]] && pass "first install selects ro-theme" || fail "first install theme: $(plymouth-set-default-theme)"
+    [[ "$(rebuilds)" == "1" ]] && pass "first install rebuilds initramfs once" || fail "first install rebuilt $(rebuilds) times (want 1)"
+    rpm -Uvh --replacepkgs --nodeps /work/new.rpm >/dev/null 2>&1 || fail "reinstall new package"
+    [[ "$(rebuilds)" == "1" ]] && pass "reinstall with unchanged theme files does not rebuild" || fail "reinstall rebuilt initramfs again ($(rebuilds))"
+    plymouth-set-default-theme spinner
+    rpm -Uvh --replacepkgs --nodeps /work/new.rpm >/dev/null 2>&1 || fail "reinstall new package"
+    [[ "$(plymouth-set-default-theme)" == "spinner" ]] && pass "user's own Plymouth theme kept on reinstall" || fail "reinstall replaced the user's Plymouth theme"
+    [[ "$(rebuilds)" == "1" ]] && pass "no rebuild when another theme is selected" || fail "rebuilt for a theme that is not selected ($(rebuilds))"
+    plymouth-set-default-theme ro-theme
+    rpm -e --nodeps ro-theme >/dev/null 2>&1 || fail "remove package"
+    [[ "$(plymouth-set-default-theme)" != "ro-theme" ]] && pass "removal resets Plymouth to the distribution default ($(plymouth-set-default-theme))" || fail "ro-theme still selected after removal"
+    [[ "$(rebuilds)" == "2" ]] && pass "removal rebuilds initramfs once" || fail "removal rebuilds: $(rebuilds) (want 2)"
+    [[ ! -e /var/lib/ro-theme ]] && pass "state directory removed" || fail "/var/lib/ro-theme left behind"
     ;;
   remove)
     # PKG-13: kaldırma. Paket dosyaları gider; yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak korunur.
@@ -115,12 +142,12 @@ chmod +x "$WORK/scenario.sh"
 # Test araçları (kreadconfig6, runuser, useradd) bir kez kurulu yerel imaj; senaryolar bu imajdan başlar.
 if ! podman image exists "$IMAGE" || [[ "${RO_THEME_TEST_REBUILD:-0}" == "1" ]]; then
   echo "Preparing test image $IMAGE (one time)..."
-  printf 'FROM %s\nRUN dnf -y install kf6-kconfig util-linux shadow-utils && dnf clean all\n' "$BASE_IMAGE" \
+  printf 'FROM %s\nRUN dnf -y install kf6-kconfig util-linux shadow-utils plymouth plymouth-plugin-two-step plymouth-plugin-script plymouth-theme-spinner && dnf clean all\nRUN printf "#!/bin/sh\\necho rebuild >> /tmp/initrd.log\\n" > /usr/libexec/plymouth/plymouth-update-initrd\n' "$BASE_IMAGE" \
     | podman build -q -t "$IMAGE" -f - "$WORK" >/dev/null
 fi
 
 total=0
-for scenario in clean user-own admin-edit upgrade remove deps; do
+for scenario in clean user-own admin-edit upgrade remove plymouth deps; do
   if [[ "$scenario" == "upgrade" && -z "$OLD_RPM" ]]; then
     echo "== $scenario: skipped (no OLD.rpm given)"
     continue
