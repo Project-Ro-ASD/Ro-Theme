@@ -605,8 +605,14 @@ pad = json.loads(Path('core/tokens/spacing.json').read_text())['fieldPadding']
 top = re.search(r'id="base-hint-top-margin"[^>]*height="([0-9.]+)"', (w / 'lineedit.svg').read_text()).group(1)
 le = (w / 'lineedit.svg').read_text()
 # hover/focus katmanı Plasma'da kendi payı kadar alanın dışına taşar (TextFieldFocus.qml): pay < 1, klavye halkası <= 2.
-over = [float(v) for v in re.findall(r'id="(?:hover|focus)-hint-[a-z]+-margin"[^>]*(?:height|width)="([0-9.]+)"', le)]
-frame = [float(v) for v in re.findall(r'id="focusframe-hint-[a-z]+-margin"[^>]*(?:height|width)="([0-9.]+)"', le)]
+def hint(prefix):
+    # Üst/alt pay yüksekliktir, sol/sağ pay genişlik.
+    out = []
+    for side, w, h in re.findall(r'id="' + prefix + r'-hint-(top|bottom|left|right)-margin"[^>]*width="([0-9.]+)"[^>]*height="([0-9.]+)"', le):
+        out.append(float(h if side in ('top', 'bottom') else w))
+    return out
+over = hint('hover') + hint('focus')
+frame = hint('focusframe')
 ok = arc('lineedit.svg', 'base-topleft') == arc('button.svg', 'normal-topleft') and float(top) == pad
 ok = ok and over and max(over) < 1 and frame and max(frame) <= 2
 sys.exit(0 if ok else 1)
