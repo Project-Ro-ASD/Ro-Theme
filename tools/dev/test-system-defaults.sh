@@ -13,6 +13,7 @@ set -euo pipefail
 #   7. Plymouth (16 · PLY-08/10): tema yalnız ilk kurulumda seçilir, initramfs yalnız tema dosyaları değişince ve bir
 #      kez üretilir, kullanıcının seçtiği tema güncellemede korunur, kaldırınca varsayılana dönülür. initramfs
 #      üretimi gerçek değil; plymouth-update-initrd yerine çağrıları sayan bir yer tutucu konur.
+#   8. Eski sürümde yönetici tarafından düzenlenen dosya yükseltmede korunur; yeni varsayılan .rpmnew olur.
 #
 # Paketler bağımlılıksız (--nodeps) kurulur: test yalnızca dosya ve betik davranışına bakar. Ayar okumak için
 # test imajına kf6-kconfig kurulur (eski sürümün %post'u da kwriteconfig6 kullanıyordu).
@@ -33,6 +34,7 @@ command -v podman >/dev/null 2>&1 || { echo "podman not found" >&2; exit 2; }
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 cp "$NEW_RPM" "$WORK/new.rpm"
+cp "$(dirname "${BASH_SOURCE[0]}")/check-rpm-dependencies.sh" "$WORK/check-rpm-dependencies.sh"
 [[ -n "$OLD_RPM" ]] && cp "$OLD_RPM" "$WORK/old.rpm"
 
 cat > "$WORK/scenario.sh" <<'EOS'
@@ -65,11 +67,20 @@ case "$1" in
     useradd -m kendi
     install -d -o kendi /home/kendi/.config
     printf '[General]\nColorScheme=BreezeClassic\n\n[KDE]\nSingleClick=true\n' > /home/kendi/.config/kdeglobals
-    before="$(sha256sum /home/kendi/.config/kdeglobals)"
+    printf '[General]\nforceFontDPI=120\n' > /home/kendi/.config/kcmfonts
+    printf '[Windeco]\nDrawBackgroundGradient=true\n' > /home/kendi/.config/breezerc
+    printf '[Theme]\nname=UserTheme\n' > /home/kendi/.config/plasmarc
+    printf '[KSplash]\nTheme=UserSplash\n' > /home/kendi/.config/ksplashrc
+    printf '[Greeter]\nWallpaperPlugin=UserWallpaper\n' > /home/kendi/.config/kscreenlockerrc
+    printf '[org.kde.kdecoration2]\ntheme=UserDecoration\n' > /home/kendi/.config/kwinrc
+    before="$(find /home/kendi -type f -print0 | sort -z | xargs -0 sha256sum)"
     rpm -i --nodeps /work/new.rpm >/dev/null 2>&1 || fail "install new package"
-    [[ "$(sha256sum /home/kendi/.config/kdeglobals)" == "$before" ]] && pass "existing user kdeglobals unchanged" || fail "existing user kdeglobals changed"
+    [[ "$(find /home/kendi -type f -print0 | sort -z | xargs -0 sha256sum)" == "$before" ]] \
+      && pass "all existing user files unchanged; no new user files written" || fail "user files changed by installation"
     [[ "$(as_user kendi kreadconfig6 --file kdeglobals --group General --key ColorScheme)" == "BreezeClassic" ]] \
       && pass "user's own ColorScheme wins over /etc/xdg" || fail "user's own ColorScheme lost"
+    [[ "$(as_user kendi kreadconfig6 --file kcmfonts --group General --key forceFontDPI)" == "120" ]] \
+      && pass "user's own DPI wins over /etc/xdg" || fail "user's own DPI lost"
     ;;
   admin-edit)
     rpm -i --nodeps /work/new.rpm >/dev/null 2>&1 || fail "install new package"
@@ -94,6 +105,16 @@ case "$1" in
     [[ "$(cat /home/eski/.config/kdeglobals 2>/dev/null | sha256sum)" == "$user_before" ]] && pass "user files untouched by the upgrade" || fail "upgrade changed user files"
     [[ "$(plymouth-set-default-theme)" == "ro-theme" ]] && pass "Plymouth theme still ro-theme after upgrade" || fail "Plymouth theme changed by upgrade"
     [[ "$(rebuilds)" == "1" ]] && pass "upgrade with new Plymouth files rebuilds initramfs once" || fail "upgrade rebuilt initramfs $(rebuilds) times (want 1)"
+    ;;
+  admin-upgrade)
+    rpm -i --nodeps /work/old.rpm >/dev/null 2>&1 || fail "install old package"
+    printf '\n[Ro-Test]\nAdminKey=1\n' >> /etc/xdg/kdeglobals
+    before="$(sha256sum /etc/xdg/kdeglobals)"
+    rpm -Uvh --nodeps /work/new.rpm >/dev/null 2>&1 || fail "upgrade to new package"
+    [[ "$(sha256sum /etc/xdg/kdeglobals)" == "$before" ]] \
+      && pass "upgrade preserves the administrator's old configuration" || fail "upgrade changed administrator settings"
+    [[ -f /etc/xdg/kdeglobals.rpmnew ]] && grep -q '^\[Colors:View\]' /etc/xdg/kdeglobals.rpmnew \
+      && pass "updated defaults delivered as .rpmnew" || fail "updated .rpmnew defaults missing"
     ;;
   plymouth)
     stub_initrd
@@ -126,11 +147,10 @@ case "$1" in
     ;;
   deps)
     # PKG-13 / Ro-Repo dependency-solve: bütün bağımlılıklar Fedora 44 depolarından çözülebilir (kurmadan).
-    out="$(dnf -y install --assumeno /work/new.rpm 2>&1)"
-    if grep -qiE "nothing provides|conflicting requests|problem:" <<<"$out"; then
-      fail "dependencies do not resolve: $(grep -iE 'nothing provides|problem' <<<"$out" | head -3)"
-    else
+    if out="$(bash /work/check-rpm-dependencies.sh /work/new.rpm 2>&1)"; then
       pass "all dependencies resolve from the Fedora 44 repositories"
+    else
+      fail "dependency resolution failed: $out"
     fi
     grep -qE "rsms-inter-fonts" <<<"$out" && pass "weak dependency rsms-inter-fonts offered" || echo "  [INFO] rsms-inter-fonts not in the transaction"
     ;;
@@ -147,8 +167,8 @@ if ! podman image exists "$IMAGE" || [[ "${RO_THEME_TEST_REBUILD:-0}" == "1" ]];
 fi
 
 total=0
-for scenario in clean user-own admin-edit upgrade remove plymouth deps; do
-  if [[ "$scenario" == "upgrade" && -z "$OLD_RPM" ]]; then
+for scenario in clean user-own admin-edit upgrade admin-upgrade remove plymouth deps; do
+  if [[ "$scenario" == *upgrade && -z "$OLD_RPM" ]]; then
     echo "== $scenario: skipped (no OLD.rpm given)"
     continue
   fi

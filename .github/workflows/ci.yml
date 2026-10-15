@@ -67,6 +67,11 @@ jobs:
             tar \
             util-linux
 
+      - name: Validation regression tests
+        run: |
+          python3 tools/dev/test-asset-validation.py
+          python3 tools/dev/test-dependency-check.py
+
       - name: Build and validate RPM
         run: |
           set -euo pipefail
@@ -114,4 +119,3 @@ jobs:
           set -uo pipefail
           # PKG-06: Ro-Repo rpmlint'i bilgi amaçlı çalıştırır, kabulü engellemez; burada da yalnızca rapor.
           rpmlint build/rpmbuild/RPMS/noarch/ro-theme-*.noarch.rpm build/rpmbuild/SRPMS/ro-theme-*.src.rpm || true
-

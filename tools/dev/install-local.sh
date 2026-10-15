@@ -32,6 +32,7 @@ mkdir -p \
   "$HOME/.local/share/plasma/look-and-feel" \
   "$HOME/.local/share/plasma/layout-templates" \
   "$HOME/.local/share/ro-theme/wallpapers" \
+  "$HOME/.local/share/ro-theme/qml" \
   "$HOME/.local/share/wallpapers" \
   "$HOME/.local/share/kwin/effects" \
   "$HOME/.local/share/aurorae/themes" \
@@ -75,6 +76,7 @@ cp platform/plasma/color-schemes/RoDark.colors "$HOME/.local/share/color-schemes
 # 2) KDE ayarlarında düzgün isimle görünecek genel wallpaper klasörü
 cp assets/wallpapers/light.jpg "$HOME/.local/share/ro-theme/wallpapers/light.jpg"
 cp assets/wallpapers/dark.jpg "$HOME/.local/share/ro-theme/wallpapers/dark.jpg"
+cp dist/qml/RoTokens.qml "$HOME/.local/share/ro-theme/qml/RoTokens.qml"
 cp assets/wallpapers/light.jpg "$HOME/.local/share/wallpapers/Ro Light.jpg"
 cp assets/wallpapers/dark.jpg "$HOME/.local/share/wallpapers/Ro Dark.jpg"
 
