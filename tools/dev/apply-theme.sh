@@ -103,6 +103,28 @@ write_config_or_warn() {
   fi
 }
 
+# WD-02/03: dekorasyon kimliği üreticinin global tema defaults dosyasından gelir.
+# Okuma başarısızsa ayarlara dokunmadan dur; eski Breeze seçimine geri düşme.
+read_decoration_default() {
+  local reader
+  for reader in kreadconfig6 kreadconfig5; do
+    if command -v "$reader" >/dev/null 2>&1; then
+      "$reader" --file "$DEFAULTS" --group kwinrc --group org.kde.kdecoration2 --key "$1"
+      return
+    fi
+  done
+  return 1
+}
+
+DEFAULTS="$ROOT/platform/plasma/look-and-feel/$LOOK_AND_FEEL/contents/defaults"
+if [[ ! -f "$DEFAULTS" ]] || \
+   ! DECORATION_LIBRARY="$(read_decoration_default library)" || \
+   ! DECORATION_THEME="$(read_decoration_default theme)" || \
+   [[ -z "$DECORATION_LIBRARY" || -z "$DECORATION_THEME" ]]; then
+  echo "Cannot read decoration defaults from $DEFAULTS; no theme settings were changed. Check kreadconfig5/6 and regenerate the theme files." >&2
+  exit 1
+fi
+
 echo "Applying Ro $MODE theme..."
 
 # Renk şeması yalnızca KDE uygulama/pencere paletini değiştirir.
@@ -122,8 +144,8 @@ delete_config --file kdeglobals --group KDE --key ColorScheme || true
 write_config_or_warn "Plasma theme" --file plasmarc --group Theme --key name "$PLASMA_THEME"
 write_config_or_warn "KSplash engine" --file ksplashrc --group KSplash --key Engine KSplashQML
 write_config_or_warn "KSplash theme" --file ksplashrc --group KSplash --key Theme "$LOOK_AND_FEEL"
-write_config_or_warn "KWin decoration library" --file kwinrc --group org.kde.kdecoration2 --key library org.kde.breeze
-write_config_or_warn "KWin decoration theme" --file kwinrc --group org.kde.kdecoration2 --key theme Breeze
+write_config_or_warn "KWin decoration library" --file kwinrc --group org.kde.kdecoration2 --key library "$DECORATION_LIBRARY"
+write_config_or_warn "KWin decoration theme" --file kwinrc --group org.kde.kdecoration2 --key theme "$DECORATION_THEME"
 
 # Wallpaper değişimi color scheme dosyalarına yazılmaz; sadece global/apply akışında yapılır.
 # Böylece Colors menüsünden RoDark/RoLight seçmek sadece paleti değiştirir.

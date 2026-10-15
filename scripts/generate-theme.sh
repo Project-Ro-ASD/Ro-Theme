@@ -982,8 +982,20 @@ def plasma_tasks_svg(tokens):
                     w_, h_ = (1, m) if side_name in ('top', 'bottom') else (m, 1)
                     out += f'  <rect id="{prefix}-hint-{side_name}-margin" x="{fmt(hx + 4 * i)}" y="{fmt(y)}" width="{fmt(w_)}" height="{fmt(h_)}" fill-opacity="0"/>\n'
             y += 2 * R + e + 8
+    # PST-16 grup göstergesi (G1, 2026-10-15): aynı uygulamanın birden fazla penceresi. Plasma görev simgesinin panel
+    # tarafına koyar; KDE'nin dili gibi vurgu renginde daire içinde "+" (artı, vurgu üstü metin rengi; etkin görevin
+    # vurgu çizgisiyle karışmasın diye nokta/halka seçilmedi).
+    gs = 11; gx = 2 * R + e + 40; c = gs / 2
+    for gi, gname in enumerate(('top', 'bottom', 'left', 'right')):
+        gy = y + gi * (gs + 4)
+        body = (f'    <rect x="{fmt(gx)}" y="{fmt(gy)}" width="{gs}" height="{gs}" fill-opacity="0"/>\n'
+                f'    <circle cx="{fmt(gx + c)}" cy="{fmt(gy + c)}" r="{fmt(c)}" class="ColorScheme-Highlight" fill="currentColor"/>\n'
+                f'    <rect x="{fmt(gx + c - 0.75)}" y="{fmt(gy + 2.5)}" width="1.5" height="6" class="ColorScheme-HighlightedText" fill="currentColor"/>\n'
+                f'    <rect x="{fmt(gx + 2.5)}" y="{fmt(gy + c - 0.75)}" width="6" height="1.5" class="ColorScheme-HighlightedText" fill="currentColor"/>\n')
+        out += f'  <g id="group-expander-{gname}">\n{body}  </g>\n'
     svg = _ctl_svg(out, R, 24, tokens)
-    return svg.replace('    .ColorScheme-Text', f'    .ColorScheme-NeutralText {{ color:{tokens["neutral"].lower()}; }}\n'
+    return svg.replace('    .ColorScheme-Text', f'    .ColorScheme-HighlightedText {{ color:{tokens["selectionText"].lower()}; }}\n'
+                       f'    .ColorScheme-NeutralText {{ color:{tokens["neutral"].lower()}; }}\n'
                        f'    .ColorScheme-PositiveText {{ color:{tokens["positive"].lower()}; }}\n    .ColorScheme-Text', 1)
 
 def _arc(cx, cy, r, w, a0, sweep, cls, op=1):
