@@ -676,7 +676,7 @@ check_file platform/cursor/ro-cursor/index.theme
 
 section "Plasma Login Manager And Plymouth"
 check_file platform/plasmalogin/20-ro-theme.conf
-check_contains platform/plasmalogin/20-ro-theme.conf "WallpaperPlugin=org.kde.image" "Plasma Login Manager image wallpaper plugin"
+check_contains platform/plasmalogin/20-ro-theme.conf "WallpaperPluginId=org.kde.image" "Plasma Login Manager image wallpaper plugin (key from plasmaloginsettingsbase.kcfg)"
 check_contains platform/plasmalogin/20-ro-theme.conf "file:///usr/share/ro-theme/wallpapers/login.jpg" "Plasma Login Manager Ro wallpaper"
 check_file assets/wallpapers/loginv2.jpg
 check_absent_file platform/sddm "legacy SDDM source tree"
