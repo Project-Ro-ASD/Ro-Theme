@@ -8,6 +8,19 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
+APPLY_THEME=1
+usage() {
+  echo "Usage: $0 [--files-only]"
+  echo "  --files-only  install local theme files without changing active KDE settings"
+}
+for arg in "$@"; do
+  case "$arg" in
+    --files-only) APPLY_THEME=0 ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "Unknown argument: $arg" >&2; usage >&2; exit 2 ;;
+  esac
+done
+
 ./scripts/generate-theme.sh
 ./scripts/validate.sh
 
@@ -88,16 +101,21 @@ cp -r platform/plasma/layout-templates/org.ro.desktop "$HOME/.local/share/plasma
 cp -r platform/kwin/aurorae/RoLight "$HOME/.local/share/aurorae/themes/"
 cp -r platform/kwin/aurorae/RoDark "$HOME/.local/share/aurorae/themes/"
 cp -r platform/gtk/Ro-GTK "$HOME/.themes/"
-cp -r platform/icons/ro-icons "$HOME/.local/share/icons/" || true
-cp -r platform/cursor/ro-cursor "$HOME/.local/share/icons/" || true
+cp -r platform/icons/ro-icons "$HOME/.local/share/icons/"
+cp -r platform/cursor/ro-cursor "$HOME/.local/share/icons/"
 
 chmod +x scripts/*.sh tools/dev/*.sh
 
-# Varsayılan kurulum dark yapılır; light için apply-theme.sh light yeterli.
-if ! apply_output="$(./tools/dev/apply-theme.sh dark 2>&1)"; then
-  echo "Local files were installed, but applying the active KDE theme failed." >&2
-  echo "$apply_output" >&2
-  echo "Run ./scripts/diagnose.sh for a fuller report." >&2
+# Varsayılan davranış dark uygular; dosya denetimi için etkin oturumu değiştirmeden kurulabilir.
+if [[ "$APPLY_THEME" -eq 1 ]]; then
+  if ! apply_output="$(./tools/dev/apply-theme.sh dark 2>&1)"; then
+    echo "Local files were installed, but applying the active KDE theme failed." >&2
+    echo "$apply_output" >&2
+    echo "Run ./scripts/diagnose.sh for a fuller report." >&2
+    exit 1
+  fi
+else
+  echo "Active KDE settings were not changed (--files-only)."
 fi
 
 echo "Local install complete."

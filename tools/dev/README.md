@@ -3,7 +3,8 @@
 Bu klasör geliştirme ve yerel test yardımcılarını tutar. Bu dosyalar GitHub
 reposunda kalır ama RPM paketinin içine kurulmaz.
 
-- `install-local.sh`: Temayı mevcut kullanıcının `~/.local` dizinlerine kurar.
+- `install-local.sh`: Temayı mevcut kullanıcının `~/.local` dizinlerine kurar ve koyu temayı uygular.
+  `--files-only` yalnız dosyaları kurar; etkin KDE ayarlarını değiştirmez.
 - `apply-theme.sh`: Kaynak checkout üzerinden Ro Dark/Ro Light geçişi yapar.
 - `test-local-safe.sh`: Generate, validate, local install, tema geçişleri ve diagnose zincirini çalıştırır.
 - `test-layout.sh`: Plasma layout dosyasını canlı oturumda dener.
@@ -21,6 +22,8 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-appearance-reset.py`: Görünüm sıfırlama aracının yedekleme, okuma/yazma hataları,
   dosya izinleri ve kullanıcıya ait diğer ayarları korumasını geçici XDG dizinlerinde sınar.
   Root çalıştırılan CI'da betik yetkisiz UID ile denenir; canlı kullanıcı ayarlarına dokunmaz.
+- `test-local-install.py`: Yerel kurulumun zorunlu dosya kopyalama/tema uygulama hatalarını
+  başarısız saymasını ve `--files-only` seçeneğinin uygulama adımını atlamasını sınar.
 - `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesi yapar.
 
 Kısa yerel test:
@@ -30,6 +33,12 @@ Kısa yerel test:
 ./tools/dev/apply-theme.sh dark
 ./scripts/diagnose.sh --local
 ```
+
+Yalnız dosyaları incelemek için `./tools/dev/install-local.sh --files-only` kullanılabilir.
+Üretim ve doğrulama yine çalışır; hiçbir tema uygulama komutu çağrılmaz. Varsayılan kurulumda
+uygulama betiği başarısız çıkarsa kurulum da başarısız döner ve komut çıktısını gösterir.
+Kopyalama sırasında hata oluşursa dosyaların bir kısmı kurulmuş olabilir; kurulum başarı mesajı
+vermez, etkin temayı uygulamaya geçmez. Hata giderildikten sonra yeniden çalıştırılabilir.
 
 `scripts/apply-dark-defaults.sh` yalnızca açıkça çalıştırıldığında mevcut kullanıcının Ro
 görünüm anahtarlarını sıfırlar. `--dry-run` değişiklikleri gösterir. Araç önce bütün değişecek
