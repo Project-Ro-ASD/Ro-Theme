@@ -18,6 +18,9 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-theme-decoration.py`: Yerel açık/koyu geçişinin ve tanı aracının üretilmiş global tema
   dekorasyonunu izlemesini sınar. Eksik defaults/okuyucu durumunda uygulama ayar yazmadan durur.
   Testler geçici kullanıcı dizinleri ve yalıtılmış komut taklitleri kullanır; canlı oturuma erişmez.
+- `test-appearance-reset.py`: Görünüm sıfırlama aracının yedekleme, okuma/yazma hataları,
+  dosya izinleri ve kullanıcıya ait diğer ayarları korumasını geçici XDG dizinlerinde sınar.
+  Root çalıştırılan CI'da betik yetkisiz UID ile denenir; canlı kullanıcı ayarlarına dokunmaz.
 - `install-system-preview.sh`: RPM kurmadan Plasma Login Manager/Plymouth önizlemesi yapar.
 
 Kısa yerel test:
@@ -27,3 +30,10 @@ Kısa yerel test:
 ./tools/dev/apply-theme.sh dark
 ./scripts/diagnose.sh --local
 ```
+
+`scripts/apply-dark-defaults.sh` yalnızca açıkça çalıştırıldığında mevcut kullanıcının Ro
+görünüm anahtarlarını sıfırlar. `--dry-run` değişiklikleri gösterir. Araç önce bütün değişecek
+dosyaları yedekler, ardından aynı dizinde hazırlanan dosyaları yerlerine taşır ve izinleri korur.
+Yedekleme veya hazırlık hatasında hiçbir ayar değiştirilmez. Birden çok dosyayı yerlerine taşıma
+sırasında hata olursa daha önce değişen dosyalar olabilir; hata çıktısındaki yedek dizini korunur.
+Sembolik bağlantı olan ayar dosyaları otomatik değiştirilmez; araç hata ile durur.

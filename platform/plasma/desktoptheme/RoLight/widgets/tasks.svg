@@ -2,6 +2,7 @@
   <!-- Ro control: radius 10. Generated from core/tokens by scripts/generate-theme.sh. -->
   <defs>
   <style id="current-color-scheme" type="text/css">
+    .ColorScheme-HighlightedText { color:#ffffff; }
     .ColorScheme-NeutralText { color:#8a5a00; }
     .ColorScheme-PositiveText { color:#1e7643; }
     .ColorScheme-Text { color:#2b2d2f; }
@@ -952,5 +953,29 @@
   <g id="east-progress-bottomright">
     <rect x="42" y="1422" width="10" height="10" fill-opacity="0"/>
     <path d="M 42,1422 L 52,1422 L 52,1424 A 8,8 0 0 1 44,1432 L 42,1432 Z" class="ColorScheme-PositiveText" fill="currentColor" fill-opacity="0.35"/>
+  </g>
+  <g id="group-expander-top">
+    <rect x="92" y="1440" width="11" height="11" fill-opacity="0"/>
+    <circle cx="97.5" cy="1445.5" r="5.5" class="ColorScheme-Highlight" fill="currentColor"/>
+    <rect x="96.75" y="1442.5" width="1.5" height="6" class="ColorScheme-HighlightedText" fill="currentColor"/>
+    <rect x="94.5" y="1444.75" width="6" height="1.5" class="ColorScheme-HighlightedText" fill="currentColor"/>
+  </g>
+  <g id="group-expander-bottom">
+    <rect x="92" y="1455" width="11" height="11" fill-opacity="0"/>
+    <circle cx="97.5" cy="1460.5" r="5.5" class="ColorScheme-Highlight" fill="currentColor"/>
+    <rect x="96.75" y="1457.5" width="1.5" height="6" class="ColorScheme-HighlightedText" fill="currentColor"/>
+    <rect x="94.5" y="1459.75" width="6" height="1.5" class="ColorScheme-HighlightedText" fill="currentColor"/>
+  </g>
+  <g id="group-expander-left">
+    <rect x="92" y="1470" width="11" height="11" fill-opacity="0"/>
+    <circle cx="97.5" cy="1475.5" r="5.5" class="ColorScheme-Highlight" fill="currentColor"/>
+    <rect x="96.75" y="1472.5" width="1.5" height="6" class="ColorScheme-HighlightedText" fill="currentColor"/>
+    <rect x="94.5" y="1474.75" width="6" height="1.5" class="ColorScheme-HighlightedText" fill="currentColor"/>
+  </g>
+  <g id="group-expander-right">
+    <rect x="92" y="1485" width="11" height="11" fill-opacity="0"/>
+    <circle cx="97.5" cy="1490.5" r="5.5" class="ColorScheme-Highlight" fill="currentColor"/>
+    <rect x="96.75" y="1487.5" width="1.5" height="6" class="ColorScheme-HighlightedText" fill="currentColor"/>
+    <rect x="94.5" y="1489.75" width="6" height="1.5" class="ColorScheme-HighlightedText" fill="currentColor"/>
   </g>
 </svg>
