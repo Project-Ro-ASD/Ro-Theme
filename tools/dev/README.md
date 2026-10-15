@@ -23,7 +23,8 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-rpm-build.py`: Göreli/mutlak derleme kökü, spec/derleme makrolarının eşliği ve doğru
   RPM çıktısının teste gönderilmesini yalıtılmış RPM araç taklitleriyle sınar.
 - `test-theme-decoration.py`: Yerel açık/koyu geçişinin ve tanı aracının üretilmiş global tema
-  dekorasyonunu izlemesini sınar. Eksik defaults/okuyucu durumunda uygulama ayar yazmadan durur.
+  dekorasyonunu izlemesini, gerekli bileşen dosyalarını ve geçersiz dosya/bağlantı durumlarını sınar.
+  Eksik defaults/okuyucu durumunda uygulama ayar yazmadan durur.
   Testler geçici kullanıcı dizinleri ve yalıtılmış komut taklitleri kullanır; canlı oturuma erişmez.
 - `test-appearance-reset.py`: Görünüm sıfırlama aracının yedekleme, okuma/yazma hataları,
   dosya izinleri ve kullanıcıya ait diğer ayarları korumasını geçici XDG dizinlerinde sınar.
@@ -48,6 +49,12 @@ Kısa yerel test:
 ./tools/dev/apply-theme.sh dark
 ./scripts/diagnose.sh --local
 ```
+
+Tanı aracı, yerel ve sistem kurulumunda QML token'ını, açık/koyu Aurorae dosyalarını,
+yerleşim şablonunu, GTK CSS dosyalarını, ikon tanımı/Dolphin/klasör girişlerini ve mevcut imleç
+tanımını kontrol eder. Eksik/okunamayan dosyalar ve dosya yerindeki klasörler hata sayılır;
+geçerli dosya bağlantıları kabul edilir. İmleç yer tutucusuna yeni varlık şartı eklenmez;
+GTK/Flatpak davranışı ve açık tasarım kararları ayrıca değerlendirilir.
 
 Yalnız dosyaları incelemek için `./tools/dev/install-local.sh --files-only` kullanılabilir.
 Üretim ve doğrulama yine çalışır; hiçbir tema uygulama komutu çağrılmaz. Varsayılan kurulumda
