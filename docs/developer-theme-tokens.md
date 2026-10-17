@@ -1,5 +1,8 @@
 # Ro Tema Token Kullanım Rehberi
 
+> **KDE/Qt uygulamaları (QML, Kirigami, Qt Widgets) için güncel rehber:** [`uygulama-rehberi/`](uygulama-rehberi/README.md).
+> Bu dosya web/CSS ve Tailwind çıktıları (`dist/tokens/`) içindir.
+
 Bu dosya, Ro Desktop üzerinde uygulama veya arayüz geliştirecek kişiler için hazırlanmıştır. Amaç, sistemin tamamında aynı renk, boşluk, radius, opacity ve animasyon dilini korumaktır.
 
 ---

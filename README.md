@@ -74,6 +74,8 @@ makinede aynı işi kolaylaştıran `tools/dev/build-rpm.sh` yardımcısıdır.
 
 Sürüm artırma, tag atma ve GitHub build akışı için: `docs/release-build.md`.
 Günlük bakım ve pratik proje notları için: `docs/project-notes.md`.
+Ro temasıyla KDE/Qt uygulaması geliştiren ekipler için: [`docs/uygulama-rehberi/`](docs/uygulama-rehberi/README.md)
+(renkleri ve şekilleri temadan okumak, `ro-tema-denetim.py`).
 
 ## Pakete Giren Araçlar
 
