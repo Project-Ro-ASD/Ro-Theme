@@ -79,7 +79,7 @@ def panel_layout_js(mode):
             '// the bar never stays without a launcher. Both get the distribution logo.',
             'var launcherId = knownWidgetTypes.indexOf("org.ro.launcher") >= 0 ? "org.ro.launcher" : "org.kde.plasma.kickoff";',
             'var launcher = safeAdd(bar, launcherId) || safeAdd(bar, "org.kde.plasma.kickoff");',
-            'if (launcher) { launcher.currentConfigGroup = ["General"]; launcher.writeConfig("icon", "start-here"); }',
+            'if (launcher) { launcher.currentConfigGroup = ["General"]; launcher.writeConfig("icon", "ro-start"); }',
             'safeAdd(bar, "org.kde.plasma.panelspacer");',
             '',
             'var tasks = safeAdd(bar, "org.kde.plasma.icontasks");',

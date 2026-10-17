@@ -96,6 +96,8 @@ cp -a platform/kwin/aurorae/RoLight %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/kwin/aurorae/RoDark %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/gtk/Ro-GTK %{buildroot}%{_datadir}/themes/
 cp -a platform/icons/ro-icons %{buildroot}%{_datadir}/icons/
+# Başlatıcı simgesi (Ro logosunun halkaları); hicolor her ikon temasının yedeği.
+install -Dm0644 assets/brand/ro-start.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/ro-start.svg
 cp -a platform/cursor/ro-cursor %{buildroot}%{_datadir}/icons/
 
 # Plymouth.
@@ -234,6 +236,7 @@ exit 0
 %{_datadir}/aurorae/themes/RoDark
 %{_datadir}/themes/Ro-GTK
 %{_datadir}/icons/ro-icons
+%{_datadir}/icons/hicolor/scalable/apps/ro-start.svg
 %{_datadir}/icons/ro-cursor
 %{_datadir}/plymouth/themes/ro-theme
 %{_prefix}/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf

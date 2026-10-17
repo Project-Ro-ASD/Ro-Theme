@@ -739,6 +739,27 @@ else
   fail "Plymouth theme: $report; run scripts/generate-theme.sh"
 fi
 
+# Başlatıcı simgesi (ro-start): Ro logosunun halkaları; renk temadan, yedek renk token'dan; panel düzeni bunu kullanır.
+check_file assets/brand/ro-start.svg
+if python3 - <<'PYC'
+import json, re
+from pathlib import Path
+s = Path('assets/brand/ro-start.svg').read_text()
+acc = json.loads(Path('core/tokens/colors.light.json').read_text())['accent'].lower()
+ok = 'id="current-color-scheme"' in s and f'.ColorScheme-Highlight {{ color:{acc}; }}' in s
+ok = ok and 'stroke="currentColor"' in s and not re.search(r'(fill|stroke)="#[0-9a-fA-F]{3,8}"', s)
+raise SystemExit(0 if ok else 1)
+PYC
+then
+  ok "ro-start icon follows the color scheme (ColorScheme-Highlight, fallback colors.light accent)"
+else
+  fail "assets/brand/ro-start.svg must use ColorScheme-Highlight/currentColor with the colors.light accent as fallback"
+fi
+for f in platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js platform/plasma/layout-templates/org.ro.desktop/contents/layout.js; do
+  check_contains "$f" 'writeConfig("icon", "ro-start")' "launcher uses the ro-start icon: ${f#platform/plasma/}"
+done
+check_contains packaging/ro-theme.spec "icons/hicolor/scalable/apps/ro-start.svg" "RPM installs the ro-start icon"
+
 section "Packaging"
 check_contains packaging/ro-theme.spec "Name:" "RPM name field"
 check_contains packaging/ro-theme.spec "ro-theme" "RPM package name"

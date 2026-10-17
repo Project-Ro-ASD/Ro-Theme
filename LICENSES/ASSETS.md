@@ -13,6 +13,7 @@ Atıf: "© Project Ro-ASD, CC-BY-SA-4.0". Tasarımcılar "Designed by" sütunund
 
 | Yol | İçerik | Designed by |
 |---|---|---|
+| `assets/brand/ro-start.svg` | Başlatıcı simgesi: Ro logosunun halkaları, yazısız, simge boyutları için yeniden çizildi | — |
 | `assets/brand/` | Ro logosu (v1'de Ro-Theme sahipliğinde; ileride ro-asd-branding'e taşınacak) | — |
 | `assets/wallpapers/` | Masaüstü ve giriş duvar kâğıtları | — |
 | `platform/plasma/look-and-feel/*/contents/splash/*.jpg` | Açılış ekranı görselleri | — |
