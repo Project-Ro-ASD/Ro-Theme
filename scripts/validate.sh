@@ -660,6 +660,7 @@ check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kd
 check_not_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'google-chrome' "org.ro.dark pins only installed apps (PAN-18)"
 check_not_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js '.remove()' "layout template never removes the user's panels (PAN-22)"
 check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'knownWidgetTypes.indexOf("org.ro.launcher")' "layout uses ro-launcher when installed, Kickoff otherwise (WGT-14)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'launcher.type !== "org.ro.launcher"' "layout keeps ro-launcher's own icon (ro-start), Kickoff gets start-here"
 check_contains packaging/ro-theme.spec "%{_datadir}/ro-theme/qml/RoTokens.qml" "RPM installs RoTokens.qml for ro-widgets (WGT-02)"
 check_not_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'userDataPath() + "/ro-theme' "org.ro.light stale wallpaper API absent"
 check_not_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'userDataPath() + "/ro-theme' "org.ro.dark stale wallpaper API absent"
