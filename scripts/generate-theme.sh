@@ -481,7 +481,7 @@ for name, groups in xdg_defaults.items():
 # - hint-*-margin öğelerinin boyutu içeriğin çerçeveden ne kadar içeride duracağını belirler.
 # - shadow-* öğeleri KWin gölgesidir; shadow-hint-*-margin gölgenin pencere dışına taşma miktarıdır.
 # - Kenarlık stroke ile değil, yüzeyin üstüne dolgulu halka olarak çizilir: stroke parçaların
-#   birleştiği yerde "L" izleri bırakıyordu (validate.sh stroke'u yasaklıyor).
+#   birleştiği yerde "L" izleri bırakıyordu (validate.sh stroke'u yasaklıyor). border=None: kenarlık yok.
 FRAME_EDGE = 32   # esneyen kenar parçalarının taslak uzunluğu; görünümü etkilemez
 FRAME_BORDER = spacing['borderWidth']  # dekoratif kenarlığın tek kaynağı (TOK-08)
 
@@ -507,10 +507,10 @@ def _corner(name, ox, oy, dx, dy, r, fill, fill_opacity, border, border_opacity)
                f'A {fmt(r)},{fmt(r)} 0 0 {sweep} {fmt(p2[0])},{fmt(p2[1])} Z')
     ring = (f'M {fmt(p1[0])},{fmt(p1[1])} A {fmt(r)},{fmt(r)} 0 0 {sweep} {fmt(p2[0])},{fmt(p2[1])} '
             f'L {fmt(q2[0])},{fmt(q2[1])} A {fmt(r - b)},{fmt(r - b)} 0 0 {1 - sweep} {fmt(q1[0])},{fmt(q1[1])} Z')
+    ring_el = f'    <path d="{ring}" fill="{border}" fill-opacity="{border_opacity}"/>\n' if border else ''
     return (f'  <g id="{name}">\n'
             f'    <path d="{surface}" fill="{fill}" fill-opacity="{fill_opacity}"/>\n'
-            f'    <path d="{ring}" fill="{border}" fill-opacity="{border_opacity}"/>\n'
-            f'  </g>\n')
+            + ring_el + '  </g>\n')
 
 def _edge(name, x, y, w, h, outer, fill, fill_opacity, border, border_opacity):
     # outer: kenarlığın bulunduğu dış taraf (top/bottom/left/right) ya da None (orta parça)
@@ -521,7 +521,7 @@ def _edge(name, x, y, w, h, outer, fill, fill_opacity, border, border_opacity):
     }.get(outer)
     out = (f'  <g id="{name}">\n'
            f'    <rect x="{fmt(x)}" y="{fmt(y)}" width="{fmt(w)}" height="{fmt(h)}" fill="{fill}" fill-opacity="{fill_opacity}"/>\n')
-    if line:
+    if line and border:
         out += (f'    <rect x="{fmt(line[0])}" y="{fmt(line[1])}" width="{fmt(line[2])}" height="{fmt(line[3])}" '
                 f'fill="{border}" fill-opacity="{border_opacity}"/>\n')
     return out + '  </g>\n'
@@ -609,7 +609,8 @@ def plasma_frame_svg(fill, fill_opacity, border, border_opacity, r, padding, sha
             + defs_block + ''.join(parts) + hints + shadow_body + '</svg>\n')
 
 plasma_modes = {
-    # Çerçeve kenarlığı opak frameBorder (COL-32): gölge olmadığı için popup'ı zeminden kenarlık ayırır.
+    # (yüzey, yüzey opaklığı, frameBorder, opaklık). Kabuk çerçeveleri TOK-09 revizeden (2026-10-19) beri kenarlıksız ve
+    # gölgeli; frameBorder burada kullanılmıyor, kontroller (giriş alanı, düğme) kendi kenarlığını çizer.
     'RoLight': (light['surface'], str(opacity['glass']), light['frameBorder'], '1.0'),
     'RoDark': (dark['surface'], str(opacity['glass']), dark['frameBorder'], '1.0'),
 }
@@ -631,9 +632,11 @@ def _ctl_layer(shape, cls, opacity):
     op = '' if opacity >= 1 else f' fill-opacity="{fmt(opacity)}"'
     return '    ' + shape.replace('/>', f' class="{cls}" fill="currentColor"{op}/>') + '\n'
 
-def _ctl_block(prefix, y0, r, fills, border, b, margins):
+def _ctl_block(prefix, y0, r, fills, border, b, margins, pad=(0, 0)):
     # Bir durum için 9 parçalı çerçeve (dolgulu halka, stroke yok); fills: [(sınıf, opaklık)]; border: (sınıf, opaklık) | None
-    e = FRAME_EDGE
+    # pad = (üst, alt): üst/alt sıradaki parçaların kutusu o kenarda saydam payla uzar, görünür şekil o kadar içeride
+    # kalır (Plasma parça boyutunu kutudan okur). Varsayılan 0: eski çıktıyla birebir aynı.
+    e = FRAME_EDGE; pt, pb = pad; ys = y0 + pt
     spec = {
         'topleft': ('c', 0, 0, -1, -1), 'topright': ('c', r + e, 0, 1, -1),
         'bottomleft': ('c', 0, r + e, -1, 1), 'bottomright': ('c', r + e, r + e, 1, 1),
@@ -645,19 +648,25 @@ def _ctl_block(prefix, y0, r, fills, border, b, margins):
     for name, sp in spec.items():
         body = ''
         if sp[0] == 'c':
-            surface, ring = _ctl_corner_paths(sp[1], sp[2] + y0, sp[3], sp[4], r, b)
+            surface, ring = _ctl_corner_paths(sp[1], sp[2] + ys, sp[3], sp[4], r, b)
             for cls, op in fills:
                 body += _ctl_layer(f'<path d="{surface}"/>', cls, op)
             if border:
                 body += _ctl_layer(f'<path d="{ring}"/>', *border)
+            px, pw = sp[1], r
         else:
             _, x, y, w, h, outer = sp
-            y += y0
+            y += ys
             for cls, op in fills:
                 body += _ctl_layer(f'<rect x="{fmt(x)}" y="{fmt(y)}" width="{fmt(w)}" height="{fmt(h)}"/>', cls, op)
             line = {'top': (x, y, w, b), 'bottom': (x, y + h - b, w, b), 'left': (x, y, b, h), 'right': (x + w - b, y, b, h)}.get(outer)
             if border and line:
                 body += _ctl_layer(f'<rect x="{fmt(line[0])}" y="{fmt(line[1])}" width="{fmt(line[2])}" height="{fmt(line[3])}"/>', *border)
+            px, pw = x, w
+        if pt and name.startswith('top'):
+            body = f'    <rect x="{fmt(px)}" y="{fmt(y0)}" width="{fmt(pw)}" height="{fmt(pt)}" fill-opacity="0"/>\n' + body
+        if pb and name.startswith('bottom'):
+            body += f'    <rect x="{fmt(px)}" y="{fmt(ys + 2 * r + e)}" width="{fmt(pw)}" height="{fmt(pb)}" fill-opacity="0"/>\n'
         parts.append(f'  <g id="{prefix}-{name}">\n{body}  </g>\n')
     hx = 2 * r + e + 8
     top, bottom, left, right = margins
@@ -924,7 +933,11 @@ def plasma_tasks_svg(tokens):
     # köşe sm (8) yuvarlak, panel kenarı tarafında 3 px çizgi. Etkin/üzerinde vurgu, dikkat uyarı, ilerleme başarı
     # rengi; açık ve küçültülmüş nötr. Renkler ColorScheme-* sınıflarından (kullanıcı vurgusuna uyar).
     # Önek yok = alt panel; north-/east-/west- = üst/sağ/sol panel; çizgi panelin dayandığı ekran kenarı tarafında.
+    # İçe boşluk (2026-10-19): Plasma görev yöneticisini panelin tüm kalınlığına yayar (fill area); görünür şekil çerçeve
+    # alanını doldurursa kutucuklar birbirine değer ve panelin kenar çizgisinin üstüne biner. Her parçanın kutusu dış
+    # kenarlarda I kadar saydam pay alır, şekil içeride çizilir: kutucuklar arası 2·I boşluk, panel kenarından I.
     br = radius['sm']; R = br + 2 * spacing['borderWidth']; e = FRAME_EDGE; t = spacing['taskLine']
+    I = 2 * spacing['borderWidth']; Rc = R + I
     T, A, N, P = 'ColorScheme-Text', 'ColorScheme-Highlight', 'ColorScheme-NeutralText', 'ColorScheme-PositiveText'
     states = {
         'normal': (T, opacity['taskNormal'], T, opacity['taskNormalLine']),
@@ -934,9 +947,16 @@ def plasma_tasks_svg(tokens):
         'attention': (N, opacity['taskAttention'], N, 1),
         'progress': (P, opacity['taskProgress'], None, 0),
     }
-    boxes = {'topleft': (0, 0, R, R), 'top': (R, 0, e, R), 'topright': (R + e, 0, R, R),
-             'left': (0, R, R, e), 'center': (R, R, e, e), 'right': (R + e, R, R, e),
-             'bottomleft': (0, R + e, R, R), 'bottom': (R, R + e, e, R), 'bottomright': (R + e, R + e, R, R)}
+    # Parça kutuları (Rc = R + I; Plasma parça boyutunu bunlardan okur) ve içlerindeki görünür alan (dış kenarda I içeride).
+    boxes = {'topleft': (0, 0, Rc, Rc), 'top': (Rc, 0, e, Rc), 'topright': (Rc + e, 0, Rc, Rc),
+             'left': (0, Rc, Rc, e), 'center': (Rc, Rc, e, e), 'right': (Rc + e, Rc, Rc, e),
+             'bottomleft': (0, Rc + e, Rc, Rc), 'bottom': (Rc, Rc + e, e, Rc), 'bottomright': (Rc + e, Rc + e, Rc, Rc)}
+    def visible(name, x, y, w, h):
+        if name.startswith('top'): y, h = y + I, h - I
+        if name.startswith('bottom'): h = h - I
+        if name.endswith('left'): x, w = x + I, w - I
+        if name.endswith('right'): w = w - I
+        return x, y, w, h
     def op_(v):
         return '' if v >= 1 else f' fill-opacity="{fmt(v)}"'
     def corner(x, y, name):
@@ -965,9 +985,10 @@ def plasma_tasks_svg(tokens):
     for dir_prefix, side in (('', 'bottom'), ('north-', 'top'), ('west-', 'left'), ('east-', 'right')):
         for state, (bc, bo, lc, lo) in states.items():
             prefix = dir_prefix + state
-            for name, (x, yy, w, h) in boxes.items():
-                yy += y
-                body = f'    <rect x="{fmt(x)}" y="{fmt(yy)}" width="{fmt(w)}" height="{fmt(h)}" fill-opacity="0"/>\n'
+            for name, (bx, by, bw, bh) in boxes.items():
+                by += y
+                body = f'    <rect x="{fmt(bx)}" y="{fmt(by)}" width="{fmt(bw)}" height="{fmt(bh)}" fill-opacity="0"/>\n'
+                x, yy, w, h = visible(name, bx, by, bw, bh)
                 if name in ('topleft', 'topright', 'bottomleft', 'bottomright'):
                     body += f'    <path d="{corner(x, yy, name)}" class="{bc}" fill="currentColor"{op_(bo)}/>\n'
                 else:
@@ -978,15 +999,15 @@ def plasma_tasks_svg(tokens):
                     body += f'    <rect x="{fmt(lx)}" y="{fmt(ly)}" width="{fmt(lw)}" height="{fmt(lh)}" class="{lc}" fill="currentColor"{op_(lo)}/>\n'
                 out += f'  <g id="{prefix}-{name}">\n{body}  </g>\n'
             if state == 'normal':
-                hx = 2 * R + e + 20; m = spacing['xs']
+                hx = 2 * Rc + e + 20; m = spacing['xs']
                 for i, side_name in enumerate(('top', 'bottom', 'left', 'right')):
                     w_, h_ = (1, m) if side_name in ('top', 'bottom') else (m, 1)
                     out += f'  <rect id="{prefix}-hint-{side_name}-margin" x="{fmt(hx + 4 * i)}" y="{fmt(y)}" width="{fmt(w_)}" height="{fmt(h_)}" fill-opacity="0"/>\n'
-            y += 2 * R + e + 8
+            y += 2 * Rc + e + 8
     # PST-16 grup göstergesi (G1, 2026-10-15): aynı uygulamanın birden fazla penceresi. Plasma görev simgesinin panel
     # tarafına koyar; KDE'nin dili gibi vurgu renginde daire içinde "+" (artı, vurgu üstü metin rengi; etkin görevin
     # vurgu çizgisiyle karışmasın diye nokta/halka seçilmedi).
-    gs = 11; gx = 2 * R + e + 40; c = gs / 2
+    gs = 11; gx = 2 * Rc + e + 40; c = gs / 2
     for gi, gname in enumerate(('top', 'bottom', 'left', 'right')):
         gy = y + gi * (gs + 4)
         body = (f'    <rect x="{fmt(gx)}" y="{fmt(gy)}" width="{gs}" height="{gs}" fill-opacity="0"/>\n'
@@ -994,7 +1015,7 @@ def plasma_tasks_svg(tokens):
                 f'    <rect x="{fmt(gx + c - 0.75)}" y="{fmt(gy + 2.5)}" width="1.5" height="6" class="ColorScheme-HighlightedText" fill="currentColor"/>\n'
                 f'    <rect x="{fmt(gx + 2.5)}" y="{fmt(gy + c - 0.75)}" width="6" height="1.5" class="ColorScheme-HighlightedText" fill="currentColor"/>\n')
         out += f'  <g id="group-expander-{gname}">\n{body}  </g>\n'
-    svg = _ctl_svg(out, R, 24, tokens)
+    svg = _ctl_svg(out, Rc, 24, tokens)
     return svg.replace('    .ColorScheme-Text', f'    .ColorScheme-HighlightedText {{ color:{tokens["selectionText"].lower()}; }}\n'
                        f'    .ColorScheme-NeutralText {{ color:{tokens["neutral"].lower()}; }}\n'
                        f'    .ColorScheme-PositiveText {{ color:{tokens["positive"].lower()}; }}\n    .ColorScheme-Text', 1)
@@ -1059,11 +1080,16 @@ def plasma_tabbar_svg(tokens):
     m = (spacing['sm'], spacing['sm'], spacing['md'], spacing['md'])
     fills = [('ColorScheme-Highlight', opacity['tabActive'])]
     out, y, pieces = '', 0, {}
-    for d, side in (('north', 'bottom'), ('south', 'top'), ('west', None), ('east', None)):
-        out += _ctl_block(f'{d}-active-tab', y, r, fills, None, b, m)
+    # Plasma bu çerçeveyi panelde açık uygulamacığın (başlatıcı, tepsi) vurgusu olarak da çizer ve panelin tüm kalınlığına
+    # yayar (2026-10-19): popup'a bakan kenar (çizginin olduğu kenar; alt panelde üst) panel kenar çizgisinin üstüne
+    # binmesin, açılan popup'a yapışmasın diye o kenarda içe pay (2 × kenarlık). Yan kenarlara pay yok: sekme çubuğunda sekmeler
+    # arasında boşluk açılmasın.
+    I = 2 * b
+    for d, side, pad in (('north', 'bottom', (0, I)), ('south', 'top', (I, 0)), ('west', None, (0, 0)), ('east', None, (0, 0))):
+        out += _ctl_block(f'{d}-active-tab', y, r, fills, None, b, m, pad)
         if side:
-            pieces.update(_tab_line(f'{d}-active-tab', y, r, side, 'ColorScheme-Highlight', spacing['tabLine'], r - 2, 3))
-        y += 2 * r + e + 8
+            pieces.update(_tab_line(f'{d}-active-tab', y + pad[0], r, side, 'ColorScheme-Highlight', spacing['tabLine'], r - 2, 3))
+        y += 2 * r + e + 8 + sum(pad)
     return _inject(_ctl_svg(out, r, 4, tokens), pieces)
 
 def plasma_bar_meter_svg(tokens):
@@ -1130,20 +1156,26 @@ def plasma_arrows_svg(tokens):
 popup_radius = radius.get('popup', radius['lg'])
 widget_radius = radius.get('widget', radius['lg'])
 popup_padding = spacing.get('popupPadding', spacing['sm'])
-popup_shadow = None  # TOK-09/10: katman ayrımı yüzey ve kenarlıkla yapılır.
+# TOK-09 revize (2026-10-19, tema sorumlusu): kabuk yüzeyleri (popup, panel, araç ipucu, masaüstü bileşeni) kenarlıksız;
+# katman ayrımı yüzey tonu ve yumuşak gölgeyle (Breeze dili). Kenarlıklar köşelerde ve panele yapışık popup'ta Plasma'nın
+# kendi ayırıcısıyla üst üste binip çift/basamaklı çizgi yapıyordu. Değerler TOK-10 (boyut 22, opaklık 0.38); panel ve
+# araç ipucu küçük gölge (panelShadow).
+popup_shadow = (spacing['popupShadow'], opacity['popupShadow'])
+small_shadow = (spacing['panelShadow'], opacity['popupShadow'])
 solid_opacity = opacity.get('solid', 1.0)
 for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
     base = root / 'platform/plasma/desktoptheme' / theme_name
+    shell_border = None  # kabuk çerçevelerinde kenarlık yok (TOK-09 revize); frameBorder kontrollerde kullanılır
     outputs = {
         # Popup'lar: normal (compositing açık), translucent (bulanıklık var), solid (compositing kapalı → opak)
-        'dialogs/background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, popup_radius, popup_padding, popup_shadow),
-        'translucent/dialogs/background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, popup_radius, popup_padding, popup_shadow),
-        'solid/dialogs/background.svg': plasma_frame_svg(fill, solid_opacity, stroke, stroke_alpha, popup_radius, popup_padding, popup_shadow),
-        'widgets/background.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, widget_radius, popup_padding),
+        'dialogs/background.svg': plasma_frame_svg(fill, alpha, shell_border, 0, popup_radius, popup_padding, popup_shadow),
+        'translucent/dialogs/background.svg': plasma_frame_svg(fill, alpha, shell_border, 0, popup_radius, popup_padding, popup_shadow),
+        'solid/dialogs/background.svg': plasma_frame_svg(fill, solid_opacity, shell_border, 0, popup_radius, popup_padding, popup_shadow),
+        'widgets/background.svg': plasma_frame_svg(fill, alpha, shell_border, 0, widget_radius, popup_padding, popup_shadow),
         # PST-15 (2026-10-13, P1): panel zemini Plasma'nın okuduğu yolda; köşe radius.panel, iç boşluk xs (44 px barda
         # ikonlar küçülmesin). Panel yüzerken widgets/ (yarı saydam, bulanıklıkta translucent/); bir pencere bara
         # değince (uyarlanır opaklık, büyütülmüş pencere) solid/ (opak). solid/ yoksa Plasma Breeze'inkine düşüyordu.
-        **{k: plasma_frame_svg(fill, a_, stroke, stroke_alpha, radius['panel'], spacing['xs'])
+        **{k: plasma_frame_svg(fill, a_, shell_border, 0, radius['panel'], spacing['xs'], small_shadow)
            for k, a_ in (('widgets/panel-background.svg', alpha), ('translucent/widgets/panel-background.svg', alpha),
                          ('solid/widgets/panel-background.svg', solid_opacity))},
         # Kabuk kontrolleri (03): Breeze'e düşen giriş alanı ve düğme artık Ro köşesi ve kenarlığıyla çizilir.
@@ -1166,12 +1198,11 @@ for theme_name, (fill, alpha, stroke, stroke_alpha) in plasma_modes.items():
         'widgets/frame.svg': plasma_frame_widget_svg(light if theme_name == 'RoLight' else dark),
         'widgets/listitem.svg': plasma_listitem_svg(light if theme_name == 'RoLight' else dark),
         'widgets/arrows.svg': plasma_arrows_svg(light if theme_name == 'RoLight' else dark),
-        'widgets/translucentbackground.svg': plasma_frame_svg(fill, alpha, stroke, stroke_alpha, widget_radius, popup_padding),
-        # PST-18 (T5): araç ipucu bir ton koyu zemin (surfaceAlt) + popup ailesinin opak çerçeve kenarlığı (COL-32),
-        # köşe sm, iç boşluk sm, gölge yok (TOK-09). Ro'nun kendi dosyası yokken Breeze'in gölgeye dayanan çerçevesi
-        # kullanılıyordu.
-        **{k: plasma_frame_svg((light if theme_name == 'RoLight' else dark)['surfaceAlt'], solid_opacity, stroke, stroke_alpha,
-                               radius['sm'], spacing['sm'])
+        'widgets/translucentbackground.svg': plasma_frame_svg(fill, alpha, shell_border, 0, widget_radius, popup_padding, popup_shadow),
+        # PST-18 (T5): araç ipucu bir ton koyu zemin (surfaceAlt), köşe sm, iç boşluk sm; TOK-09 revize ile kenarlık
+        # yerine küçük gölge (2026-10-19).
+        **{k: plasma_frame_svg((light if theme_name == 'RoLight' else dark)['surfaceAlt'], solid_opacity, shell_border, 0,
+                               radius['sm'], spacing['sm'], small_shadow)
            for k in ('widgets/tooltip.svg', 'translucent/widgets/tooltip.svg', 'solid/widgets/tooltip.svg')},
     }
     for rel, content in outputs.items():
