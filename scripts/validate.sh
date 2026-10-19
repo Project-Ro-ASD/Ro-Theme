@@ -766,6 +766,7 @@ check_contains packaging/ro-theme.spec "Requires:       plasma-workspace" "RPM P
 check_contains packaging/ro-theme.spec "Requires:       plasma-desktop" "RPM Plasma desktop dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace" "RPM Plasma workspace dependency (brings libs, kpackage, kservice; PKG-05)"
 check_contains packaging/ro-theme.spec "Recommends:     rsms-inter-fonts" "RPM recommends Inter for window titles (FNT-04, PKG-05)"
+check_contains packaging/ro-theme.spec "Recommends:     ro-widgets" "RPM recommends ro-launcher for the panel (PAN-08, WGT-14)"
 check_contains packaging/ro-theme.spec "License:        GPL-3.0-or-later AND CC-BY-SA-4.0" "RPM license covers code and artwork (PKG-08)"
 check_file LICENSES/CC-BY-SA-4.0.txt
 check_file LICENSES/ASSETS.md

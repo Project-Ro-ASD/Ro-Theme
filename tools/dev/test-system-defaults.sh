@@ -153,6 +153,7 @@ case "$1" in
       fail "dependency resolution failed: $out"
     fi
     grep -qE "rsms-inter-fonts" <<<"$out" && pass "weak dependency rsms-inter-fonts offered" || echo "  [INFO] rsms-inter-fonts not in the transaction"
+    grep -qE "ro-widgets" <<<"$out" && pass "weak dependency ro-widgets offered" || echo "  [INFO] ro-widgets not in the transaction (not in Fedora repos)"
     ;;
 esac
 exit "$fails"
