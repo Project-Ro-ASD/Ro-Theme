@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.5
+Version:        1.1.6
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -252,6 +252,11 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.6-1
+- Packaging: Recommends ro-widgets, so the panel layout finds ro-launcher on a
+  fresh install; without it the panel still falls back to Kickoff.
+- CI: Fedora 44 baseline kf6-kconfig 6.31.0, verified against the theme.
+
 * Mon Oct 19 2026 Project Ro-ASD <contact@roasd.org> - 1.1.5-1
 - Plasma shell: popups, the panel, tooltips and desktop widget frames are
   borderless with soft shadows; the double line under popups attached to a
