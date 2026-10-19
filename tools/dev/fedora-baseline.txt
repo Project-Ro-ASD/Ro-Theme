@@ -6,4 +6,4 @@ plasma-desktop 6.7.5
 kwin 6.7.5
 aurorae 6.7.5
 qt6-qtbase 6.11.2
-kf6-kconfig 6.30.0
+kf6-kconfig 6.31.0
