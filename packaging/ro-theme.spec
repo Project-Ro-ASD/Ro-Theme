@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.4
+Version:        1.1.5
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -250,6 +250,17 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Mon Oct 19 2026 Project Ro-ASD <contact@roasd.org> - 1.1.5-1
+- Plasma shell: popups, the panel, tooltips and desktop widget frames are
+  borderless with soft shadows; the double line under popups attached to a
+  non-floating panel is gone.
+- Task manager: tiles no longer touch each other or the panel edge; the
+  expanded launcher/tray highlight stays clear of the popup.
+- Panel layout: ro-launcher keeps its own icon (ro-start); Kickoff, the
+  fallback, gets the distribution logo.
+- Developer tools: diagnose reports missing installed component files; CI
+  parses the generated GTK 3/4 CSS. App developer guide (docs/).
+
 * Thu Oct 15 2026 Project Ro-ASD <contact@roasd.org> - 1.1.4-1
 - Task manager: group indicator (accent circle with a plus) for applications
   with several windows.
