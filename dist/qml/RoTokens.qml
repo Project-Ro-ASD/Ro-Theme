@@ -60,6 +60,7 @@ QtObject {
     readonly property real opacityFrameEdge: 0.15
     readonly property real opacityListSection: 0.05
     readonly property real opacityWindowShadow: 0.35
+    readonly property real opacityPopupShadow: 0.38
     readonly property real motionWindowOpenMs: 185
     readonly property real motionWindowCloseMs: 155
     readonly property real motionWindowMinimizeMs: 170

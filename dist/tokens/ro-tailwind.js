@@ -138,7 +138,9 @@ module.exports = {
         "progressBar": 6,
         "arrowSize": 16,
         "windowShadow": 32,
-        "fieldPadding": 6
+        "fieldPadding": 6,
+        "popupShadow": 22,
+        "panelShadow": 16
       },
       "opacity": {
         "glass": 0.85,
@@ -174,7 +176,8 @@ module.exports = {
         "tabActive": 0.15,
         "frameEdge": 0.15,
         "listSection": 0.05,
-        "windowShadow": 0.35
+        "windowShadow": 0.35,
+        "popupShadow": 0.38
       }
     }
   }

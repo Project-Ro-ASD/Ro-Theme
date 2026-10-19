@@ -423,10 +423,25 @@ check_plasma_frame_svg() {
   check_contains "$path" '<g id="topleft">' "$label corner element"
   check_contains "$path" ' A ' "$label rounded corner arc"
   check_contains "$path" 'id="hint-top-margin"' "$label content margin hint"
-  if grep -Eq 'id="shadow-|id="ro-shadow-' "$path"; then
-    fail "$label must not contain popup shadows (TOK-09/10)"
+  # TOK-09 revize (2026-10-19): kabuk çerçeveleri kenarlıksız, ayrım yumuşak gölgeyle (KWin shadow-* öğeleri).
+  local sh
+  for sh in topleft top topright left right bottomleft bottom bottomright; do
+    grep -q "id=\"shadow-$sh\"" "$path" || { fail "$label missing shadow-$sh (TOK-09 revize)"; return; }
+  done
+  ok "$label has a soft shadow (TOK-09 revize)"
+  if python3 - "$path" <<'PYC'
+import re, sys
+s = open(sys.argv[1]).read()
+# Kenarlık: çerçeve parçasında yüzey dolgusundan sonra gelen ikinci dolgu (halka ya da 1 px şerit).
+for gid in ('topleft', 'top', 'topright', 'left', 'right', 'bottomleft', 'bottom', 'bottomright'):
+    m = re.search(r'<g id="%s">(.*?)</g>' % gid, s, re.S)
+    if m and len(re.findall(r'<(?:rect|path)\b', m.group(1))) > 1:
+        sys.exit(1)
+PYC
+  then
+    ok "$label has no border (TOK-09 revize)"
   else
-    ok "$label no popup shadows"
+    fail "$label must not draw a border; separation is the shadow (TOK-09 revize)"
   fi
 }
 
@@ -591,6 +606,7 @@ for theme in RoLight RoDark; do
     check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/${variant}widgets/panel-background.svg" "$theme ${variant}panel frame"
   done
   check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/widgets/translucentbackground.svg" "$theme translucent widget frame"
+  check_plasma_frame_svg "platform/plasma/desktoptheme/$theme/widgets/background.svg" "$theme desktop widget frame"
   for control in lineedit button viewitem; do
     check_plasma_control_svg "platform/plasma/desktoptheme/$theme/widgets/$control.svg" "$theme $control (Ro-drawn, not Breeze fallback)"
   done
