@@ -22,6 +22,8 @@ Requires:       plasma-workspace
 Requires:       plasma-login-manager
 # FNT-04: pencere başlığı Inter SemiBold; yoksa Noto Sans'a düşer (FNT-08).
 Recommends:     rsms-inter-fonts
+# PAN-08, WGT-14: panel düzeni ro-launcher kuruluysa onu kullanır, değilse Kickoff'a düşer.
+Recommends:     ro-widgets
 Requires:       util-linux
 Requires(post): bash
 Requires(post): coreutils
