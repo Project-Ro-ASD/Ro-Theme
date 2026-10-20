@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.6
+Version:        1.1.7
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -178,15 +178,25 @@ exit 0
 set +e
 # PLY-08 B / PLY-10: Ro teması seçiliyse ve tema dosyaları değiştiyse initramfs bir kez (çalışan çekirdek) yenilenir.
 # Her güncellemede değil; dosyalar aynıysa hiçbir şey yapılmaz. Kurulum programı kendi initramfs'ini zaten üretir.
+# Damga dizini ayrı değişkende: parametre açılımıyla dizin çıkarmak spec'te kaçış gerektiriyor ve okuyanı yanıltıyordu.
+# plymouth-set-default-theme -R yalnız "dracut -f" çalıştırır: çalışan çekirdeğin (uname -r) initramfs'i.
+# Installroot, konteyner ve imaj derlemesinde o çekirdeğin modülleri bu kökte yoktur; dracut orada başarısız
+# olur. Betikler o kökün içinde (chroot) çalıştığı için ana sistemin initramfs'ine dokunulmaz; burada denenmez,
+# damga yazılmaz (gerçek sistemdeki ilk işlem bir kez üretir). İmajın initramfs'ini imaj aracı kendi çekirdeği
+# için üretir ve seçili temayı alır.
 if [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
-  stamp=%{_sharedstatedir}/ro-theme/plymouth.sha256
+  stampdir=%{_sharedstatedir}/ro-theme
+  stamp="$stampdir/plymouth.sha256"
   sum="$(cat %{_datadir}/plymouth/themes/ro-theme/* 2>/dev/null | sha256sum | cut -d' ' -f1)"
-  if [ "$sum" != "$(cat "$stamp" 2>/dev/null)" ]; then
-    if plymouth-set-default-theme -R ro-theme >/dev/null 2>&1; then
-      mkdir -p "${stamp%%/*}" && echo "$sum" > "$stamp"
-    else
-      echo "ro-theme posttrans: warning: initramfs rebuild for the Plymouth theme failed" >&2
-    fi
+  kver="$(uname -r)"
+  if [ "$sum" = "$(cat "$stamp" 2>/dev/null)" ]; then
+    :
+  elif [ ! -d "/lib/modules/$kver" ]; then
+    echo "ro-theme posttrans: initramfs not rebuilt here: modules of the running kernel ($kver) are not in this root (installroot, container or image build)" >&2
+  elif plymouth-set-default-theme -R ro-theme >/dev/null 2>&1; then
+    mkdir -p "$stampdir" && echo "$sum" > "$stamp"
+  else
+    echo "ro-theme posttrans: warning: initramfs rebuild for the Plymouth theme failed; it is retried on the next ro-theme update" >&2
   fi
 fi
 exit 0
@@ -252,6 +262,14 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.7-1
+- Plymouth: %%posttrans no longer tries to rebuild the initramfs when the
+  running kernel's modules are not in this root (installroot, container,
+  image build); it prints a note instead of a failure warning and writes no
+  stamp. The stamp directory is set explicitly.
+- Tests: stamp after a successful rebuild, failed rebuild (warning, no stamp,
+  retried next time) and the installroot case.
+
 * Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.6-1
 - Packaging: Recommends ro-widgets, so the panel layout finds ro-launcher on a
   fresh install; without it the panel still falls back to Kickoff.

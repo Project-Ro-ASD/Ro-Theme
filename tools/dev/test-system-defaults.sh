@@ -11,8 +11,12 @@ set -euo pipefail
 #   5. Kaldırma (PKG-13): dosyalar gider, yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak kalır.
 #   6. Bağımlılık çözümü (PKG-13, Ro-Repo dependency-solve): Fedora 44 depolarından, kurmadan.
 #   7. Plymouth (16 · PLY-08/10): tema yalnız ilk kurulumda seçilir, initramfs yalnız tema dosyaları değişince ve bir
-#      kez üretilir, kullanıcının seçtiği tema güncellemede korunur, kaldırınca varsayılana dönülür. initramfs
-#      üretimi gerçek değil; plymouth-update-initrd yerine çağrıları sayan bir yer tutucu konur.
+#      kez üretilir, başarılı üretimden sonra damga yazılır, aynı dosyalarla yeniden üretim yapılmaz, başarısız
+#      üretim uyarır ve damga yazmaz (sonraki işlem yeniden dener), kullanıcının seçtiği tema güncellemede korunur,
+#      kaldırınca varsayılana dönülür. initramfs üretimi gerçek değil; plymouth-update-initrd yerine çağrıları sayan
+#      bir yer tutucu konur.
+#   7b. Plymouth installroot: çalışan çekirdeğin modülleri kökte yokken (installroot, konteyner, imaj derlemesi)
+#      dracut denenmez, "failed" uyarısı yerine bilgi notu çıkar, damga yazılmaz.
 #   8. Eski sürümde yönetici tarafından düzenlenen dosya yükseltmede korunur; yeni varsayılan .rpmnew olur.
 #
 # Paketler bağımlılıksız (--nodeps) kurulur: test yalnızca dosya ve betik davranışına bakar. Ayar okumak için
@@ -45,8 +49,14 @@ pass() { printf '  [PASS] %s\n' "$1"; }
 fail() { printf '  [FAIL] %s\n' "$1"; fails=$((fails + 1)); }
 as_user() { local u="$1"; shift; runuser -u "$u" -- env HOME="/home/$u" XDG_CONFIG_DIRS=/etc/xdg "$@"; }
 rebuilds() { wc -l < /tmp/initrd.log 2>/dev/null || echo 0; }
-# Test imajında plymouth-update-initrd gerçek dracut yerine çağrıyı /tmp/initrd.log'a yazar.
-stub_initrd() { : > /tmp/initrd.log; }
+# Test imajında plymouth-update-initrd gerçek dracut yerine çağrıyı /tmp/initrd.log'a yazar. Gerçek sistemde
+# çalışan çekirdeğin modülleri vardır; konteynerde yoktur (installroot ile aynı durum), burada oluşturulur.
+stub_initrd() { : > /tmp/initrd.log; mkdir -p "/lib/modules/$(uname -r)"; }
+# initramfs üretimi başarısız olsun (dracut hatası yerine)
+fail_initrd() { printf '#!/bin/sh\necho rebuild >> /tmp/initrd.log\nexit 1\n' > /usr/libexec/plymouth/plymouth-update-initrd; }
+ok_initrd() { printf '#!/bin/sh\necho rebuild >> /tmp/initrd.log\n' > /usr/libexec/plymouth/plymouth-update-initrd; }
+STAMP=/var/lib/ro-theme/plymouth.sha256
+theme_sum() { cat /usr/share/plymouth/themes/ro-theme/* 2>/dev/null | sha256sum | cut -d' ' -f1; }
 sysval() { awk -v g="[$1]" -v k="$2" '$0 == g { s = 1; next } /^\[/ { s = 0 } s && index($0, k "=") == 1 { print substr($0, length(k) + 2); exit }' /etc/xdg/kdeglobals; }
 
 
@@ -121,8 +131,20 @@ case "$1" in
     rpm -i --nodeps /work/new.rpm >/dev/null 2>&1 || fail "install new package"
     [[ "$(plymouth-set-default-theme)" == "ro-theme" ]] && pass "first install selects ro-theme" || fail "first install theme: $(plymouth-set-default-theme)"
     [[ "$(rebuilds)" == "1" ]] && pass "first install rebuilds initramfs once" || fail "first install rebuilt $(rebuilds) times (want 1)"
+    [[ -f "$STAMP" && "$(cat "$STAMP")" == "$(theme_sum)" ]] && pass "successful rebuild writes the theme checksum stamp" || fail "stamp missing or wrong after rebuild: $(cat "$STAMP" 2>&1)"
     rpm -Uvh --replacepkgs --nodeps /work/new.rpm >/dev/null 2>&1 || fail "reinstall new package"
     [[ "$(rebuilds)" == "1" ]] && pass "reinstall with unchanged theme files does not rebuild" || fail "reinstall rebuilt initramfs again ($(rebuilds))"
+    # Başarısız üretim: damga eskisi kalır, uyarı verilir, bir sonraki işlemde yeniden denenir
+    echo stale > "$STAMP"
+    fail_initrd
+    err="$(rpm -Uvh --replacepkgs --nodeps /work/new.rpm 2>&1 >/dev/null)"
+    [[ "$(rebuilds)" == "2" ]] && pass "changed theme files trigger a rebuild" || fail "rebuild attempts: $(rebuilds) (want 2)"
+    grep -q "initramfs rebuild for the Plymouth theme failed" <<<"$err" && pass "failed rebuild warns" || fail "no warning on failed rebuild: $err"
+    [[ "$(cat "$STAMP")" == "stale" ]] && pass "failed rebuild does not write the stamp" || fail "stamp written after a failed rebuild"
+    ok_initrd
+    rpm -Uvh --replacepkgs --nodeps /work/new.rpm >/dev/null 2>&1 || fail "reinstall new package"
+    [[ "$(rebuilds)" == "3" && "$(cat "$STAMP")" == "$(theme_sum)" ]] && pass "next transaction retries and writes the stamp" || fail "retry: rebuilds $(rebuilds), stamp $(cat "$STAMP")"
+    : > /tmp/initrd.log; echo rebuild > /tmp/initrd.log
     plymouth-set-default-theme spinner
     rpm -Uvh --replacepkgs --nodeps /work/new.rpm >/dev/null 2>&1 || fail "reinstall new package"
     [[ "$(plymouth-set-default-theme)" == "spinner" ]] && pass "user's own Plymouth theme kept on reinstall" || fail "reinstall replaced the user's Plymouth theme"
@@ -132,6 +154,17 @@ case "$1" in
     [[ "$(plymouth-set-default-theme)" != "ro-theme" ]] && pass "removal resets Plymouth to the distribution default ($(plymouth-set-default-theme))" || fail "ro-theme still selected after removal"
     [[ "$(rebuilds)" == "2" ]] && pass "removal rebuilds initramfs once" || fail "removal rebuilds: $(rebuilds) (want 2)"
     [[ ! -e /var/lib/ro-theme ]] && pass "state directory removed" || fail "/var/lib/ro-theme left behind"
+    ;;
+  plymouth-installroot)
+    # Installroot / konteyner / imaj derlemesi: çalışan çekirdeğin modülleri bu kökte yok. dracut denenmez,
+    # "failed" uyarısı çıkmaz, damga yazılmaz; tema yine seçilir (imaj aracı initramfs'i kendi üretir).
+    : > /tmp/initrd.log
+    rm -rf "/lib/modules/$(uname -r)"
+    err="$(rpm -i --nodeps /work/new.rpm 2>&1 >/dev/null)" || fail "install new package"
+    [[ "$(plymouth-set-default-theme)" == "ro-theme" ]] && pass "installroot: ro-theme selected" || fail "installroot theme: $(plymouth-set-default-theme)"
+    [[ "$(rebuilds)" == "0" ]] && pass "installroot: initramfs not rebuilt" || fail "installroot rebuilt $(rebuilds) times"
+    [[ ! -e "$STAMP" ]] && pass "installroot: no stamp written" || fail "installroot wrote a stamp"
+    grep -q "initramfs not rebuilt here" <<<"$err" && ! grep -q "failed" <<<"$err" && pass "installroot: informative note, no failure warning" || fail "installroot output: $err"
     ;;
   remove)
     # PKG-13: kaldırma. Paket dosyaları gider; yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak korunur.
@@ -168,7 +201,7 @@ if ! podman image exists "$IMAGE" || [[ "${RO_THEME_TEST_REBUILD:-0}" == "1" ]];
 fi
 
 total=0
-for scenario in clean user-own admin-edit upgrade admin-upgrade remove plymouth deps; do
+for scenario in clean user-own admin-edit upgrade admin-upgrade remove plymouth plymouth-installroot deps; do
   if [[ "$scenario" == *upgrade && -z "$OLD_RPM" ]]; then
     echo "== $scenario: skipped (no OLD.rpm given)"
     continue
