@@ -102,6 +102,7 @@ def panel_layout_js(mode):
             '    tray.currentConfigGroup = ["General"];',
             '    tray.writeConfig("shownItems", "' + ','.join(PANEL_TRAY_SHOWN) + '");',
             '    tray.writeConfig("reverseIconOrder", true);',
+            '    tray.writeConfig("scaleIconsToFit", true);   // PAN-03: tepsi ikonları panel yüksekliğiyle ölçeklenir (sabit 22 px kalmaz)',
             '}',
             '',
             f"// PAN-09: time only, {clock['family']} {clock['styleName']} {clock['pointSize']} pt (fonts.panelClock).",

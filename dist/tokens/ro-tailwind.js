@@ -114,7 +114,7 @@ module.exports = {
         "md": 12,
         "lg": 16,
         "xl": 24,
-        "panelHeight": 44,
+        "panelHeight": 52,
         "panelMargin": 8,
         "popupPadding": 12,
         "titlebarHeight": 36,
