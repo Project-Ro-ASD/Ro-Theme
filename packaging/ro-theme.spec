@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.8
+Version:        1.1.9
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -275,6 +275,13 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.9-1
+- Panel: 52 px high (was 44) and the system tray icons scale with the panel
+  instead of staying 22 px (scaleIconsToFit). Layout packages and the layout
+  template follow.
+- Global themes: the Settings previews are regenerated from a real Ro desktop
+  (seed-102 wallpaper, Ro Icons, English interface).
+
 * Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.8-1
 - Global themes now select the whole look: Ro Icons over Papirus (ro-icons,
   ro-icons-light for the light theme), the Breeze cursor and the Ro wallpaper
