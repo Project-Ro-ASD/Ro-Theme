@@ -735,6 +735,23 @@ done
 if [[ "$plymouth_frame_errors" -eq 0 ]]; then
   ok "Plymouth animation frame sequence 0001-0086"
 fi
+# Kare boyutu: two-step görseli ölçeklemez; 192 px, 640×480'de bile firmware logosuyla çakışmaz ve alta taşmaz (PLY-05)
+if python3 - <<'PYC'
+import struct, sys
+from pathlib import Path
+bad = []
+for f in sorted(Path('platform/plymouth/ro-theme').glob('throbber-*.png')):
+    w, h = struct.unpack('>II', f.read_bytes()[16:24])
+    if (w, h) != (192, 192):
+        bad.append(f'{f.name} {w}x{h}')
+print('; '.join(bad[:3]))
+sys.exit(1 if bad else 0)
+PYC
+then
+  ok "Plymouth animation frames are 192x192 (PLY-05)"
+else
+  fail "Plymouth animation frames must be 192x192 (tools/dev/resize-plymouth-frames.py)"
+fi
 if report="$(python3 - <<'PYC'
 import json, re
 from pathlib import Path
