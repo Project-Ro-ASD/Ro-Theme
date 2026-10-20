@@ -7,7 +7,7 @@ function safeAdd(panel, pluginId) {
 
 var bar = new Panel();
 bar.location = "bottom";
-bar.height = 44;
+bar.height = 52;
 bar.hiding = "none";
 try { bar.floating = true; } catch (e) {}
 
@@ -38,6 +38,7 @@ if (tray) {
     tray.currentConfigGroup = ["General"];
     tray.writeConfig("shownItems", "org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.volume,org.kde.plasma.notifications,org.kde.plasma.battery");
     tray.writeConfig("reverseIconOrder", true);
+    tray.writeConfig("scaleIconsToFit", true);   // PAN-03: tepsi ikonları panel yüksekliğiyle ölçeklenir (sabit 22 px kalmaz)
 }
 
 // PAN-09: time only, Noto Sans SemiBold 13 pt (fonts.panelClock).
