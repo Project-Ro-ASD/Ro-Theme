@@ -61,6 +61,7 @@ class LocalInstall(unittest.TestCase):
         for relative in (
             "platform/plasma/color-schemes/RoLight.colors", "platform/plasma/color-schemes/RoDark.colors",
             "assets/wallpapers/light.jpg", "assets/wallpapers/dark.jpg", "dist/qml/RoTokens.qml",
+            "assets/wallpapers/RoLight/metadata.json", "assets/wallpapers/RoDark/metadata.json",
         ):
             path = self.source / relative
             path.parent.mkdir(parents=True, exist_ok=True)

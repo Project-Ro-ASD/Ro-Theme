@@ -28,8 +28,12 @@ PAYLOAD = """/usr/share/color-schemes/RoLight.colors
 /usr/share/ro-theme/wallpapers/light.jpg
 /usr/share/ro-theme/wallpapers/dark.jpg
 /usr/share/ro-theme/wallpapers/login.jpg
-/usr/share/wallpapers/Ro Light.jpg
-/usr/share/wallpapers/Ro Dark.jpg
+/usr/share/wallpapers/RoLight/metadata.json
+/usr/share/wallpapers/RoLight/contents/images/1920x1080.jpg
+/usr/share/wallpapers/RoLight/contents/images/3840x2160.jpg
+/usr/share/wallpapers/RoDark/metadata.json
+/usr/share/wallpapers/RoDark/contents/images/1920x1080.jpg
+/usr/share/wallpapers/RoDark/contents/images/3840x2160.jpg
 /usr/share/plymouth/themes/ro-theme/ro-theme.plymouth
 /usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf
 /usr/bin/ro-theme-diagnose

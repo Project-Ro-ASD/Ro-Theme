@@ -52,10 +52,10 @@ def panel_layout_js(mode):
             '}',
             '']
     if mode:
-        name = 'Ro ' + mode.title()
-        head += [f'// PAN-23 A: RPM installs the wallpaper system-wide; tools/dev/install-local.sh uses the user data dir.',
-                 f'var systemWallpaper = "/usr/share/wallpapers/{name}.jpg";',
-                 f'var userWallpaper = userDataPath("data") + "/wallpapers/{name}.jpg";',
+        name = 'Ro' + mode.title()
+        head += [f'// PAN-23 A: RPM installs the wallpaper package system-wide; tools/dev/install-local.sh uses the user data dir.',
+                 f'var systemWallpaper = "/usr/share/wallpapers/{name}";',
+                 f'var userWallpaper = userDataPath("data") + "/wallpapers/{name}";',
                  'var wallpaperPath = fileExists(systemWallpaper) ? systemWallpaper : userWallpaper;',
                  'var ds = desktops();',
                  'for (var i = 0; i < ds.length; i++) {',
@@ -405,6 +405,12 @@ for mode in ['light', 'dark']:
     for key, role in font_roles.items():
         set_key(groups, '[kdeglobals][General]', key, qfont_string(role))
     set_key(groups, '[kdeglobals][WM]', 'activeFont', qfont_string('windowTitle'))
+    # 06 GT-04c/e: ikon teması Ro Icons (Ro'nun kendi ikonları Papirus'un üstünde; açık modda Papirus-Light tabanlı
+    # ro-icons-light), imleç Breeze (kendi imleç seti gelene kadar).
+    set_key(groups, '[kdeglobals][Icons]', 'Theme', 'ro-icons' if mode == 'dark' else 'ro-icons-light')
+    set_key(groups, '[kcminputrc][Mouse]', 'cursorTheme', 'breeze_cursors')
+    # 06 GT-04j: masaüstü duvar kâğıdı Ro paketi (seed 102; 1080p ve 4K, Plasma boyutu seçer)
+    set_key(groups, '[Wallpaper]', 'Image', 'RoDark' if mode == 'dark' else 'RoLight')
     # 06 GT-04i: açılış ekranı dosya önekiyle ([ksplashrc][KSplash]); GT-04l: LookAndFeelPackage'ı Plasma kendisi yazar.
     if '[KSplash]' in groups:
         groups['[ksplashrc][KSplash]'] = groups.pop('[KSplash]')
@@ -437,6 +443,7 @@ for mode, tr_name in (('light', 'Ro Açık'), ('dark', 'Ro Koyu')):
     (root / f'platform/plasma/look-and-feel/org.ro.{mode}/metadata.json').write_text(
         json.dumps(meta, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Breeze')
+set_key(kdeglobals, '[Icons]', 'Theme', 'ro-icons')
 set_key(kdeglobals, '[WM]', 'activeFont', qfont_string('windowTitle'))
 # 04 APP-11/13: Tamam/İptal düğmelerinde ikon yok; ana araç çubuğu ikon + metin (KDE varsayılanı), diğerleri yalnız ikon.
 set_key(kdeglobals, '[KDE]', 'ShowIconsOnPushButtons', 'false')

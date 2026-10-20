@@ -90,8 +90,7 @@ cp platform/plasma/color-schemes/RoDark.colors "$HOME/.local/share/color-schemes
 cp assets/wallpapers/light.jpg "$HOME/.local/share/ro-theme/wallpapers/light.jpg"
 cp assets/wallpapers/dark.jpg "$HOME/.local/share/ro-theme/wallpapers/dark.jpg"
 cp dist/qml/RoTokens.qml "$HOME/.local/share/ro-theme/qml/RoTokens.qml"
-cp assets/wallpapers/light.jpg "$HOME/.local/share/wallpapers/Ro Light.jpg"
-cp assets/wallpapers/dark.jpg "$HOME/.local/share/wallpapers/Ro Dark.jpg"
+cp -r assets/wallpapers/RoLight assets/wallpapers/RoDark "$HOME/.local/share/wallpapers/"
 
 cp -r platform/plasma/desktoptheme/RoLight "$HOME/.local/share/plasma/desktoptheme/"
 cp -r platform/plasma/desktoptheme/RoDark "$HOME/.local/share/plasma/desktoptheme/"

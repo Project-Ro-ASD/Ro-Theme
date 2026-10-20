@@ -39,7 +39,7 @@ jobs:
           dnf install -y --setopt=install_weak_deps=False \
             bash coreutils diffutils dracut findutils gzip grep gtk3 gtk4 \
             kf6-kconfig kf6-kpackage kf6-kservice \
-            plasma-desktop plasma-workspace plasma-workspace-libs plasma-login-manager \
+            plasma-desktop plasma-workspace plasma-workspace-libs plasma-login-manager papirus-icon-theme breeze-cursor-theme \
             plymouth plymouth-plugin-two-step python3 python3-gobject rpm rpm-build sed tar util-linux
 
       - name: Validate tag and build RPMs

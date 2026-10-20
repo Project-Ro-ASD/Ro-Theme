@@ -1,7 +1,7 @@
 [Icon Theme]
 Name=Ro Icons
-Comment=Ro-ASD monochrome icon theme (Dolphin set: toolbar, places, devices, files)
-Inherits=breeze
+Comment=Ro-ASD icons (Dolphin set: toolbar, places, devices, files) over Papirus Dark
+Inherits=Papirus-Dark
 Example=folder
 DisplayDepth=32
 FollowsColorScheme=true

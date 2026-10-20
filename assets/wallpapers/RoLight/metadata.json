@@ -1,0 +1,16 @@
+{
+  "KPlugin": {
+    "Id": "RoLight",
+    "Name": "Ro Light",
+    "Name[tr]": "Ro Açık",
+    "Description": "Ro Desktop wallpaper (seed 102)",
+    "Description[tr]": "Ro masaüstü duvar kâğıdı",
+    "License": "CC-BY-SA-4.0",
+    "Authors": [
+      {
+        "Name": "Project Ro-ASD"
+      }
+    ]
+  },
+  "KPackageStructure": "Wallpaper/Images"
+}

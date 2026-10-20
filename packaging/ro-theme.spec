@@ -21,6 +21,9 @@ Requires:       plasma-desktop
 Requires:       plasma-workspace
 Requires:       plasma-login-manager
 # FNT-04: pencere başlığı Inter SemiBold; yoksa Noto Sans'a düşer (FNT-08).
+# GT-04c/e: global tema Ro Icons (Papirus tabanlı) ve Breeze imleç seçer; eksik kalırsa seçim sessizce düşer.
+Requires:       papirus-icon-theme
+Requires:       breeze-cursor-theme
 Recommends:     rsms-inter-fonts
 # PAN-08, WGT-14: panel düzeni ro-launcher kuruluysa onu kullanır, değilse Kickoff'a düşer.
 Recommends:     ro-widgets
@@ -89,8 +92,10 @@ install -Dm0644 dist/qml/RoTokens.qml %{buildroot}%{_datadir}/ro-theme/qml/RoTok
 install -Dm0644 assets/wallpapers/light.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/light.jpg
 install -Dm0644 assets/wallpapers/dark.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/dark.jpg
 install -Dm0644 assets/wallpapers/loginv2.jpg %{buildroot}%{_datadir}/ro-theme/wallpapers/login.jpg
-install -Dm0644 assets/wallpapers/light.jpg "%{buildroot}%{_datadir}/wallpapers/Ro Light.jpg"
-install -Dm0644 assets/wallpapers/dark.jpg "%{buildroot}%{_datadir}/wallpapers/Ro Dark.jpg"
+# KDE duvar kâğıdı paketleri: Ayarlar'da "Ro Koyu" / "Ro Açık" olarak görünür, Plasma ekrana uygun boyutu
+# (1920×1080 ya da 3840×2160) kendisi seçer; global tema ve yerleşim betiği bunları kullanır (GT-04j).
+mkdir -p %{buildroot}%{_datadir}/wallpapers
+cp -a assets/wallpapers/RoDark assets/wallpapers/RoLight %{buildroot}%{_datadir}/wallpapers/
 
 # KWin, GTK, icon ve cursor paketleri.
 # Pencere dekorasyonu (Aurorae).
@@ -98,6 +103,13 @@ cp -a platform/kwin/aurorae/RoLight %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/kwin/aurorae/RoDark %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/gtk/Ro-GTK %{buildroot}%{_datadir}/themes/
 cp -a platform/icons/ro-icons %{buildroot}%{_datadir}/icons/
+# Açık mod: aynı Ro ikonları, tabanı Papirus-Light. Klasörler ro-icons'a sembolik bağ (ikonlar iki kez saklanmaz).
+mkdir -p %{buildroot}%{_datadir}/icons/ro-icons-light
+sed -e 's/^Name=Ro Icons$/Name=Ro Icons (Light)/' -e 's/^Inherits=Papirus-Dark$/Inherits=Papirus-Light/' \
+  platform/icons/ro-icons/index.theme > %{buildroot}%{_datadir}/icons/ro-icons-light/index.theme
+for dir in actions apps devices mimetypes places; do
+  ln -s ../ro-icons/$dir %{buildroot}%{_datadir}/icons/ro-icons-light/$dir
+done
 cp -a platform/cursor/ro-cursor %{buildroot}%{_datadir}/icons/
 
 # Plymouth.
@@ -240,12 +252,13 @@ exit 0
 %{_datadir}/ro-theme/wallpapers/light.jpg
 %{_datadir}/ro-theme/wallpapers/dark.jpg
 %{_datadir}/ro-theme/wallpapers/login.jpg
-"%{_datadir}/wallpapers/Ro Light.jpg"
-"%{_datadir}/wallpapers/Ro Dark.jpg"
+%{_datadir}/wallpapers/RoLight
+%{_datadir}/wallpapers/RoDark
 %{_datadir}/aurorae/themes/RoLight
 %{_datadir}/aurorae/themes/RoDark
 %{_datadir}/themes/Ro-GTK
 %{_datadir}/icons/ro-icons
+%{_datadir}/icons/ro-icons-light
 %{_datadir}/icons/ro-cursor
 %{_datadir}/plymouth/themes/ro-theme
 %{_prefix}/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf

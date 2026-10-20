@@ -537,6 +537,22 @@ section "Assets"
 check_file assets/wallpapers/light.jpg
 check_file assets/wallpapers/dark.jpg
 check_file assets/brand/roasd-logo.png
+for pkg in RoDark RoLight; do
+  check_file "assets/wallpapers/$pkg/metadata.json"
+  check_file "assets/wallpapers/$pkg/contents/images/1920x1080.jpg"
+  check_file "assets/wallpapers/$pkg/contents/images/3840x2160.jpg"
+done
+# 06 GT-04c/e/j: global tema ikon (Ro Icons, Papirus tabanlı), imleç (Breeze) ve duvar kâğıdı (Ro paketi) seçer
+check_contains platform/icons/ro-icons/index.theme "Inherits=Papirus-Dark" "Ro Icons sits on Papirus Dark (GT-04c)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/defaults "Theme=ro-icons" "org.ro.dark selects Ro Icons (GT-04c)"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/defaults "Theme=ro-icons-light" "org.ro.light selects Ro Icons Light (GT-04c)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/defaults "cursorTheme=breeze_cursors" "org.ro.dark selects the Breeze cursor (GT-04e)"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/defaults "cursorTheme=breeze_cursors" "org.ro.light selects the Breeze cursor (GT-04e)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/defaults "Image=RoDark" "org.ro.dark selects the RoDark wallpaper (GT-04j)"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/defaults "Image=RoLight" "org.ro.light selects the RoLight wallpaper (GT-04j)"
+check_contains packaging/ro-theme.spec "Requires:       papirus-icon-theme" "RPM requires Papirus for Ro Icons (GT-04c)"
+check_contains packaging/ro-theme.spec "Requires:       breeze-cursor-theme" "RPM requires the Breeze cursor (GT-04e)"
+check_contains packaging/ro-theme.spec "Inherits=Papirus-Light" "RPM builds ro-icons-light on Papirus Light"
 
 section "Plasma Color Schemes"
 check_file platform/plasma/color-schemes/RoLight.colors
@@ -664,12 +680,12 @@ check_global_theme org.ro.light org.ro.light RoLight RoLight
 check_global_theme org.ro.dark org.ro.dark RoDark RoDark
 check_file platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js
 check_file platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js
-check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js '/usr/share/wallpapers/Ro Light.jpg' "org.ro.light system wallpaper path (PAN-23)"
+check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js '/usr/share/wallpapers/RoLight' "org.ro.light system wallpaper path (PAN-23)"
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'new Panel()' "org.ro.light global layout creates the bar"
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'org.kde.plasma.icontasks' "org.ro.light bar has the icon task manager"
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'reverseIconOrder' "org.ro.light tray arrow on the left"
 check_not_contains platform/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js 'google-chrome' "org.ro.light pins only installed apps (PAN-18)"
-check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js '/usr/share/wallpapers/Ro Dark.jpg' "org.ro.dark system wallpaper path (PAN-23)"
+check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js '/usr/share/wallpapers/RoDark' "org.ro.dark system wallpaper path (PAN-23)"
 check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'new Panel()' "org.ro.dark global layout creates the bar"
 check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'org.kde.plasma.icontasks' "org.ro.dark bar has the icon task manager"
 check_contains platform/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js 'reverseIconOrder' "org.ro.dark tray arrow on the left"
@@ -849,6 +865,8 @@ errors = []
 for mode in ('dark', 'light'):
     d = groups(Path(f'platform/plasma/look-and-feel/org.ro.{mode}/contents/defaults'))
     for head, kv in d.items():
+        if head == '[Wallpaper]':   # Look-and-feel'in kendi grubu (dosya öneki yok)
+            continue
         m = re.match(r'^\[([^\]]+)\]((?:\[[^\]]+\])+)$', head)
         if not m:
             errors.append(f'org.ro.{mode}: {head} has no file prefix')
