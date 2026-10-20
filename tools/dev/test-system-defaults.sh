@@ -56,7 +56,7 @@ stub_initrd() { : > /tmp/initrd.log; mkdir -p "/lib/modules/$(uname -r)"; }
 fail_initrd() { printf '#!/bin/sh\necho rebuild >> /tmp/initrd.log\nexit 1\n' > /usr/libexec/plymouth/plymouth-update-initrd; }
 ok_initrd() { printf '#!/bin/sh\necho rebuild >> /tmp/initrd.log\n' > /usr/libexec/plymouth/plymouth-update-initrd; }
 STAMP=/var/lib/ro-theme/plymouth.sha256
-theme_sum() { cat /usr/share/plymouth/themes/ro-theme/* 2>/dev/null | sha256sum | cut -d' ' -f1; }
+theme_sum() { (cd /usr/share/plymouth/themes/ro-theme && find . -type f -print0 | sort -z | xargs -0 cat | sha256sum | cut -d' ' -f1); }
 sysval() { awk -v g="[$1]" -v k="$2" '$0 == g { s = 1; next } /^\[/ { s = 0 } s && index($0, k "=") == 1 { print substr($0, length(k) + 2); exit }' /etc/xdg/kdeglobals; }
 
 
@@ -123,8 +123,14 @@ case "$1" in
     rpm -Uvh --nodeps /work/new.rpm >/dev/null 2>&1 || fail "upgrade to new package"
     [[ "$(sha256sum /etc/xdg/kdeglobals)" == "$before" ]] \
       && pass "upgrade preserves the administrator's old configuration" || fail "upgrade changed administrator settings"
-    [[ -f /etc/xdg/kdeglobals.rpmnew ]] && grep -q '^\[Colors:View\]' /etc/xdg/kdeglobals.rpmnew \
-      && pass "updated defaults delivered as .rpmnew" || fail "updated .rpmnew defaults missing"
+    # RPM yalnız paketteki dosya değiştiyse .rpmnew bırakır; iki sürümde kdeglobals aynıysa beklenmez
+    if [[ "$(rpm -qp --dump /work/old.rpm 2>/dev/null | awk '$1=="/etc/xdg/kdeglobals"{print $4}')" == \
+          "$(rpm -qp --dump /work/new.rpm 2>/dev/null | awk '$1=="/etc/xdg/kdeglobals"{print $4}')" ]]; then
+      echo "  [INFO] kdeglobals is identical in both packages; no .rpmnew expected"
+    else
+      [[ -f /etc/xdg/kdeglobals.rpmnew ]] && grep -q '^\[Colors:View\]' /etc/xdg/kdeglobals.rpmnew \
+        && pass "updated defaults delivered as .rpmnew" || fail "updated .rpmnew defaults missing"
+    fi
     ;;
   plymouth)
     stub_initrd
@@ -165,6 +171,9 @@ case "$1" in
     [[ "$(rebuilds)" == "0" ]] && pass "installroot: initramfs not rebuilt" || fail "installroot rebuilt $(rebuilds) times"
     [[ ! -e "$STAMP" ]] && pass "installroot: no stamp written" || fail "installroot wrote a stamp"
     grep -q "initramfs not rebuilt here" <<<"$err" && ! grep -q "failed" <<<"$err" && pass "installroot: informative note, no failure warning" || fail "installroot output: $err"
+    rpm -e --nodeps ro-theme >/dev/null 2>&1 || fail "installroot: remove package"
+    [[ "$(plymouth-set-default-theme)" != "ro-theme" ]] && pass "installroot: removal resets the theme selection" || fail "installroot: ro-theme still selected after removal"
+    [[ "$(rebuilds)" == "0" ]] && pass "installroot: removal does not try an initramfs rebuild" || fail "installroot: removal rebuilt $(rebuilds) times"
     ;;
   remove)
     # PKG-13: kaldırma. Paket dosyaları gider; yöneticinin değiştirdiği /etc/xdg dosyası .rpmsave olarak korunur.

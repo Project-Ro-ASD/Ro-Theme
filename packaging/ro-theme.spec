@@ -36,6 +36,7 @@ Requires:       plymouth-plugin-two-step
 Requires(post): plymouth
 Requires(posttrans): plymouth
 Requires(posttrans): coreutils
+Requires(posttrans): findutils
 Requires(preun): plymouth
 
 %description
@@ -187,7 +188,8 @@ set +e
 if [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
   stampdir=%{_sharedstatedir}/ro-theme
   stamp="$stampdir/plymouth.sha256"
-  sum="$(cat %{_datadir}/plymouth/themes/ro-theme/* 2>/dev/null | sha256sum | cut -d' ' -f1)"
+  # Özet tema klasörünün bütün dosyalarını (alt klasörler dahil, sıralı) kapsar
+  sum="$(cd %{_datadir}/plymouth/themes/ro-theme 2>/dev/null && find . -type f -print0 | sort -z | xargs -0 cat | sha256sum | cut -d' ' -f1)"
   kver="$(uname -r)"
   if [ "$sum" = "$(cat "$stamp" 2>/dev/null)" ]; then
     :
@@ -205,8 +207,13 @@ exit 0
 set +e
 # Paket kaldırılırken Ro açılış teması seçiliyse dağıtım varsayılanına dönülür (tek initramfs üretimi).
 # %%postun'da değil: tema dosyaları silindikten sonra plymouth-set-default-theme seçili temayı göremez.
+# Installroot / konteynerde (%%posttrans ile aynı koşul) yalnız tema seçimi sıfırlanır, initramfs denenmez.
 if [ "$1" -eq 0 ] && [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
-  plymouth-set-default-theme --reset --rebuild-initrd >/dev/null 2>&1 || true
+  if [ -d "/lib/modules/$(uname -r)" ]; then
+    plymouth-set-default-theme --reset --rebuild-initrd >/dev/null 2>&1 || true
+  else
+    plymouth-set-default-theme --reset >/dev/null 2>&1 || true
+  fi
 fi
 exit 0
 
