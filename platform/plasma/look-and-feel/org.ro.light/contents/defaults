@@ -24,3 +24,12 @@ activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0
 [ksplashrc][KSplash]
 Engine=KSplashQML
 Theme=org.ro.light
+
+[kdeglobals][Icons]
+Theme=ro-icons-light
+
+[kcminputrc][Mouse]
+cursorTheme=breeze_cursors
+
+[Wallpaper]
+Image=RoLight

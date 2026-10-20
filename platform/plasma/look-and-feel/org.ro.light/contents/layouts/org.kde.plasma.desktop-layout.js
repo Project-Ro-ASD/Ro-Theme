@@ -5,9 +5,9 @@ function safeAdd(panel, pluginId) {
     try { return panel.addWidget(pluginId); } catch (e) { print("Ro layout: could not add " + pluginId + ": " + e); return null; }
 }
 
-// PAN-23 A: RPM installs the wallpaper system-wide; tools/dev/install-local.sh uses the user data dir.
-var systemWallpaper = "/usr/share/wallpapers/Ro Light.jpg";
-var userWallpaper = userDataPath("data") + "/wallpapers/Ro Light.jpg";
+// PAN-23 A: RPM installs the wallpaper package system-wide; tools/dev/install-local.sh uses the user data dir.
+var systemWallpaper = "/usr/share/wallpapers/RoLight";
+var userWallpaper = userDataPath("data") + "/wallpapers/RoLight";
 var wallpaperPath = fileExists(systemWallpaper) ? systemWallpaper : userWallpaper;
 var ds = desktops();
 for (var i = 0; i < ds.length; i++) {

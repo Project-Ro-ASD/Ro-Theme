@@ -159,5 +159,8 @@ activeBlend=237,238,240
 inactiveBlend=75,77,82
 activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0
 
+[Icons]
+Theme=ro-icons
+
 [Toolbar style]
 ToolButtonStyleOtherToolbars=IconOnly

@@ -3,22 +3,17 @@
 Ro Theme wallpaper dosyalarında aktif isimler sabit tutulur. Yeni görsel eklerken
 önce `v2` adaylarını koy, sonra aktif dosyaların üzerine geçir.
 
-## Aday Dosyalar
-
-```text
-assets/wallpapers/lightv2.jpg   # Yeni light masaüstü wallpaper
-assets/wallpapers/darkv2.jpg    # Yeni dark masaüstü wallpaper
-assets/wallpapers/loginv2.jpg   # Login / splash / lockscreen kaynak görseli
-```
-
 ## Aktif Dosyalar
 
-Masaüstü global theme şu dosyaları kullanır:
+Masaüstü duvar kâğıdı KDE paketidir (seed 102, açık ve koyu):
 
 ```text
-assets/wallpapers/light.jpg
-assets/wallpapers/dark.jpg
+assets/wallpapers/RoDark/contents/images/1920x1080.jpg  ve  3840x2160.jpg
+assets/wallpapers/RoLight/contents/images/1920x1080.jpg ve  3840x2160.jpg
+assets/wallpapers/dark.jpg, light.jpg    # 1080p kopyası (betikler, diagnose)
 ```
+
+Yeni görsel: paketin iki boyutunu değiştir, `dark.jpg` / `light.jpg` 1080p kopyasını güncelle.
 
 Plasma Login Manager giriş ekranı RPM içinde şu dosyayı kullanır:
 
