@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.7
+Version:        1.1.8
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -275,6 +275,16 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.8-1
+- Global themes now select the whole look: Ro Icons over Papirus (ro-icons,
+  ro-icons-light for the light theme), the Breeze cursor and the Ro wallpaper
+  package. Requires papirus-icon-theme and breeze-cursor-theme.
+- Wallpaper: RoDark and RoLight KDE wallpaper packages (seed 102, 1080p and 4K,
+  Plasma picks the size) replace the single jpg files; login, splash and lock
+  screen images from the seed-102 login art.
+- Plymouth: 192 px animation frames so the splash fits every screen size
+  (it overlapped the firmware logo and ran off the bottom at 640x480).
+
 * Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.7-1
 - Plymouth: %%posttrans no longer tries to rebuild the initramfs when the
   running kernel's modules are not in this root (installroot, container,
