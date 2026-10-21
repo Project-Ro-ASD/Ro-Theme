@@ -1649,6 +1649,47 @@ UseFirmwareBackground=true
 [system-reset]
 {ply_progress_mode('Sistem sıfırlanıyor…')}""", encoding='utf-8')
 
+# --- GRUB teması (24 · GRUB-01): renkler token'dan; görseller, simgeler ve yazı tipi platform/grub/ro içinde elle üretilmiş sabit dosyalardır ---
+grub = root / 'platform/grub/ro'
+grub.mkdir(parents=True, exist_ok=True)
+(grub / 'theme.txt').write_text(f"""# Ro GRUB teması. scripts/generate-theme.sh tarafından üretilir (24 · GRUB-01..04); renkler core/tokens'dan.
+# Arka plan: yapay zekâ üretimi, halka ve yay imzası (bg.jpg). Menüde panel yok; seçili satır yarı saydam vurgu hapı.
+title-text: ""
+desktop-color: "{dark['bootBackground']}"
+desktop-image: "bg.jpg"
+desktop-image-scale-method: "stretch"
+terminal-font: "Noto Sans Regular 16"
+
++ boot_menu {{
+    left = 8%
+    top = 50%-120
+    width = 460
+    height = 270
+    item_font = "Noto Sans Regular 22"
+    selected_item_font = "Noto Sans Regular 22"
+    item_color = "{dark['textSecondary']}"
+    selected_item_color = "{dark['text']}"
+    item_height = 36
+    item_padding = 0
+    item_spacing = 22
+    item_icon_space = 14
+    icon_width = 36
+    icon_height = 36
+    selected_item_pixmap_style = "select_*.png"
+    scrollbar = false
+}}
+
++ label {{
+    left = 8%
+    top = 100%-60
+    width = 60%
+    height = 24
+    font = "Noto Sans Regular 16"
+    color = "{dark['textSecondary']}"
+    text = "Enter: boot     E: edit     C: command line"
+}}
+""", encoding='utf-8')
+
 PY
 
 echo "generated: token outputs updated"
