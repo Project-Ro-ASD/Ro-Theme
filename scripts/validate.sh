@@ -726,6 +726,9 @@ check_file platform/gtk/Ro-GTK/gtk-4.0/gtk.css
 check_file platform/icons/ro-icons/index.theme
 check_file platform/cursor/ro-cursor/index.theme
 
+check_file platform/firefox/ro-theme.js
+check_contains platform/firefox/ro-theme.js 'pref("ui.accentcolor"' "Firefox progress accent default"
+
 section "Plasma Login Manager And Plymouth"
 check_file platform/plasmalogin/20-ro-theme.conf
 check_contains platform/plasmalogin/20-ro-theme.conf "WallpaperPluginId=org.kde.image" "Plasma Login Manager image wallpaper plugin (key from plasmaloginsettingsbase.kcfg)"
