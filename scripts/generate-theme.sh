@@ -1653,7 +1653,7 @@ UseFirmwareBackground=true
 grub = root / 'platform/grub/ro'
 grub.mkdir(parents=True, exist_ok=True)
 (grub / 'theme.txt').write_text(f"""# Ro GRUB teması. scripts/generate-theme.sh tarafından üretilir (24 · GRUB-01..04); renkler core/tokens'dan.
-# Arka plan: yapay zekâ üretimi, akan dalga katmanları (bg.jpg). Menüde panel yok; seçili satır yarı saydam vurgu hapı.
+# Arka plan: yapay zekâ üretimi, tepeler ve ay (bg.jpg). Menüde panel yok; seçili satır yarı saydam vurgu hapı.
 title-text: ""
 desktop-color: "{dark['bootBackground']}"
 desktop-image: "bg.jpg"
@@ -1662,11 +1662,11 @@ terminal-font: "Noto Sans Regular 16"
 
 + boot_menu {{
     left = 5%
-    top = 50%-120
-    width = 800
+    top = 28%
+    width = 740
     height = 270
-    item_font = "Noto Sans Regular 18"
-    selected_item_font = "Noto Sans Regular 18"
+    item_font = "Noto Sans Regular 16"
+    selected_item_font = "Noto Sans Regular 16"
     item_color = "{dark['textSecondary']}"
     selected_item_color = "{dark['text']}"
     item_height = 32
