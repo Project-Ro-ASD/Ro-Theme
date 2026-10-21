@@ -67,7 +67,6 @@ cmd_enable() {
     echo "GRUB_THEME=\"$boot/themes/ro/theme.txt\""
     echo 'GRUB_TERMINAL_OUTPUT="gfxterm"'
     echo 'GRUB_TIMEOUT_STYLE=menu'
-    echo 'GRUB_GFXPAYLOAD_LINUX=keep'
     echo "$END"
   } >> "$DEFAULTS"
   # Fedora menüyü başarılı açılıştan sonra gizler; Ro menüsü her açılışta görünür (GRUB-01).
