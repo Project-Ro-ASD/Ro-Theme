@@ -23,7 +23,7 @@ for (var i = 0; i < oldPanels.length; i++) { oldPanels[i].remove(); }
 
 var bar = new Panel();
 bar.location = "bottom";
-bar.height = 52;
+bar.height = 56;
 bar.hiding = "none";
 try { bar.floating = true; } catch (e) {}
 
@@ -54,7 +54,7 @@ if (tray) {
     tray.currentConfigGroup = ["General"];
     tray.writeConfig("shownItems", "org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.volume,org.kde.plasma.notifications,org.kde.plasma.battery");
     tray.writeConfig("reverseIconOrder", true);
-    tray.writeConfig("scaleIconsToFit", true);   // PAN-03: tepsi ikonları panel yüksekliğiyle ölçeklenir (sabit 22 px kalmaz)
+    tray.writeConfig("scaleIconsToFit", false);   // PAN-03: tepsi ikonları sabit çerçevede kalır; ölçekli seçenek 56 px panelde tepsiyi görev ikonları kadar (38 px) büyütüp orantıyı bozuyordu
 }
 
 // PAN-09: time only, Noto Sans SemiBold 13 pt (fonts.panelClock).

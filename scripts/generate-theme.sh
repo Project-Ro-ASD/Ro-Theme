@@ -102,7 +102,7 @@ def panel_layout_js(mode):
             '    tray.currentConfigGroup = ["General"];',
             '    tray.writeConfig("shownItems", "' + ','.join(PANEL_TRAY_SHOWN) + '");',
             '    tray.writeConfig("reverseIconOrder", true);',
-            '    tray.writeConfig("scaleIconsToFit", true);   // PAN-03: tepsi ikonları panel yüksekliğiyle ölçeklenir (sabit 22 px kalmaz)',
+            '    tray.writeConfig("scaleIconsToFit", false);   // PAN-03: tepsi ikonları sabit çerçevede kalır; ölçekli seçenek 56 px panelde tepsiyi görev ikonları kadar (38 px) büyütüp orantıyı bozuyordu',
             '}',
             '',
             f"// PAN-09: time only, {clock['family']} {clock['styleName']} {clock['pointSize']} pt (fonts.panelClock).",
