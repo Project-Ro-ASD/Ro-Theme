@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.12
+Version:        1.1.13
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -296,6 +296,12 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.13-1
+- GRUB: hills and moon artwork; the menu sits higher and is narrower (Noto Sans
+  16) so long Fedora titles stay clear of the art; the theme defines a full
+  screen terminal area, so pressing Enter no longer shows a black rectangle over
+  the menu. Run `sudo ro-grub-theme enable` again to refresh /boot.
+- ro-icons: trash-empty for Dolphin's Move to Trash.
 * Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.12-1
 - GRUB: wave artwork instead of the rings; menu rows keep their spacing when
   the selection moves; wider menu with Noto Sans 18 so long Fedora titles fit.
