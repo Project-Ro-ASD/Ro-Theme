@@ -114,6 +114,10 @@ for dir in actions apps devices mimetypes places; do
 done
 cp -a platform/cursor/ro-cursor %{buildroot}%{_datadir}/icons/
 
+# Firefox: ilerleme çubuğu rengi (GTK Breeze'de seçili yazı rengini alıyordu).
+install -Dm0644 platform/firefox/ro-theme.js \
+  %{buildroot}%{_libdir}/firefox/browser/defaults/preferences/ro-theme.js
+
 # Plymouth.
 cp -a platform/plymouth/ro-theme %{buildroot}%{_datadir}/plymouth/themes/
 install -Dm0644 platform/plasmalogin/20-ro-theme.conf \
@@ -259,6 +263,11 @@ exit 0
 %{_datadir}/aurorae/themes/RoLight
 %{_datadir}/aurorae/themes/RoDark
 %{_datadir}/kwin/effects/ro-login-reveal
+%dir %{_libdir}/firefox
+%dir %{_libdir}/firefox/browser
+%dir %{_libdir}/firefox/browser/defaults
+%dir %{_libdir}/firefox/browser/defaults/preferences
+%{_libdir}/firefox/browser/defaults/preferences/ro-theme.js
 %{_datadir}/themes/Ro-GTK
 %{_datadir}/icons/ro-icons
 %{_datadir}/icons/ro-icons-light
