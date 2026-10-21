@@ -1659,6 +1659,13 @@ desktop-color: "{dark['bootBackground']}"
 desktop-image: "bg.jpg"
 desktop-image-scale-method: "stretch"
 terminal-font: "Noto Sans Regular 16"
+# Enter'dan sonra GRUB metin terminaline geçer; alan tanımlı değilse ekranın ortasında siyah bir dikdörtgen çizer.
+# Tam ekran ve çerçevesiz: sessiz açılışta ekran siyaha döner (varsayılan GRUB gibi), Plymouth'a kesintisiz geçilir.
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+terminal-border: "0"
 
 + boot_menu {{
     left = 5%
