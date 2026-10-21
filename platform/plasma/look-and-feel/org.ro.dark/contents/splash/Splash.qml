@@ -3,33 +3,18 @@ import QtQuick 2.15
 // Ro login sonrası geçiş ekranı.
 // KDE'nin stok dönen/şişen splash animasyonunu kullanmıyoruz.
 // Amaç: giriş yöneticisinden masaüstüne geçerken önce blur bir yüzey göstermek,
-// sonra bu yüzeyi yavaşça azaltıp masaüstünü sakin şekilde ortaya çıkarmak.
+// sonra masaüstü hazır olunca ksplashqml kendiliğinden kapanır ve kapanışı KWin efekti (ro-login-reveal) oynatır:
+// bu yüzey solarak büyür, masaüstü ve panel aynı anda yakınlaşıp yerine oturur.
 // Not: KWin başlamadan önce gerçek masaüstü arkasına blur verilemez.
 // Bu yüzden burada login wallpaper'ın önceden blur'lanmış hali kullanılır.
 Item {
     id: root
     width: 1920
     height: 1080
-    opacity: 1.0
+
+    // KSplash aşama numarası. Masaüstü hazır olunca (aşama 6) süreç kendiliğinden çıkar; kapanış animasyonu KWin'de
+    // (ro-login-reveal). Bu bileşen yalnız bekleme yüzeyini çizer.
     property int stage: 0
-    property bool fadeStarted: false
-
-    function startFade() {
-        if (fadeStarted) {
-            return
-        }
-
-        fadeStarted = true
-        fadeOutAnimation.start()
-    }
-
-    onStageChanged: {
-        if (stage >= 5) {
-            startFade()
-        }
-    }
-
-    Component.onCompleted: fallbackFadeTimer.start()
 
     Rectangle {
         anchors.fill: parent
@@ -67,37 +52,6 @@ Item {
             loops: Animation.Infinite
             NumberAnimation { from: 0.22; to: 0.58; duration: 700; easing.type: Easing.InOutQuad }
             NumberAnimation { from: 0.58; to: 0.22; duration: 700; easing.type: Easing.InOutQuad }
-        }
-    }
-
-    // Normalde Plasma stage 5'e geldiğinde kapanır; stage sinyali gelmezse takılı kalmasın.
-    Timer {
-        id: fallbackFadeTimer
-        interval: 8000
-        repeat: false
-        onTriggered: root.startFade()
-    }
-
-    // Masaüstü gelirken (ro-login-reveal KWin efekti: 1.06 → 1.0 yakınlaşma) bulanık yüzey de hafifçe büyüyerek
-    // silinir: iki hareket tek bir "içeri doğru yaklaşma" gibi okunur.
-    ParallelAnimation {
-        id: fadeOutAnimation
-        running: false
-        NumberAnimation {
-            target: root
-            property: "opacity"
-            from: 1.0
-            to: 0.0
-            duration: 1100
-            easing.type: Easing.OutCubic
-        }
-        NumberAnimation {
-            target: root
-            property: "scale"
-            from: 1.0
-            to: 1.05
-            duration: 1100
-            easing.type: Easing.OutCubic
         }
     }
 }

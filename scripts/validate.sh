@@ -795,6 +795,7 @@ fi
 check_file platform/kwin/effects/ro-login-reveal/metadata.json
 check_file platform/kwin/effects/ro-login-reveal/contents/code/main.js
 check_contains platform/kwin/effects/ro-login-reveal/contents/code/main.js "windowClass" "login reveal effect matches plasmashell by windowClass"
+check_contains platform/kwin/effects/ro-login-reveal/contents/code/main.js "ksplashqml" "login reveal effect animates the closing splash"
 check_contains platform/plasma/defaults/xdg/kwinrc "ro-login-revealEnabled=true" "login reveal effect enabled by default"
 check_contains packaging/ro-theme.spec "kwin/effects/ro-login-reveal" "RPM installs the login reveal effect"
 
