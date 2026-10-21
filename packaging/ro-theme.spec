@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.9
+Version:        1.1.10
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -278,6 +278,13 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.10-1
+- Panel: 56 px high; the system tray icons keep their fixed size (scaling them
+  to the panel made them look oversized next to the app icons).
+- Login: new KWin effect ro-login-reveal, enabled by default. When the desktop
+  is ready the splash window dissolves and grows a little while the desktop and
+  panel zoom in; the splash no longer fades on its own (its fade was cut short
+  when the splash process exited).
 * Tue Oct 20 2026 Project Ro-ASD <contact@roasd.org> - 1.1.9-1
 - Panel: 52 px high (was 44) and the system tray icons scale with the panel
   instead of staying 22 px (scaleIconsToFit). Layout packages and the layout
