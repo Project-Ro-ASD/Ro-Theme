@@ -118,6 +118,11 @@ cp -a platform/cursor/ro-cursor %{buildroot}%{_datadir}/icons/
 install -Dm0644 platform/firefox/ro-theme.js \
   %{buildroot}%{_libdir}/firefox/browser/defaults/preferences/ro-theme.js
 
+# GRUB teması: yalnız dosyalar; /boot ve /etc/default/grub'a paket yazmaz, açmak için ro-grub-theme enable.
+install -d %{buildroot}%{_datadir}/grub/themes
+cp -a platform/grub/ro %{buildroot}%{_datadir}/grub/themes/ro
+install -Dm0755 scripts/ro-grub-theme.sh %{buildroot}%{_bindir}/ro-grub-theme
+
 # Plymouth.
 cp -a platform/plymouth/ro-theme %{buildroot}%{_datadir}/plymouth/themes/
 install -Dm0644 platform/plasmalogin/20-ro-theme.conf \
@@ -263,6 +268,10 @@ exit 0
 %{_datadir}/aurorae/themes/RoLight
 %{_datadir}/aurorae/themes/RoDark
 %{_datadir}/kwin/effects/ro-login-reveal
+%dir %{_datadir}/grub
+%dir %{_datadir}/grub/themes
+%{_datadir}/grub/themes/ro
+%{_bindir}/ro-grub-theme
 %dir %{_libdir}/firefox
 %dir %{_libdir}/firefox/browser
 %dir %{_libdir}/firefox/browser/defaults

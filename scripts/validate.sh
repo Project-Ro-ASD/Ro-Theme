@@ -729,6 +729,54 @@ check_file platform/cursor/ro-cursor/index.theme
 check_file platform/firefox/ro-theme.js
 check_contains platform/firefox/ro-theme.js 'pref("ui.accentcolor"' "Firefox progress accent default"
 
+section "GRUB theme"
+check_file platform/grub/ro/theme.txt
+check_file platform/grub/ro/bg.jpg
+check_file platform/grub/ro/NotoSans-22.pf2
+check_file scripts/ro-grub-theme.sh
+if python3 - <<'PY'
+import re, sys
+from pathlib import Path
+d = Path('platform/grub/ro'); t = (d / 'theme.txt').read_text()
+missing = []
+for m in re.finditer(r'(?:desktop-image|file)\s*[:=]\s*"([^"]+)"', t):
+    if not (d / m.group(1)).is_file():
+        missing.append(m.group(1))
+for m in re.finditer(r'pixmap_style\s*=\s*"([^"]+)"', t):
+    for k in ('nw', 'n', 'ne', 'w', 'c', 'e', 'sw', 's', 'se'):
+        if not (d / m.group(1).replace('*', k)).is_file():
+            missing.append(m.group(1).replace('*', k))
+if re.search(r'#[0-9A-Fa-f]{6}', t.split('title-text', 1)[1]) is None:
+    missing.append('token colours')
+sys.exit(1 if missing else 0)
+PY
+then
+  ok "GRUB theme files referenced by theme.txt exist"
+else
+  fail "GRUB theme.txt references missing files"
+fi
+if bash -n scripts/ro-grub-theme.sh; then
+  grub_root="$(mktemp -d)"
+  mkdir -p "$grub_root/usr/share/grub/themes" "$grub_root/etc/default" "$grub_root/boot/grub2"
+  cp -a platform/grub/ro "$grub_root/usr/share/grub/themes/ro"
+  printf 'GRUB_TIMEOUT=5\nGRUB_TERMINAL_OUTPUT="console"\n' > "$grub_root/etc/default/grub"
+  if RO_GRUB_ROOT="$grub_root" scripts/ro-grub-theme.sh enable --no-regenerate >/dev/null \
+     && grep -q 'GRUB_THEME="/boot/grub2/themes/ro/theme.txt"' "$grub_root/etc/default/grub" \
+     && grep -q 'GRUB_TIMEOUT=5' "$grub_root/etc/default/grub" \
+     && RO_GRUB_ROOT="$grub_root" scripts/ro-grub-theme.sh enable --no-regenerate >/dev/null \
+     && [[ "$(grep -c 'BEGIN ro-theme' "$grub_root/etc/default/grub")" == 1 ]] \
+     && RO_GRUB_ROOT="$grub_root" scripts/ro-grub-theme.sh disable --no-regenerate >/dev/null \
+     && ! grep -q 'ro-theme' "$grub_root/etc/default/grub" && [[ ! -e "$grub_root/boot/grub2/themes/ro" ]] \
+     && grep -q 'GRUB_TIMEOUT=5' "$grub_root/etc/default/grub"; then
+    ok "ro-grub-theme enable/disable on a scratch root (idempotent, keeps user settings)"
+  else
+    fail "ro-grub-theme enable/disable failed on a scratch root"
+  fi
+  rm -rf "$grub_root"
+else
+  fail "ro-grub-theme.sh has a syntax error"
+fi
+
 section "Plasma Login Manager And Plymouth"
 check_file platform/plasmalogin/20-ro-theme.conf
 check_contains platform/plasmalogin/20-ro-theme.conf "WallpaperPluginId=org.kde.image" "Plasma Login Manager image wallpaper plugin (key from plasmaloginsettingsbase.kcfg)"
