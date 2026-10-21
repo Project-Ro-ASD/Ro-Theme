@@ -1,6 +1,6 @@
 [Icon Theme]
 Name=Ro Icons
-Comment=Ro-ASD icons (Dolphin set: toolbar, places, devices, files) over Papirus Dark
+Comment=Ro-ASD icons (Dolphin set: toolbar, menus, places, devices, files) over Papirus Dark
 Inherits=Papirus-Dark
 Example=folder
 DisplayDepth=32
