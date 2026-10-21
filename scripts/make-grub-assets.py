@@ -3,6 +3,7 @@
 Gerekir: Pillow, numpy. Renkler core/tokens/colors.dark.json'dan. Kullanım: scripts/make-grub-assets.py
 
 - select_*.png: seçili satırın 9 dilimi, yarı saydam vurgu dolgusu ve ince vurgu kenarı (menüde panel yok).
+- item_*.png: seçili olmayan satırların tamamen saydam 9 dilimi (satır aralığı seçimle değişmesin).
 - icons/ro.png (+ fedora, gnu-linux, linux): Ro logosunun (assets/brand/roasd-logo.png) yayları, yazısız.
 - icons/recovery.png (+ advanced): can simidi (halka motifi).
 Arka plan (bg.jpg) yapay zekâ üretimidir; kaynağı ve istemi Ro-Theme-Docs 24'te. Windows ve UEFI simgeleri elle çizilmiştir."""
@@ -29,6 +30,13 @@ img.paste(Image.new('RGBA', (sz, sz), fill), (0, 0), mask(S, N * S - S))
 img = img.resize((3 * N, 3 * N), Image.LANCZOS)
 for k, (x, y) in {'nw': (0, 0), 'n': (1, 0), 'ne': (2, 0), 'w': (0, 1), 'c': (1, 1), 'e': (2, 1), 'sw': (0, 2), 's': (1, 2), 'se': (2, 2)}.items():
     img.crop((x * N, y * N, (x + 1) * N, (y + 1) * N)).save(out / f'select_{k}.png')
+
+# --- Seçili olmayan satırlar için aynı ölçüde saydam dilimler ---
+# gfxmenu seçili satırın içeriğini hap dilimlerinin kalınlığı kadar kaydırır; seçili olmayanlara da aynı ölçüde saydam bir çerçeve verilince
+# bütün satırlar aynı kaydırmayı alır ve seçim değişince satır aralıkları oynamaz.
+blank = Image.new('RGBA', (N, N), (0, 0, 0, 0))
+for k in ('nw', 'n', 'ne', 'w', 'c', 'e', 'sw', 's', 'se'):
+    blank.save(out / f'item_{k}.png')
 
 # --- Ro simgesi: logonun yayları ---
 logo = Image.open(root / 'assets/brand/roasd-logo.png').convert('RGBA'); a = np.array(logo)
