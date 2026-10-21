@@ -706,7 +706,9 @@ check_file platform/plasma/layout-templates/org.ro.desktop/contents/layout.js
 check_not_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'writeConfig("Image"' "layout template wallpaper-free"
 check_not_contains tools/dev/test-layout.sh "plasma-apply-wallpaperimage" "layout test wallpaper-free"
 check_contains platform/plasma/layout-templates/org.ro.desktop/contents/layout.js 'org.kde.plasma.icontasks' "layout template creates the Ro bar"
-if [ -e platform/kwin/effects ]; then fail "platform/kwin/effects must not exist (FX-03: ro-smooth-motion removed)"; else ok "no custom KWin effect (FX-03)"; fi
+# FX-03: ro-smooth-motion kaldırıldı. Tek istisna: ro-login-reveal (giriş sonrası yakınlaşma; yalnız açılışta çalışır, pencere
+# hareketlerine dokunmaz). Başka özel KWin efekti eklenmez.
+if [ -d platform/kwin/effects ] && [ -n "$(ls -A platform/kwin/effects | grep -v '^ro-login-reveal$')" ]; then fail "platform/kwin/effects may only hold ro-login-reveal (FX-03)"; else ok "custom KWin effects limited to ro-login-reveal (FX-03)"; fi
 if grep -rIl -e "kwin4_effect_" -e "ro-smooth-motion" platform packaging scripts/generate-theme.sh tools/dev/test-rpm.sh scripts/diagnose.sh >/dev/null 2>&1; then
   fail "obsolete KWin effect keys or ro-smooth-motion referenced (FX-23)"
 else
@@ -788,6 +790,14 @@ PYC
 else
   fail "Plymouth theme: $report; run scripts/generate-theme.sh"
 fi
+
+# Giriş sonrası açılış: KWin efekti (masaüstü ve panel yakınlaşarak belirir) + açılış ekranı birlikte
+check_file platform/kwin/effects/ro-login-reveal/metadata.json
+check_file platform/kwin/effects/ro-login-reveal/contents/code/main.js
+check_contains platform/kwin/effects/ro-login-reveal/contents/code/main.js "windowClass" "login reveal effect matches plasmashell by windowClass"
+check_contains platform/kwin/effects/ro-login-reveal/contents/code/main.js "ksplashqml" "login reveal effect animates the closing splash"
+check_contains platform/plasma/defaults/xdg/kwinrc "ro-login-revealEnabled=true" "login reveal effect enabled by default"
+check_contains packaging/ro-theme.spec "kwin/effects/ro-login-reveal" "RPM installs the login reveal effect"
 
 section "Packaging"
 check_contains packaging/ro-theme.spec "Name:" "RPM name field"
@@ -939,7 +949,15 @@ check_contains "$XDG_DEFAULTS/kscreenlockerrc" "Blur=false" "system lock screen 
 check_contains "$XDG_DEFAULTS/kwinrc" "library=org.kde.kwin.aurorae.v2" "system Ro Aurorae decoration default (WD-02)"
 check_contains "$XDG_DEFAULTS/kwinrc" "theme=__aurorae__svg__RoDark" "system Ro Dark decoration theme"
 check_contains packaging/ro-theme.spec "Requires:       aurorae" "RPM requires the Aurorae decoration plugin"
-check_not_contains "$XDG_DEFAULTS/kwinrc" "[Plugins]" "system kwinrc leaves KWin effects at KDE defaults (FX-02/23)"
+# FX-02/23: KDE efekt varsayılanlarına dokunulmaz; yalnız ro-login-reveal açılır
+if python3 - "$XDG_DEFAULTS/kwinrc" <<'PYC'
+import sys, re
+t = open(sys.argv[1]).read()
+m = re.search(r'(?ms)^\[Plugins\]\n(.*?)(?=^\[|\Z)', t)
+keys = [l.split('=')[0] for l in (m.group(1).strip().splitlines() if m else []) if l.strip()]
+sys.exit(0 if all(k == 'ro-login-revealEnabled' for k in keys) else 1)
+PYC
+then ok "system kwinrc leaves KWin effects at KDE defaults except ro-login-reveal (FX-02/23)"; else fail "system kwinrc [Plugins] may only enable ro-login-reveal (FX-02/23)"; fi
 check_not_contains packaging/ro-theme.spec "kwin4_effect_" "RPM has no obsolete Plasma 5 effect keys"
 check_not_contains packaging/ro-theme.spec "--all-users" "RPM never applies settings to all users"
 check_not_contains packaging/ro-theme.spec "xdg/autostart" "RPM ships no autostart that writes user files"
