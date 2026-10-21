@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.10
+Version:        1.1.11
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -296,6 +296,13 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.11-1
+- GRUB: new Ro GRUB theme (ring artwork, text-only menu, Ro icons) in
+  /usr/share/grub/themes/ro. The package does not touch /boot or
+  /etc/default/grub; turn it on with `sudo ro-grub-theme enable` (and off
+  with `disable`).
+- Firefox: default accent colour (ui.accentcolor) so the download progress
+  bar is visible; it took the dark selected-text colour and merged with its track.
 * Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.10-1
 - Panel: 56 px high; the system tray icons keep their fixed size (scaling them
   to the panel made them look oversized next to the app icons).
