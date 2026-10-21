@@ -78,7 +78,9 @@ Item {
         onTriggered: root.startFade()
     }
 
-    SequentialAnimation {
+    // Masaüstü gelirken (ro-login-reveal KWin efekti: 1.06 → 1.0 yakınlaşma) bulanık yüzey de hafifçe büyüyerek
+    // silinir: iki hareket tek bir "içeri doğru yaklaşma" gibi okunur.
+    ParallelAnimation {
         id: fadeOutAnimation
         running: false
         NumberAnimation {
@@ -86,7 +88,15 @@ Item {
             property: "opacity"
             from: 1.0
             to: 0.0
-            duration: 1350
+            duration: 1100
+            easing.type: Easing.OutCubic
+        }
+        NumberAnimation {
+            target: root
+            property: "scale"
+            from: 1.0
+            to: 1.05
+            duration: 1100
             easing.type: Easing.OutCubic
         }
     }

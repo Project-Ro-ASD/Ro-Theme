@@ -101,6 +101,8 @@ cp -a assets/wallpapers/RoDark assets/wallpapers/RoLight %{buildroot}%{_datadir}
 # Pencere dekorasyonu (Aurorae).
 cp -a platform/kwin/aurorae/RoLight %{buildroot}%{_datadir}/aurorae/themes/
 cp -a platform/kwin/aurorae/RoDark %{buildroot}%{_datadir}/aurorae/themes/
+mkdir -p %{buildroot}%{_datadir}/kwin/effects
+cp -a platform/kwin/effects/ro-login-reveal %{buildroot}%{_datadir}/kwin/effects/
 cp -a platform/gtk/Ro-GTK %{buildroot}%{_datadir}/themes/
 cp -a platform/icons/ro-icons %{buildroot}%{_datadir}/icons/
 # Açık mod: aynı Ro ikonları, tabanı Papirus-Light. Klasörler ro-icons'a sembolik bağ (ikonlar iki kez saklanmaz).
@@ -256,6 +258,7 @@ exit 0
 %{_datadir}/wallpapers/RoDark
 %{_datadir}/aurorae/themes/RoLight
 %{_datadir}/aurorae/themes/RoDark
+%{_datadir}/kwin/effects/ro-login-reveal
 %{_datadir}/themes/Ro-GTK
 %{_datadir}/icons/ro-icons
 %{_datadir}/icons/ro-icons-light

@@ -473,6 +473,8 @@ xdg_defaults = {
         # WD-02/WD-03: Ro Aurorae (v2 eklentisi) varsayılan dekorasyon; global tema da aynısını seçer.
         '[org.kde.kdecoration2]': ['library=org.kde.kwin.aurorae.v2', f'theme=__aurorae__svg__{default_scheme}',
                                    'ButtonsOnLeft=M', 'ButtonsOnRight=IAX'],
+        # Giriş sonrası masaüstü ve panel yumuşak yakınlaşarak belirir (platform/kwin/effects/ro-login-reveal).
+        '[Plugins]': ['ro-login-revealEnabled=true'],
     },
 }
 xdg_dir = root / 'platform/plasma/defaults/xdg'
