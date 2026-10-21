@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.11
+Version:        1.1.12
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -296,6 +296,12 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.12-1
+- GRUB: wave artwork instead of the rings; menu rows keep their spacing when
+  the selection moves; wider menu with Noto Sans 18 so long Fedora titles fit.
+  ro-grub-theme no longer writes GRUB_GFXPAYLOAD_LINUX=keep (run
+  `sudo ro-grub-theme enable` again to refresh the copy in /boot).
+- ro-icons: Dolphin context menu icons (16 and 22 px, 24 and 32 link to 22).
 * Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.11-1
 - GRUB: new Ro GRUB theme (ring artwork, text-only menu, Ro icons) in
   /usr/share/grub/themes/ro. The package does not touch /boot or

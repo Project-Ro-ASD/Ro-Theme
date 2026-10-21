@@ -732,7 +732,7 @@ check_contains platform/firefox/ro-theme.js 'pref("ui.accentcolor"' "Firefox pro
 section "GRUB theme"
 check_file platform/grub/ro/theme.txt
 check_file platform/grub/ro/bg.jpg
-check_file platform/grub/ro/NotoSans-22.pf2
+check_file platform/grub/ro/NotoSans-18.pf2
 check_file scripts/ro-grub-theme.sh
 if python3 - <<'PY'
 import re, sys
