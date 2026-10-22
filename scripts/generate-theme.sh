@@ -460,7 +460,8 @@ xdg_defaults = {
     # 04 APP-03: Breeze stil ayarları; yalnız KDE varsayılanından farklı olanlar (SYS-02). Ağaç dal çizgisi,
     # araç çubuğu ayracı ve sürgü işaretleri kapalı; animasyon kısa etkileşim süresi (TOK-12g).
     'breezerc': {'[Style]': ['ToolBarDrawItemSeparator=false', 'ViewDrawTreeBranchLines=false',
-                             'SliderDrawTickMarks=false', f"AnimationsDuration={motion['fastMs']}"]},
+                             'SliderDrawTickMarks=false', f"AnimationsDuration={motion['fastMs']}",
+                             'MenuOpacity=80']},   # APP-14: Qt widget menus hafif saydam (Breeze, yalnız Qt widget uygulamaları); denendi: 30 okunmaz, 80 ince cam
     'plasmarc': {'[Theme]': ['name=RoDark']},
     'ksplashrc': {'[KSplash]': ['Engine=KSplashQML', 'Theme=org.ro.dark']},
     'kscreenlockerrc': {
