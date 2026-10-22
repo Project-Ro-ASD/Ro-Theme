@@ -6,3 +6,4 @@ ToolBarDrawItemSeparator=false
 ViewDrawTreeBranchLines=false
 SliderDrawTickMarks=false
 AnimationsDuration=120
+MenuOpacity=75
