@@ -467,7 +467,7 @@ xdg_defaults = {
     # araç çubuğu ayracı ve sürgü işaretleri kapalı; animasyon kısa etkileşim süresi (TOK-12g).
     'breezerc': {'[Style]': ['ToolBarDrawItemSeparator=false', 'ViewDrawTreeBranchLines=false',
                              'SliderDrawTickMarks=false', f"AnimationsDuration={motion['fastMs']}",
-                             'MenuOpacity=75']},   # APP-14: Qt widget menus hafif saydam (Breeze, yalnız Qt widget uygulamaları); denendi: 30 okunmaz, 75 ince cam
+                             'MenuOpacity=60']},   # APP-14: Qt widget menus hafif saydam (Breeze, yalnız Qt widget uygulamaları); denendi: parlak zeminde 35 yazı okunur (5.5:1) ama devre dışı satır kaybolur, 60 ince cam
     'plasmarc': {'[Theme]': ['name=RoDark']},
     'ksplashrc': {'[KSplash]': ['Engine=KSplashQML', 'Theme=org.ro.dark']},
     'kscreenlockerrc': {
