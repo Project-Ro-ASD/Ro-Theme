@@ -304,6 +304,14 @@ exit 0
   Ro's file-type icons (the volume applet showed a note in a document). The
   audio/video/image/text -x-generic icons are gone from the theme; the artwork
   stays under specific names and the common file types have aliases.
+- Qt widget menus (Dolphin, Kate, System Settings, panel context menus) are slightly
+  translucent: MenuOpacity=60 in the system breezerc (the Ro style, Ro-Style, adds
+  the rounder corners; users can change the value in System Settings > Application
+  Style > Configure > Transparency).
+- Colours: dark-theme disabled text is lighter (ContrastAmount 0.45; it was #626365,
+  almost invisible on translucent menus).
+- Packaging: the selected font families (Noto Sans, Noto Sans Mono, Inter) are hard
+  requirements, so they are installed even with weak dependencies disabled.
 * Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.13-1
 - GRUB: hills and moon artwork; the menu sits higher and is narrower (Noto Sans
   16) so long Fedora titles stay clear of the art; the theme defines a full
