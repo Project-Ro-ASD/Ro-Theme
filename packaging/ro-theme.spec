@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.13
+Version:        1.1.14
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -296,6 +296,12 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Thu Oct 22 2026 Project Ro-ASD <contact@roasd.org> - 1.1.14-1
+- ro-icons: audio-volume-*, audio-speakers, audio-input-microphone, video-display,
+  image-missing, text-editor and about 40 other Papirus names no longer resolve to
+  Ro's file-type icons (the volume applet showed a note in a document). The
+  audio/video/image/text -x-generic icons are gone from the theme; the artwork
+  stays under specific names and the common file types have aliases.
 * Wed Oct 21 2026 Project Ro-ASD <contact@roasd.org> - 1.1.13-1
 - GRUB: hills and moon artwork; the menu sits higher and is narrower (Noto Sans
   16) so long Fedora titles stay clear of the art; the theme defines a full
