@@ -20,11 +20,13 @@ Requires:       aurorae
 Requires:       plasma-desktop
 Requires:       plasma-workspace
 Requires:       plasma-login-manager
-# FNT-04: pencere başlığı Inter SemiBold; yoksa Noto Sans'a düşer (FNT-08).
+# FNT-08: seçilen aileler zayıf bağımlılıklar kapalıyken de kurulmalı.
+Requires:       google-noto-sans-fonts
+Requires:       google-noto-sans-mono-fonts
+Requires:       rsms-inter-fonts
 # GT-04c/e: global tema Ro Icons (Papirus tabanlı) ve Breeze imleç seçer; eksik kalırsa seçim sessizce düşer.
 Requires:       papirus-icon-theme
 Requires:       breeze-cursor-theme
-Recommends:     rsms-inter-fonts
 # PAN-08, WGT-14: panel düzeni ro-launcher kuruluysa onu kullanır, değilse Kickoff'a düşer.
 Recommends:     ro-widgets
 Requires:       util-linux

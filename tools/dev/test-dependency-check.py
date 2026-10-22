@@ -17,12 +17,13 @@ class DependencyCheck(unittest.TestCase):
             (root / "new.rpm").touch()
             (root / "output").write_text(output)
             stub = root / "dnf"
-            stub.write_text(f'#!/bin/sh\ncat "{root}/output"\nexit {status}\n')
+            stub.write_text(f'#!/bin/sh\nprintf "%s\\n" "$@" > "{root}/args"\ncat "{root}/output"\nexit {status}\n')
             stub.chmod(0o755)
             result = subprocess.run(["bash", str(CHECK), str(root / "new.rpm")],
                                     env=os.environ | {"PATH": str(root) + ":" + os.environ["PATH"]},
                                     capture_output=True, text=True)
             self.assertEqual(result.returncode == 0, succeeds, result.stdout + result.stderr)
+            self.assertIn("--setopt=install_weak_deps=False", (root / "args").read_text().splitlines())
 
     def test_resolved_transaction_cancelled(self):
         self.check_result(RESOLVED, 1, True)

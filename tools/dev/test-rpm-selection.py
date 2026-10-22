@@ -76,7 +76,10 @@ class RpmSelection(unittest.TestCase):
                        'with open(os.environ["RO_TEST_CALLS"], "a") as log:\n'
                        '    log.write(json.dumps(sys.argv[1:]) + "\\n")\n'
                        'if sys.argv[1] == "-qlp":\n'
-                       '    print(Path(os.environ["RO_TEST_PAYLOAD"]).read_text(), end="")\n')
+                       '    print(Path(os.environ["RO_TEST_PAYLOAD"]).read_text(), end="")\n'
+                       'elif sys.argv[1:3] == ["-qp", "--requires"]:\n'
+                       '    print(os.environ.get("RO_TEST_REQUIREMENTS", "google-noto-sans-fonts\\ngoogle-noto-sans-mono-fonts\\nrsms-inter-fonts"))\n'
+                       '    sys.exit(int(os.environ.get("RO_TEST_REQUIREMENTS_EXIT", "0")))\n')
         rpm.chmod(0o755)
         self.env = os.environ | {"HOME": str(self.home), "PATH": str(self.bin),
                                  "TMPDIR": str(self.root), "RO_TEST_CALLS": str(self.calls),
@@ -170,6 +173,23 @@ class RpmSelection(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertIn("Usage:", result.stdout)
         self.assertEqual(self.calls.read_text(), "")
+
+    def test_each_selected_font_must_be_a_strong_requirement(self):
+        expected = self.artifact(self.repo / "build")
+        fonts = ["google-noto-sans-fonts", "google-noto-sans-mono-fonts", "rsms-inter-fonts"]
+        for missing in fonts:
+            with self.subTest(missing=missing):
+                self.env["RO_TEST_REQUIREMENTS"] = "\n".join(font for font in fonts if font != missing)
+                result = self.run_check(expected)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("RPM must require " + missing, result.stderr)
+
+    def test_unreadable_font_requirements_fail(self):
+        expected = self.artifact(self.repo / "build")
+        self.env["RO_TEST_REQUIREMENTS_EXIT"] = "1"
+        result = self.run_check(expected)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("font requirements could not be read", result.stderr)
 
 
 if __name__ == "__main__":

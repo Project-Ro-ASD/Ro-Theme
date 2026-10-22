@@ -119,6 +119,20 @@ printf '  file: %s\n' "$RPM_PATH"
 run_capture "Digest And Signature" rpm -K "$RPM_PATH" || true
 run_capture "Package Metadata" rpm -qip "$RPM_PATH" || true
 
+section "Required Fonts"
+# Spec metni yerine üretilmiş paketin gerçek güçlü bağımlılıklarını sınar.
+if requirements="$(rpm -qp --requires "$RPM_PATH" 2>&1)"; then
+  for font_package in google-noto-sans-fonts google-noto-sans-mono-fonts rsms-inter-fonts; do
+    if grep -Eq "^${font_package}([[:space:]]|$)" <<< "$requirements"; then
+      pass "required font: $font_package"
+    else
+      fail "RPM must require $font_package; a weak dependency does not guarantee installation"
+    fi
+  done
+else
+  fail "RPM font requirements could not be read: $requirements"
+fi
+
 section "Payload Files"
 payload="$(mktemp)"
 payload_err="$(mktemp)"

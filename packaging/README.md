@@ -2,6 +2,13 @@
 
 RPM paketinin ana dosyası `ro-theme.spec` dosyasıdır.
 
+Noto Sans, Noto Sans Mono ve Inter, `ro-theme` RPM'inin zorunlu bağımlılıklarıdır
+(`google-noto-sans-fonts`, `google-noto-sans-mono-fonts`, `rsms-inter-fonts`). Normal
+DNF kurulumunda `install_weak_deps=False` olsa da kurulur; çözülemiyorlarsa işlem
+başarısız olur. `test-rpm.sh` üretilmiş RPM'in güçlü bağımlılıklarını da denetler.
+Bağımlılıkları atlayan `rpm --nodeps` ve yalnız dosya kopyalayan yerel kurulum bu
+garantinin dışında kalır. Paket, kullanıcı font ayarlarını yeniden yazmaz.
+
 GitHub Actions gibi CI ortamlarında genelde şu akış yeterlidir:
 
 ```bash
