@@ -313,11 +313,15 @@ def color_scheme(theme_id, tokens, dark_mode):
     complementary = roles(d['text'], d['textSecondary'], d)
     display_name, display_name_tr = SCHEME_NAMES[theme_id]
 
+    # COL-11: devre dışı metin = metin rengi, pencere zeminine soldurulur (ContrastAmount) ve %10 koyulaştırılır. Koyu temada 0.65 bu
+    # zeminde #626365 veriyordu (hedef disabled token #707276); 0.58 token'a oturur. Açık temada 0.65 zaten #9C9C9E (hedef #9E9FA4).
+    disabled_contrast = 0.58 if dark_mode else 0.65
+
     return f'''[ColorEffects:Disabled]
 Color={rgb(bg)}
 ColorAmount=0
 ColorEffect=0
-ContrastAmount=0.65
+ContrastAmount={disabled_contrast}
 ContrastEffect=1
 IntensityAmount=0.1
 IntensityEffect=2
