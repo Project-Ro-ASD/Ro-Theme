@@ -724,6 +724,14 @@ fi
 check_file platform/gtk/Ro-GTK/gtk-3.0/gtk.css
 check_file platform/gtk/Ro-GTK/gtk-4.0/gtk.css
 check_file platform/icons/ro-icons/index.theme
+# KDE'nin simge yükleyicisi, temada bulamadığı "audio-…", "video-…", "image-…", "text-…" adları için önce o temanın "<önek>-x-generic"
+# simgesini arar; Ro bunları taşırsa Papirus'taki audio-volume-*, audio-speakers, video-display, image-missing, text-editor gibi simgeler
+# ezilir (ses simgeleri nota işaretli dosya olarak göründü). Bu dört genel ad Ro'da bulunmaz; çizimler özel adlarla durur.
+if [[ -z "$(find platform/icons/ro-icons \( -name 'audio-x-generic.svg' -o -name 'video-x-generic.svg' -o -name 'image-x-generic.svg' -o -name 'text-x-generic.svg' \))" ]]; then
+  ok "ro-icons ships no audio/video/image/text -x-generic icons (they would hijack Papirus names)"
+else
+  fail "ro-icons must not contain audio/video/image/text -x-generic icons (they hijack audio-volume-*, video-display ...)"
+fi
 check_file platform/cursor/ro-cursor/index.theme
 
 check_file platform/firefox/ro-theme.js
