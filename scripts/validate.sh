@@ -1030,6 +1030,7 @@ fi
 check_not_contains scripts/apply-dark-defaults.sh "getent passwd" "apply-dark-defaults only changes the current user"
 check_not_contains scripts/apply-dark-defaults.sh "runuser" "apply-dark-defaults never acts as another user"
 check_contains "$XDG_DEFAULTS/breezerc" "ViewDrawTreeBranchLines=false" "system Breeze style settings (APP-03)"
+check_contains "$XDG_DEFAULTS/breezerc" "MenuOpacity=75" "translucent Qt menus (APP-14)"
 check_contains "$XDG_DEFAULTS/kdeglobals" "ShowIconsOnPushButtons=false" "system push buttons without icons (APP-11)"
 check_contains scripts/apply-dark-defaults.sh "FILES=(kdeglobals kcmfonts" "explicit appearance reset includes the Ro-managed font DPI default"
 
