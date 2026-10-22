@@ -35,6 +35,9 @@ jobs:
                 findutils \
                 gzip \
                 grep \
+                google-noto-sans-fonts \
+                google-noto-sans-mono-fonts \
+                rsms-inter-fonts \
                 kf6-kconfig \
                 kf6-kpackage \
                 kf6-kservice \

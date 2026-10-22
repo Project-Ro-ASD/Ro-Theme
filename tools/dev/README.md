@@ -14,10 +14,12 @@ reposunda kalır ama RPM paketinin içine kurulmaz.
 - `test-rpm.sh [RPM_PATH] [--verify-installed]`: Oluşan RPM dosyasını kurmadan önce denetler.
   Yol verilmezse depo `build/rpmbuild/RPMS` ve `~/rpmbuild/RPMS` içindeki en yeni
   `ro-theme-*.noarch.rpm` seçilir; göreli yol çağıranın çalışma dizinine göre yorumlanır.
+  Noto Sans, Noto Sans Mono ve Inter'in üretilmiş RPM'de güçlü bağımlılık olduğunu da doğrular.
 - `test-system-defaults.sh NEW.rpm [OLD.rpm]`: Fedora konteynerlerinde kurulum, kullanıcı/yönetici ayarı,
   yükseltme (`.rpmnew` dahil), kaldırma, Plymouth ve bağımlılık senaryolarını çalıştırır.
 - `check-rpm-dependencies.sh NEW.rpm`: Temiz Fedora test konteynerinde bağımlılıkları kurmadan çözer;
-  DNF işlem özetini ve beklenen `--assumeno` iptalini doğrular. Ağ/depo hataları başarı sayılmaz.
+  zayıf bağımlılıklar kapalıyken DNF işlem özetini ve beklenen `--assumeno` iptalini doğrular.
+  Ağ/depo hataları başarı sayılmaz.
 - `test-asset-validation.py`, `test-dependency-check.py`: Bozuk varlıklar ve DNF hata durumları için
   CI'da da çalıştırılan regresyon testleri. `python3 tools/dev/<dosya>` ile çalışır.
 - `test-rpm-build.py`: Göreli/mutlak derleme kökü, spec/derleme makrolarının eşliği ve doğru

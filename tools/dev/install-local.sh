@@ -27,7 +27,8 @@ done
 echo "Installing Ro Desktop locally..."
 echo "Font roles are included in the global theme defaults."
 echo "System font rendering and kcmfonts/forceFontDPI defaults require the RPM installation."
-echo "Required font families: Noto Sans, Noto Sans Mono and Inter; package installation is coordinated separately (FNT-08)."
+echo "The RPM requires Noto Sans, Noto Sans Mono and Inter (FNT-08)."
+echo "Local file installation does not install font packages: google-noto-sans-fonts, google-noto-sans-mono-fonts, rsms-inter-fonts."
 
 for writable_dir in "$HOME/.local/share" "$HOME/.themes"; do
   mkdir -p "$writable_dir"

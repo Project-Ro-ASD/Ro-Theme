@@ -38,6 +38,7 @@ jobs:
         run: |
           dnf install -y --setopt=install_weak_deps=False \
             bash coreutils diffutils dracut findutils gzip grep gtk3 gtk4 \
+            google-noto-sans-fonts google-noto-sans-mono-fonts rsms-inter-fonts \
             kf6-kconfig kf6-kpackage kf6-kservice \
             plasma-desktop plasma-workspace plasma-workspace-libs plasma-login-manager papirus-icon-theme breeze-cursor-theme \
             plymouth plymouth-plugin-two-step python3 python3-gobject rpm rpm-build sed tar util-linux

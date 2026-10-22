@@ -867,7 +867,9 @@ check_contains packaging/ro-theme.spec "%defattr(-,root,root,-)" "RPM root file 
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace" "RPM Plasma dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-desktop" "RPM Plasma desktop dependency"
 check_contains packaging/ro-theme.spec "Requires:       plasma-workspace" "RPM Plasma workspace dependency (brings libs, kpackage, kservice; PKG-05)"
-check_contains packaging/ro-theme.spec "Recommends:     rsms-inter-fonts" "RPM recommends Inter for window titles (FNT-04, PKG-05)"
+for font_package in google-noto-sans-fonts google-noto-sans-mono-fonts rsms-inter-fonts; do
+  check_contains packaging/ro-theme.spec "Requires:       $font_package" "RPM requires $font_package (FNT-08)"
+done
 check_contains packaging/ro-theme.spec "Recommends:     ro-widgets" "RPM recommends ro-launcher for the panel (PAN-08, WGT-14)"
 check_contains packaging/ro-theme.spec "License:        GPL-3.0-or-later AND CC-BY-SA-4.0" "RPM license covers code and artwork (PKG-08)"
 check_file LICENSES/CC-BY-SA-4.0.txt

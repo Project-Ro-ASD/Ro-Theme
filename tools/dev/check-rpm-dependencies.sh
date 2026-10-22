@@ -10,7 +10,7 @@ if [[ -z "$RPM_PATH" || ! -f "$RPM_PATH" ]]; then
 fi
 
 status=0
-output="$(LC_ALL=C dnf --setopt=skip_if_unavailable=False install --assumeno "$RPM_PATH" 2>&1)" || status=$?
+output="$(LC_ALL=C dnf --setopt=skip_if_unavailable=False --setopt=install_weak_deps=False install --assumeno "$RPM_PATH" 2>&1)" || status=$?
 if [[ "$status" -eq 1 ]] \
     && grep -q '^Transaction Summary:' <<< "$output" \
     && grep -qE '^ ro-theme[[:space:]]' <<< "$output" \

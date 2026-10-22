@@ -185,7 +185,11 @@ case "$1" in
     else
       fail "dependency resolution failed: $out"
     fi
-    grep -qE "rsms-inter-fonts" <<<"$out" && pass "weak dependency rsms-inter-fonts offered" || echo "  [INFO] rsms-inter-fonts not in the transaction"
+    for font_package in google-noto-sans-fonts google-noto-sans-mono-fonts rsms-inter-fonts; do
+      rpm -qp --requires /work/new.rpm | grep -Eq "^${font_package}([[:space:]]|$)" \
+        && pass "font required even with weak dependencies disabled: $font_package" \
+        || fail "missing strong font dependency: $font_package"
+    done
     grep -qE "ro-widgets" <<<"$out" && pass "weak dependency ro-widgets offered" || echo "  [INFO] ro-widgets not in the transaction (not in Fedora repos)"
     ;;
 esac
