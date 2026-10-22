@@ -313,11 +313,17 @@ def color_scheme(theme_id, tokens, dark_mode):
     complementary = roles(d['text'], d['textSecondary'], d)
     display_name, display_name_tr = SCHEME_NAMES[theme_id]
 
+    # COL-11: devre dışı metin = metin rengi, pencere zeminine soldurulur (ContrastAmount) ve %10 koyulaştırılır. Koyu temada 0.65 bu
+    # zeminde #626365 veriyordu (token #707276, 2.2:1) ve saydam menüde görünmez oluyordu. 0.58 token'a oturur; gerçek Dolphin'de
+    # 0.45 (#868789, koyu pencerede 3.9:1, normal yazıdan hâlâ 3.1:1 ayrışır) ve 0.30 (#A0A1A3, normal yazıya çok yaklaşır, 2.2:1) denendi: 0.45 seçildi.
+    # Açık temada 0.65 zaten #9C9C9E (hedef #9E9FA4).
+    disabled_contrast = 0.45 if dark_mode else 0.65
+
     return f'''[ColorEffects:Disabled]
 Color={rgb(bg)}
 ColorAmount=0
 ColorEffect=0
-ContrastAmount=0.65
+ContrastAmount={disabled_contrast}
 ContrastEffect=1
 IntensityAmount=0.1
 IntensityEffect=2
