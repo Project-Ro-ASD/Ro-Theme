@@ -550,7 +550,9 @@ check_contains platform/plasma/look-and-feel/org.ro.dark/contents/defaults "curs
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/defaults "cursorTheme=breeze_cursors" "org.ro.light selects the Breeze cursor (GT-04e)"
 check_contains platform/plasma/look-and-feel/org.ro.dark/contents/defaults "Image=RoDark" "org.ro.dark selects the RoDark wallpaper (GT-04j)"
 check_contains platform/plasma/look-and-feel/org.ro.light/contents/defaults "Image=RoLight" "org.ro.light selects the RoLight wallpaper (GT-04j)"
-check_contains packaging/ro-theme.spec "Requires:       papirus-icon-theme" "RPM requires Papirus for Ro Icons (GT-04c)"
+for icon_package in papirus-icon-theme papirus-icon-theme-dark papirus-icon-theme-light; do
+  check_contains packaging/ro-theme.spec "Requires:       $icon_package" "RPM requires $icon_package for Ro Icons (GT-04c, ICO-01)"
+done
 check_contains packaging/ro-theme.spec "Requires:       breeze-cursor-theme" "RPM requires the Breeze cursor (GT-04e)"
 check_contains packaging/ro-theme.spec "Inherits=Papirus-Light" "RPM builds ro-icons-light on Papirus Light"
 

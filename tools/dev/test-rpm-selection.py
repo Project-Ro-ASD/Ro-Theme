@@ -10,6 +10,8 @@ import tempfile
 import unittest
 
 SCRIPT = Path(__file__).with_name("test-rpm.sh").resolve()
+APPEARANCE_REQUIREMENTS = ("google-noto-sans-fonts", "google-noto-sans-mono-fonts", "rsms-inter-fonts",
+                           "papirus-icon-theme", "papirus-icon-theme-dark", "papirus-icon-theme-light")
 # Seçim testlerinin paket içeriğinden bağımsız çalışması için geçerli örnek liste.
 PAYLOAD = """/usr/share/color-schemes/RoLight.colors
 /usr/share/color-schemes/RoDark.colors
@@ -83,7 +85,8 @@ class RpmSelection(unittest.TestCase):
         rpm.chmod(0o755)
         self.env = os.environ | {"HOME": str(self.home), "PATH": str(self.bin),
                                  "TMPDIR": str(self.root), "RO_TEST_CALLS": str(self.calls),
-                                 "RO_TEST_PAYLOAD": str(self.payload)}
+                                 "RO_TEST_PAYLOAD": str(self.payload),
+                                 "RO_TEST_REQUIREMENTS": "\n".join(APPEARANCE_REQUIREMENTS)}
 
     def artifact(self, base, name="ro-theme-1.1.3-1.noarch.rpm", timestamp=10):
         path = base / "rpmbuild/RPMS/noarch" / name
@@ -179,10 +182,21 @@ class RpmSelection(unittest.TestCase):
         fonts = ["google-noto-sans-fonts", "google-noto-sans-mono-fonts", "rsms-inter-fonts"]
         for missing in fonts:
             with self.subTest(missing=missing):
-                self.env["RO_TEST_REQUIREMENTS"] = "\n".join(font for font in fonts if font != missing)
+                self.env["RO_TEST_REQUIREMENTS"] = "\n".join(package for package in APPEARANCE_REQUIREMENTS if package != missing)
                 result = self.run_check(expected)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("RPM must require " + missing, result.stderr)
+
+    def test_inherited_icon_bases_cannot_be_missing_or_only_a_similar_name(self):
+        expected = self.artifact(self.repo / "build")
+        for missing in ("papirus-icon-theme-dark", "papirus-icon-theme-light"):
+            for replacement in ("", missing + "-extra"):
+                with self.subTest(missing=missing, replacement=replacement):
+                    packages = [package for package in APPEARANCE_REQUIREMENTS if package != missing]
+                    self.env["RO_TEST_REQUIREMENTS"] = "\n".join(packages + [replacement])
+                    result = self.run_check(expected)
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn("RPM must require " + missing + ";", result.stderr)
 
     def test_unreadable_font_requirements_fail(self):
         expected = self.artifact(self.repo / "build")

@@ -24,8 +24,10 @@ Requires:       plasma-login-manager
 Requires:       google-noto-sans-fonts
 Requires:       google-noto-sans-mono-fonts
 Requires:       rsms-inter-fonts
-# GT-04c/e: global tema Ro Icons (Papirus tabanlı) ve Breeze imleç seçer; eksik kalırsa seçim sessizce düşer.
+# GT-04c/e, ICO-01: açık/koyu kalıtım tabanları Fedora'da ayrı paketlerdir; zayıf bağımlılıklara bırakılmaz.
 Requires:       papirus-icon-theme
+Requires:       papirus-icon-theme-dark
+Requires:       papirus-icon-theme-light
 Requires:       breeze-cursor-theme
 # PAN-08, WGT-14: panel düzeni ro-launcher kuruluysa onu kullanır, değilse Kickoff'a düşer.
 Recommends:     ro-widgets
