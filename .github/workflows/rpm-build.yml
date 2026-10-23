@@ -46,6 +46,8 @@ jobs:
                 plasma-workspace-libs \
                 plasma-login-manager \
                 papirus-icon-theme \
+                papirus-icon-theme-dark \
+                papirus-icon-theme-light \
                 breeze-cursor-theme \
                 plymouth \
                 plymouth-plugin-two-step \
