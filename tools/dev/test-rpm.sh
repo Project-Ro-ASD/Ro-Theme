@@ -133,6 +133,20 @@ else
   fail "RPM font requirements could not be read: $requirements"
 fi
 
+section "Required Icon Bases"
+# Kalıtılan açık/koyu temalar Fedora'da taban paketten ayrı sağlanır.
+if requirements="$(rpm -qp --requires "$RPM_PATH" 2>&1)"; then
+  for icon_package in papirus-icon-theme papirus-icon-theme-dark papirus-icon-theme-light; do
+    if grep -Eq "^${icon_package}([[:space:]]|$)" <<< "$requirements"; then
+      pass "required icon base: $icon_package"
+    else
+      fail "RPM must require $icon_package; inherited icon themes must be installed without weak dependencies"
+    fi
+  done
+else
+  fail "RPM icon requirements could not be read: $requirements"
+fi
+
 section "Payload Files"
 payload="$(mktemp)"
 payload_err="$(mktemp)"
