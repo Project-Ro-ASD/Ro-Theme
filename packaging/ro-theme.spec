@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.14
+Version:        1.1.15
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -300,6 +300,15 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Fri Oct 23 2026 Project Ro-ASD <contact@roasd.org> - 1.1.15-1
+- Qt widget style: Ro (Ro-Style, derived from Breeze) is the default
+  (widgetStyle=Ro in the system kdeglobals and in both global themes). The spec
+  Recommends ro-style; where it is not installed Qt falls back to Breeze by itself.
+- Splash: fades in from black, the blurred wallpaper zooms very slowly and a bar
+  fills with the startup stage.
+- ro-login-reveal: the one second zoom is replaced by a short reveal (the splash
+  dissolves in 0.3 s while the desktop floats up and the panel slides in from its
+  own screen edge), so it no longer holds back the ready desktop.
 * Thu Oct 22 2026 Project Ro-ASD <contact@roasd.org> - 1.1.14-1
 - ro-icons: audio-volume-*, audio-speakers, audio-input-microphone, video-display,
   image-missing, text-editor and about 40 other Papirus names no longer resolve to
