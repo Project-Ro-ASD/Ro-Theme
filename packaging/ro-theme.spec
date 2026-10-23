@@ -29,6 +29,8 @@ Requires:       papirus-icon-theme
 Requires:       breeze-cursor-theme
 # PAN-08, WGT-14: panel düzeni ro-launcher kuruluysa onu kullanır, değilse Kickoff'a düşer.
 Recommends:     ro-widgets
+# APP-01: varsayılan Qt widget stili Ro (Ro-Style). Kurulu değilse Qt Breeze'e düşer (plasma-integration stil listesi).
+Recommends:     ro-style
 Requires:       util-linux
 Requires(post): bash
 Requires(post): coreutils

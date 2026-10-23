@@ -1,7 +1,7 @@
 # Ro Light Global Theme defaults. Font roles generated from core/tokens/fonts.json.
 
 [kdeglobals][KDE]
-widgetStyle=Breeze
+widgetStyle=Ro
 
 [kdeglobals][General]
 ColorScheme=RoLight

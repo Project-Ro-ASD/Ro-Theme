@@ -147,7 +147,7 @@ contrast=4
 LookAndFeelPackage=org.ro.dark
 DefaultLightLookAndFeel=org.ro.light
 DefaultDarkLookAndFeel=org.ro.dark
-widgetStyle=Breeze
+widgetStyle=Ro
 ShowIconsOnPushButtons=false
 
 [WM]
