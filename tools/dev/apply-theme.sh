@@ -138,7 +138,7 @@ fi
 # Global theme, renk şeması + Plasma style + splash kimliğini aynı moda bağlar.
 # Layout reset işlemi burada yapılmaz; panel yerleşimi için test-layout/global theme reset kullanılır.
 write_config_or_warn "LookAndFeelPackage" --file kdeglobals --group KDE --key LookAndFeelPackage "$LOOK_AND_FEEL"
-write_config_or_warn "widgetStyle" --file kdeglobals --group KDE --key widgetStyle Breeze
+write_config_or_warn "widgetStyle" --file kdeglobals --group KDE --key widgetStyle Ro
 write_config_or_warn "General ColorScheme" --file kdeglobals --group General --key ColorScheme "$SCHEME"
 delete_config --file kdeglobals --group KDE --key ColorScheme || true
 write_config_or_warn "Plasma theme" --file plasmarc --group Theme --key name "$PLASMA_THEME"

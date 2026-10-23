@@ -138,7 +138,7 @@ with open(os.environ["RO_TEST_CALLS"], "a") as log:
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(self.writes()["library"], "org.kde.kwin.aurorae.v2")
                 self.assertEqual(self.writes()["theme"], f"__aurorae__svg__Ro{mode.title()}")
-                self.assertEqual(self.writes()["widgetStyle"], "Breeze")
+                self.assertEqual(self.writes()["widgetStyle"], "Ro")
 
     def test_apply_reads_values_instead_of_repeating_them(self):
         self.defaults("dark").write_text("[kwinrc][org.kde.kdecoration2]\nlibrary=fixture.engine\ntheme=fixture.theme\n")

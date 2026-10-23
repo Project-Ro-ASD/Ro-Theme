@@ -449,7 +449,7 @@ for mode, tr_name in (('light', 'Ro Açık'), ('dark', 'Ro Koyu')):
         'KPackageStructure': 'Plasma/LookAndFeel'}
     (root / f'platform/plasma/look-and-feel/org.ro.{mode}/metadata.json').write_text(
         json.dumps(meta, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Breeze')
+set_key(kdeglobals, '[KDE]', 'widgetStyle', 'Ro')
 set_key(kdeglobals, '[Icons]', 'Theme', 'ro-icons')
 set_key(kdeglobals, '[WM]', 'activeFont', qfont_string('windowTitle'))
 # 04 APP-11/13: Tamam/İptal düğmelerinde ikon yok; ana araç çubuğu ikon + metin (KDE varsayılanı), diğerleri yalnız ikon.
