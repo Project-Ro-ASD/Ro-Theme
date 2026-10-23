@@ -21,13 +21,20 @@ Plasma Login Manager giriş ekranı RPM içinde şu dosyayı kullanır:
 /usr/share/ro-theme/wallpapers/login.jpg
 ```
 
-Splash ekranı şu dosyaları kullanır:
+Splash ekranı arka planı (SPL-03 C) duvar kâğıdının bulanığıdır; her mod için kendi
+duvar kâğıdından üretilir (PIL `GaussianBlur(40)`, JPEG kalite 88):
+
+```text
+assets/wallpapers/RoLight/contents/images/1920x1080.jpg  →  platform/plasma/look-and-feel/org.ro.light/contents/splash/wallpaper-blur.jpg
+assets/wallpapers/RoDark/contents/images/1920x1080.jpg   →  platform/plasma/look-and-feel/org.ro.dark/contents/splash/wallpaper-blur.jpg
+```
+
+Splash klasöründeki `login.jpg` yerinde durur (artık arka plan olarak kullanılmaz,
+uyumluluk için korunur):
 
 ```text
 platform/plasma/look-and-feel/org.ro.light/contents/splash/login.jpg
 platform/plasma/look-and-feel/org.ro.dark/contents/splash/login.jpg
-platform/plasma/look-and-feel/org.ro.light/contents/splash/login-blur.jpg
-platform/plasma/look-and-feel/org.ro.dark/contents/splash/login-blur.jpg
 ```
 
 Lock screen şu dosyaları kullanır:
