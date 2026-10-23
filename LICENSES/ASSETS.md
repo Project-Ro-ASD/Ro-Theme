@@ -15,7 +15,7 @@ Atıf: "© Project Ro-ASD, CC-BY-SA-4.0". Tasarımcılar "Designed by" sütunund
 |---|---|---|
 | `assets/brand/` | Ro logosu (v1'de Ro-Theme sahipliğinde; ileride ro-asd-branding'e taşınacak) | — |
 | `assets/wallpapers/` | Masaüstü ve giriş duvar kâğıtları | — |
-| `platform/plasma/look-and-feel/*/contents/splash/*.jpg` | Açılış ekranı görselleri | — |
+| `platform/plasma/look-and-feel/*/contents/splash/*.jpg` | Açılış ekranı görselleri (`wallpaper-blur.jpg`, duvar kâğıdının bulanığı, yukarıdaki duvar kâğıtlarından üretilir — SPL-03 C) | — |
 | `platform/plasma/look-and-feel/*/contents/lockscreen/assets/` | Kilit ekranı görseli | — |
 | `platform/plasma/look-and-feel/*/contents/previews/` | Global tema önizlemeleri (Ro masaüstü ekran görüntüsü) | — |
 | `platform/plymouth/ro-theme/throbber-*.png` | Açılış animasyonu kareleri (parola alanı görselleri üreticiden, GPL) | — |

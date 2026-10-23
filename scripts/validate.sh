@@ -191,7 +191,7 @@ check_global_theme() {
   check_json "platform/plasma/look-and-feel/$package/metadata.json"
   check_file "platform/plasma/look-and-feel/$package/contents/splash/Splash.qml"
   check_file "platform/plasma/look-and-feel/$package/contents/splash/login.jpg"
-  check_file "platform/plasma/look-and-feel/$package/contents/splash/login-blur.jpg"
+  check_file "platform/plasma/look-and-feel/$package/contents/splash/wallpaper-blur.jpg"
   check_absent_file "platform/plasma/look-and-feel/$package/contents/lockscreen/LockScreen.qml" "$package unsafe custom lockscreen override"
   check_file "platform/plasma/look-and-feel/$package/contents/lockscreen/assets/login.jpg"
   check_contains "platform/plasma/look-and-feel/$package/contents/splash/Splash.qml" "property int stage" "$package stage-aware splash"
