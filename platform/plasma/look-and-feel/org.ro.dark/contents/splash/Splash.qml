@@ -12,21 +12,27 @@ Item {
     width: 1920
     height: 1080
 
-    // KSplash aşama numarası. Masaüstü hazır olunca (aşama 6) süreç kendiliğinden çıkar; kapanış animasyonu KWin'de
+    // KSplash aşama numarası (1..6). Masaüstü hazır olunca (aşama 6) süreç kendiliğinden çıkar; kapanış animasyonu KWin'de
     // (ro-login-reveal). Bu bileşen yalnız bekleme yüzeyini çizer.
     property int stage: 0
+
+    // Siyahtan yumuşak giriş: giriş ekranı kapandıktan sonraki siyah aralık ani bir parlamayla bitmesin.
+    opacity: 0
+    Component.onCompleted: fadeIn.start()
+    NumberAnimation { id: fadeIn; target: root; property: "opacity"; from: 0; to: 1; duration: 450; easing.type: Easing.OutCubic }
 
     Rectangle {
         anchors.fill: parent
         color: "#071018"
     }
 
+    // Duvar kağıdı çok yavaş yakınlaşır (GPU ölçeklemesi, hafif); bekleme sırasında yüzey canlı görünür.
     Image {
         anchors.fill: parent
         source: "login-blur.jpg"
         fillMode: Image.PreserveAspectCrop
-        opacity: 1.0
         smooth: true
+        NumberAnimation on scale { from: 1.0; to: 1.05; duration: 6000; easing.type: Easing.OutQuad }
     }
 
     // İnce karartma katmanı, blur görselin fazla parlak kalmasını engeller.
@@ -36,22 +42,33 @@ Item {
         opacity: 0.18
     }
 
-    // Küçük nefes efekti; KDE'nin stok animasyonu gibi dikkat çekmez.
+    // İlerleme çubuğu: KSplash aşamasıyla dolar, aşama değişmese de nefes alır.
     Rectangle {
-        id: pulse
-        width: 74
+        id: track
+        width: 240
         height: 4
         radius: 2
-        color: "#92C7CF"
-        opacity: 0.42
+        color: "#FFFFFF"
+        opacity: 0.16
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: Math.max(70, parent.height * 0.08)
+    }
+
+    Rectangle {
+        id: fill
+        height: track.height
+        radius: track.radius
+        color: "#92C7CF"
+        anchors.left: track.left
+        anchors.verticalCenter: track.verticalCenter
+        width: track.width * Math.min(1, Math.max(0.1, root.stage / 6))
+        Behavior on width { NumberAnimation { duration: 450; easing.type: Easing.OutCubic } }
 
         SequentialAnimation on opacity {
             loops: Animation.Infinite
-            NumberAnimation { from: 0.22; to: 0.58; duration: 700; easing.type: Easing.InOutQuad }
-            NumberAnimation { from: 0.58; to: 0.22; duration: 700; easing.type: Easing.InOutQuad }
+            NumberAnimation { from: 0.55; to: 1.0; duration: 700; easing.type: Easing.InOutQuad }
+            NumberAnimation { from: 1.0; to: 0.55; duration: 700; easing.type: Easing.InOutQuad }
         }
     }
 }
