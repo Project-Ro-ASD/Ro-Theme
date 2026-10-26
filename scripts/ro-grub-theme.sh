@@ -5,8 +5,10 @@
 # (00 §4). Temayı açmak kullanıcının kararıdır ve bu araçla yapılır:
 #   sudo ro-grub-theme enable     temayı /boot/grub2/themes/ro'ya kopyalar, /etc/default/grub'a işaretli bir blok yazar,
 #                                 grub.cfg'yi yeniden üretir. Tekrar çalıştırmak temayı pakettekiyle günceller.
-#   sudo ro-grub-theme disable    bloğu ve kopyayı kaldırır, grub.cfg'yi yeniden üretir.
-#   ro-grub-theme status          açık mı, kopya güncel mi.
+#                                 "UEFI Firmware Settings" satırını Ro simgeli kopyayla (/etc/grub.d/30_ro-uefi-firmware)
+#                                 değiştirir; Fedora'nın satırında --class yoktur, simge seçilmez.
+#   sudo ro-grub-theme disable    bloğu ve kopyayı kaldırır, UEFI satırını Fedora'nınkine geri verir, grub.cfg'yi üretir.
+#   ro-grub-theme status          açık mı, kopya güncel mi, UEFI satırı kimde.
 # Seçenekler: --no-regenerate (grub.cfg'ye dokunma; sonra kendiniz grub2-mkconfig çalıştırın).
 # Deneme için RO_GRUB_ROOT=/ön/ek kök dizini ön ekler (gerçek sisteme dokunmadan sınama).
 set -euo pipefail
@@ -14,6 +16,8 @@ set -euo pipefail
 ROOT="${RO_GRUB_ROOT:-}"
 SRC="$ROOT/usr/share/grub/themes/ro"
 DEFAULTS="$ROOT/etc/default/grub"
+FW_FEDORA="$ROOT/etc/grub.d/30_uefi-firmware"
+FW_RO="$ROOT/etc/grub.d/30_ro-uefi-firmware"
 BEGIN='# BEGIN ro-theme (ro-grub-theme tarafından yönetilir; kaldırmak için: ro-grub-theme disable)'
 END='# END ro-theme'
 
@@ -51,6 +55,48 @@ need_root() {
   fi
 }
 
+install_uefi_entry() {
+  [[ -d "$ROOT/etc/grub.d" ]] || return 0
+  if [[ -x "$FW_FEDORA" ]]; then
+    chmod a-x "$FW_FEDORA"
+    touch "$ROOT/etc/grub.d/.ro-uefi-firmware-disabled"
+  fi
+  cat > "$FW_RO" <<'ROFW'
+#!/usr/bin/sh
+set -e
+
+# Ro-Theme ro-grub-theme tarafından yönetilir; Fedora'nın 30_uefi-firmware satırının --class taşıyan kopyası.
+# GRUB simgeyi menü satırının --class adına göre seçer (icons/<class>.png).
+
+# Fedora betiği geri çalıştırılabilir olduysa (grub2-tools güncellemesi izni geri getirmişse) çift satır olmasın:
+if [ -x /etc/grub.d/30_uefi-firmware ]; then
+  exit 0
+fi
+
+echo "Adding boot menu entry for UEFI Firmware Settings (Ro) ..." >&2
+
+cat <<EOF
+if [ "\$grub_platform" = "efi" ]; then
+  if [ fwsetup --is-supported ]; then
+    menuentry 'UEFI Firmware Settings' --class uefi-firmware --class efi \$menuentry_id_option 'uefi-firmware' {
+      fwsetup
+    }
+  fi
+fi
+EOF
+ROFW
+  chmod 0755 "$FW_RO"
+}
+
+remove_uefi_entry() {
+  [[ -d "$ROOT/etc/grub.d" ]] || return 0
+  rm -f "$FW_RO"
+  if [[ -f "$ROOT/etc/grub.d/.ro-uefi-firmware-disabled" ]]; then
+    if [[ -f "$FW_FEDORA" ]]; then chmod a+x "$FW_FEDORA"; fi
+    rm -f "$ROOT/etc/grub.d/.ro-uefi-firmware-disabled"
+  fi
+}
+
 cmd_enable() {
   need_root enable
   [[ -f "$SRC/theme.txt" ]] || { echo "Tema dosyaları yok: /usr/share/grub/themes/ro (ro-theme paketi kurulu mu?)" >&2; exit 1; }
@@ -73,6 +119,7 @@ cmd_enable() {
   if [[ -z "$ROOT" ]] && command -v grub2-editenv >/dev/null 2>&1; then
     grub2-editenv - unset menu_auto_hide 2>/dev/null || true
   fi
+  install_uefi_entry
   regenerate
   echo "Ro GRUB teması açıldı. Yedek: /etc/default/grub.ro-backup"
 }
@@ -82,6 +129,7 @@ cmd_disable() {
   local boot; boot="$(boot_dir)"
   remove_block
   rm -rf "$ROOT$boot/themes/ro"
+  remove_uefi_entry
   regenerate
   echo "Ro GRUB teması kapatıldı. (Önceki ayarlar /etc/default/grub.ro-backup içinde; blok dışındaki satırlara dokunulmadı.)"
 }
@@ -94,6 +142,13 @@ cmd_status() {
     else echo "Kopya: $boot/themes/ro, pakettekinden farklı (güncellemek için: sudo ro-grub-theme enable)"; fi
   else
     echo "Kopya: yok"
+  fi
+  if [[ -f "$FW_RO" && ! -x "$FW_FEDORA" ]]; then
+    echo "UEFI satırı: Ro simgeli"
+  elif [[ -x "$FW_FEDORA" ]]; then
+    echo "UEFI satırı: Fedora'nın, simgesiz (güncellemek için: sudo ro-grub-theme enable)"
+  else
+    echo "UEFI satırı: yok"
   fi
 }
 
