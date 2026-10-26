@@ -767,20 +767,35 @@ else
 fi
 if bash -n scripts/ro-grub-theme.sh; then
   grub_root="$(mktemp -d)"
-  mkdir -p "$grub_root/usr/share/grub/themes" "$grub_root/etc/default" "$grub_root/boot/grub2"
+  mkdir -p "$grub_root/usr/share/grub/themes" "$grub_root/etc/default" "$grub_root/boot/grub2" "$grub_root/etc/grub.d"
   cp -a platform/grub/ro "$grub_root/usr/share/grub/themes/ro"
   printf 'GRUB_TIMEOUT=5\nGRUB_TERMINAL_OUTPUT="console"\n' > "$grub_root/etc/default/grub"
+  printf '#!/bin/sh\necho fedora\n' > "$grub_root/etc/grub.d/30_uefi-firmware"
+  chmod 0755 "$grub_root/etc/grub.d/30_uefi-firmware"
   if RO_GRUB_ROOT="$grub_root" scripts/ro-grub-theme.sh enable --no-regenerate >/dev/null \
      && grep -q 'GRUB_THEME="/boot/grub2/themes/ro/theme.txt"' "$grub_root/etc/default/grub" \
      && grep -q 'GRUB_TIMEOUT=5' "$grub_root/etc/default/grub" \
+     && [[ -x "$grub_root/etc/grub.d/30_ro-uefi-firmware" ]] \
+     && grep -q -- '--class uefi-firmware' "$grub_root/etc/grub.d/30_ro-uefi-firmware" \
+     && [[ ! -x "$grub_root/etc/grub.d/30_uefi-firmware" ]] \
+     && bash -n "$grub_root/etc/grub.d/30_ro-uefi-firmware" \
      && RO_GRUB_ROOT="$grub_root" scripts/ro-grub-theme.sh enable --no-regenerate >/dev/null \
      && [[ "$(grep -c 'BEGIN ro-theme' "$grub_root/etc/default/grub")" == 1 ]] \
+     && [[ "$(find "$grub_root/etc/grub.d" -maxdepth 1 -name '30_ro-uefi-firmware*' | wc -l)" == 1 ]] \
+     && [[ -x "$grub_root/etc/grub.d/30_ro-uefi-firmware" ]] \
+     && grep -q -- '--class uefi-firmware' "$grub_root/etc/grub.d/30_ro-uefi-firmware" \
+     && [[ ! -x "$grub_root/etc/grub.d/30_uefi-firmware" ]] \
      && RO_GRUB_ROOT="$grub_root" scripts/ro-grub-theme.sh disable --no-regenerate >/dev/null \
      && ! grep -q 'ro-theme' "$grub_root/etc/default/grub" && [[ ! -e "$grub_root/boot/grub2/themes/ro" ]] \
-     && grep -q 'GRUB_TIMEOUT=5' "$grub_root/etc/default/grub"; then
+     && grep -q 'GRUB_TIMEOUT=5' "$grub_root/etc/default/grub" \
+     && [[ ! -e "$grub_root/etc/grub.d/30_ro-uefi-firmware" ]] \
+     && [[ -x "$grub_root/etc/grub.d/30_uefi-firmware" ]] \
+     && [[ ! -e "$grub_root/etc/grub.d/.ro-uefi-firmware-disabled" ]]; then
     ok "ro-grub-theme enable/disable on a scratch root (idempotent, keeps user settings)"
+    ok "ro-grub-theme swaps the UEFI firmware entry for one with the Ro icon class"
   else
     fail "ro-grub-theme enable/disable failed on a scratch root"
+    fail "ro-grub-theme UEFI firmware entry swap failed on a scratch root"
   fi
   rm -rf "$grub_root"
 else
