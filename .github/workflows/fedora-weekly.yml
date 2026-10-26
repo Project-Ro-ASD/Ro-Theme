@@ -28,6 +28,7 @@ jobs:
         run: |
           dnf install -y --setopt=install_weak_deps=False \
             aurorae bash coreutils diffutils dracut findutils gzip grep jq kf6-kconfig \
+            google-noto-sans-fonts google-noto-sans-mono-fonts rsms-inter-fonts \
             kwin plasma-desktop plasma-workspace plasma-login-manager papirus-icon-theme papirus-icon-theme-dark papirus-icon-theme-light breeze-cursor-theme plymouth plymouth-plugin-two-step \
             python3 qt6-qtbase rpm rpm-build sed tar util-linux
 
