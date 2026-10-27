@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        1.1.15
+Version:        1.1.16
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 # PKG-08: kod ve üretilen dosyalar GPL; elle hazırlanmış görseller ve logo CC-BY-SA-4.0 (LICENSES/ASSETS.md).
@@ -302,6 +302,17 @@ exit 0
 %config(noreplace) %{_sysconfdir}/xdg/kwinrc
 
 %changelog
+* Tue Oct 27 2026 Project Ro-ASD <contact@roasd.org> - 1.1.16-1
+- Splash: the background is the blur of Ro's wallpaper for the current mode, the
+  Plymouth Ro animation plays on a translucent dark tile instead of a progress
+  bar, and the wallpaper no longer zooms; ro-login-reveal is shorter (200 ms
+  splash fade, 280 ms desktop and panel motion). Light and dark splash share one
+  file again.
+- GRUB: the UEFI Firmware Settings entry shows the Ro icon. Fedora's entry has no
+  --class, so `ro-grub-theme enable` replaces it with a copy that has one
+  (`disable` restores Fedora's). Run `sudo ro-grub-theme enable` again.
+- CI: the Fedora weekly check installs the font packages the spec requires.
+
 * Fri Oct 23 2026 Project Ro-ASD <contact@roasd.org> - 1.1.15-1
 - Qt widget style: Ro (Ro-Style, derived from Breeze) is the default
   (widgetStyle=Ro in the system kdeglobals and in both global themes). The spec
