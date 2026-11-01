@@ -33,8 +33,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     v = sub.add_parser("validate", help="kaynak ağacını ya da kurulu ağacı denetle")
     v.add_argument("--json", action="store_true", help="sonuçları JSON olarak yaz")
-    v.add_argument("--section", help="yalnız bu bölümü çalıştır")
+    v.add_argument("--section", help="yalnız bu bölümü çalıştır (ör. tokens, plasma, packaging)")
+    v.add_argument("--check", metavar="KİMLİK", help="yalnız bu denetim kimliğini çalıştır (ör. VAL-TOK-03)")
+    v.add_argument("--root", type=Path, metavar="DİZİN", help="denetlenecek kaynak kökü")
     v.add_argument("--installed", type=Path, metavar="KÖK", help="kurulu ağacı denetle (ör. RPM buildroot)")
+    v.add_argument("--freshness", action="store_true", help="üretilmiş dosyaların belirteçlerle eşleştiğini doğrula")
     v.set_defaults(func=_module("validate"))
 
     i = sub.add_parser("install", help="manifestteki dosyaları kur")

@@ -18,7 +18,7 @@ import sys
 import traceback
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Iterator
+from typing import Callable
 
 from .. import ROOT
 
@@ -31,6 +31,7 @@ class Result:
     status: str
     message: str
     check: str = ""
+    section: str = ""
 
 
 def ok(msg):
@@ -58,6 +59,7 @@ class Check:
 class Context:
     root: Path                      # kaynak ağacı ya da kurulu kök
     installed: bool = False
+    freshness: bool = False
     cache: dict = field(default_factory=dict)
 
 
@@ -71,20 +73,22 @@ def check(id: str, section: str, title: str, target: str = "source"):
     return deco
 
 
-def run_checks(ctx: Context, section: str | None = None) -> list[Result]:
+def run_checks(ctx: Context, section: str | None = None, check_id: str | None = None) -> list[Result]:
     for name in SECTION_MODULES:
         importlib.import_module(f"{__name__}.{name}")
     target = "installed" if ctx.installed else "source"
     results = []
     for c in REGISTRY:
-        if c.target != target or (section and c.section != section):
+        if c.target != target or (section and c.section != section) or (check_id and c.id != check_id):
             continue
         try:
             for r in c.func(ctx) or ():
                 r.check = c.id
+                r.section = c.section
                 results.append(r)
         except Exception:
-            results.append(Result(FAIL, f"{c.title}: beklenmeyen hata\n{traceback.format_exc()}", c.id))
+            results.append(Result(FAIL, f"{c.title}: beklenmeyen hata\n{traceback.format_exc()}",
+                                  c.id, c.section))
     return results
 
 
@@ -95,13 +99,19 @@ def report(results: list[Result], as_json: bool) -> int:
         print(json.dumps({"errors": errors, "warnings": warnings,
                           "results": [r.__dict__ for r in results]}, ensure_ascii=False, indent=2))
     else:
+        last = None
         for r in results:
+            if r.section != last:
+                print(f"\n== {r.section} ==")
+                last = r.section
             stream = sys.stdout if r.status == OK else sys.stderr
             print(f"  [{r.status}] {r.check}: {r.message}", file=stream)
-        print(f"Doğrulama özeti: {errors} hata, {warnings} uyarı")
+        print(f"\nDoğrulama özeti: {errors} hata, {warnings} uyarı")
     return 1 if errors else 0
 
 
 def main(args) -> int:
-    ctx = Context(root=args.installed or ROOT, installed=bool(args.installed))
-    return report(run_checks(ctx, args.section), args.json)
+    root = getattr(args, "installed", None) or getattr(args, "root", None) or ROOT
+    ctx = Context(root=root, installed=bool(getattr(args, "installed", None)),
+                  freshness=bool(getattr(args, "freshness", False)))
+    return report(run_checks(ctx, args.section, getattr(args, "check", None)), args.json)
