@@ -40,7 +40,7 @@ DIRS = {
     "sysconfdir": "/etc",
     "bindir": "/usr/bin",
     "libexecdir": "/usr/libexec",
-    "libdir": "/usr/lib64",          # Firefox tercihleri x86_64'te yalnız buradan okunur
+    "libdir": "/usr/lib64",
     "prefix": "/usr",
     "localstatedir": "/var",
 }
@@ -75,7 +75,7 @@ INSTALL: tuple[Entry, ...] = (
     Entry("platform/kwin/effects/ro-login-reveal", "{datadir}/kwin/effects/ro-login-reveal"),
     Entry("platform/icons/ro-icons", "{datadir}/icons/ro-icons"),
     Entry("platform/cursor/ro-cursor", "{datadir}/icons/ro-cursor"),
-    Entry("platform/firefox/ro-theme.js", "{libdir}/firefox/defaults/pref/ro-theme.js", local=False),
+    Entry("platform/firefox/ro-theme.js", "{prefix}/lib/firefox/browser/defaults/preferences/ro-theme.js", local=False),
     Entry("platform/grub/ro", "{datadir}/grub/themes/ro", local=False),
     Entry("platform/plymouth/ro-theme", "{datadir}/plymouth/themes/ro-theme", local=False),
     Entry("platform/plasmalogin/20-ro-theme.conf", "{prefix}/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf",
