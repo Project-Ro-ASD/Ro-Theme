@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="104" viewBox="0 0 100 104">
+  <!-- Ro control: radius 4. Generated from core/tokens by scripts/generate-theme.sh. -->
+  <defs>
+  <style id="current-color-scheme" type="text/css">
+    .ColorScheme-Text { color:#2b2d2f; }
+    .ColorScheme-ViewBackground { color:#ffffff; }
+    .ColorScheme-ButtonBackground { color:#e7e8eb; }
+    .ColorScheme-ButtonText { color:#2b2d2f; }
+    .ColorScheme-ViewFocus { color:#3059a6; }
+    .ColorScheme-ButtonFocus { color:#3059a6; }
+    .ColorScheme-Highlight { color:#3059a6; }
+  </style>
+  </defs>
+  <g id="header-topleft">
+    <rect x="0" y="0" width="4" height="4" fill-opacity="0"/>
+  </g>
+  <g id="header-top">
+    <rect x="4" y="0" width="32" height="4" fill-opacity="0"/>
+  </g>
+  <g id="header-topright">
+    <rect x="36" y="0" width="4" height="4" fill-opacity="0"/>
+  </g>
+  <g id="header-left">
+    <rect x="0" y="4" width="4" height="32" fill-opacity="0"/>
+  </g>
+  <g id="header-center">
+    <rect x="4" y="4" width="32" height="32" fill-opacity="0"/>
+  </g>
+  <g id="header-right">
+    <rect x="36" y="4" width="4" height="32" fill-opacity="0"/>
+  </g>
+  <g id="header-bottomleft">
+    <rect x="0" y="36" width="4" height="4" fill-opacity="0"/>
+    <rect x="0" y="39" width="4" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="header-bottom">
+    <rect x="4" y="36" width="32" height="4" fill-opacity="0"/>
+    <rect x="4" y="39" width="32" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="header-bottomright">
+    <rect x="36" y="36" width="4" height="4" fill-opacity="0"/>
+    <rect x="36" y="39" width="4" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="footer-topleft">
+    <rect x="0" y="48" width="4" height="4" fill-opacity="0"/>
+    <rect x="0" y="48" width="4" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="footer-top">
+    <rect x="4" y="48" width="32" height="4" fill-opacity="0"/>
+    <rect x="4" y="48" width="32" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="footer-topright">
+    <rect x="36" y="48" width="4" height="4" fill-opacity="0"/>
+    <rect x="36" y="48" width="4" height="1" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.15"/>
+  </g>
+  <g id="footer-left">
+    <rect x="0" y="52" width="4" height="32" fill-opacity="0"/>
+  </g>
+  <g id="footer-center">
+    <rect x="4" y="52" width="32" height="32" fill-opacity="0"/>
+  </g>
+  <g id="footer-right">
+    <rect x="36" y="52" width="4" height="32" fill-opacity="0"/>
+  </g>
+  <g id="footer-bottomleft">
+    <rect x="0" y="84" width="4" height="4" fill-opacity="0"/>
+  </g>
+  <g id="footer-bottom">
+    <rect x="4" y="84" width="32" height="4" fill-opacity="0"/>
+  </g>
+  <g id="footer-bottomright">
+    <rect x="36" y="84" width="4" height="4" fill-opacity="0"/>
+  </g>
+</svg>
