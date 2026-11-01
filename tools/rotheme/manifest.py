@@ -295,3 +295,92 @@ SVG_CONTRACTS: dict[str, tuple[str, ...]] = {
 SVG_CONTROL_FILES: tuple[str, ...] = tuple(
     path for path in SVG_CONTRACTS if path.startswith("widgets/") and path not in _FRAME_FILES
 )
+
+# --- diagnose: kurulu dosya denetimi ---
+# Her iki kurulum modunda da aranan dosyalar (hedefler {kök} ile genişletilir).
+REQUIRED_FILES = (
+    "{datadir}/color-schemes/RoLight.colors",
+    "{datadir}/color-schemes/RoDark.colors",
+    "{datadir}/plasma/desktoptheme/RoLight/metadata.json",
+    "{datadir}/plasma/desktoptheme/RoLight/colors",
+    "{datadir}/plasma/desktoptheme/RoLight/plasmarc",
+    "{datadir}/plasma/desktoptheme/RoDark/metadata.json",
+    "{datadir}/plasma/desktoptheme/RoDark/colors",
+    "{datadir}/plasma/desktoptheme/RoDark/plasmarc",
+    "{datadir}/plasma/look-and-feel/org.ro.light/metadata.json",
+    "{datadir}/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js",
+    "{datadir}/plasma/look-and-feel/org.ro.light/contents/lockscreen/assets/login.jpg",
+    "{datadir}/plasma/look-and-feel/org.ro.dark/metadata.json",
+    "{datadir}/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js",
+    "{datadir}/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg",
+    "{datadir}/ro-theme/wallpapers/light.jpg",
+    "{datadir}/ro-theme/wallpapers/dark.jpg",
+    "{datadir}/wallpapers/RoLight/metadata.json",
+    "{datadir}/wallpapers/RoLight/contents/images/1920x1080.jpg",
+    "{datadir}/wallpapers/RoLight/contents/images/3840x2160.jpg",
+    "{datadir}/wallpapers/RoDark/metadata.json",
+    "{datadir}/wallpapers/RoDark/contents/images/1920x1080.jpg",
+    "{datadir}/wallpapers/RoDark/contents/images/3840x2160.jpg",
+    "{datadir}/ro-theme/qml/RoTokens.qml",
+    "{datadir}/aurorae/themes/RoLight/metadata.desktop",
+    "{datadir}/aurorae/themes/RoDark/metadata.desktop",
+    "{datadir}/icons/ro-icons/index.theme",
+    "{datadir}/icons/ro-icons-light/index.theme",
+    "{datadir}/icons/ro-cursor/index.theme",
+    "{datadir}/kwin/effects/ro-login-reveal/metadata.json",
+)
+
+# Yalnız sistem kurulumunda aranan ek dosyalar.
+SYSTEM_FILES = (
+    "{datadir}/ro-theme/wallpapers/login.jpg",
+    "{datadir}/plymouth/themes/ro-theme/ro-theme.plymouth",
+    "{prefix}/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf",
+    "{bindir}/ro-theme-diagnose",
+    "{libexecdir}/ro-theme/apply-dark-defaults",
+    "{libexecdir}/ro-theme/check-plasma-runtime",
+    *(f"{{sysconfdir}}/xdg/{name}" for name in XDG_FILES),
+)
+
+# Var olmaları güvenlik/bütünlük hatası sayılan yollar.
+ABSENT_FILES = (
+    "{datadir}/plasma/look-and-feel/org.ro.light/contents/lockscreen/LockScreen.qml",
+    "{datadir}/plasma/look-and-feel/org.ro.dark/contents/lockscreen/LockScreen.qml",
+    "{datadir}/plasma/desktoptheme/Ro",
+    "{datadir}/plasma/look-and-feel/org.ro.global",
+)
+
+# diagnose: etkin KDE yapılandırmasında karşılaştırılan anahtarlar (dosya, grup, anahtar).
+KDE_KEYS = (
+    ("kdeglobals", "[General]", "ColorScheme"),
+    ("kdeglobals", "[KDE]", "ColorScheme"),
+    ("kdeglobals", "[KDE]", "LookAndFeelPackage"),
+    ("plasmarc", "[Theme]", "name"),
+    ("ksplashrc", "[KSplash]", "Theme"),
+    ("kscreenlockerrc", "[Greeter]", "WallpaperPlugin"),
+    ("kscreenlockerrc", "[Greeter][Wallpaper][org.kde.image][General]", "Image"),
+    ("kscreenlockerrc", "[Greeter][Wallpaper][org.kde.image][General]", "Blur"),
+    ("kwinrc", "[org.kde.kdecoration2]", "library"),
+    ("kwinrc", "[org.kde.kdecoration2]", "theme"),
+)
+
+# apply: global temanın contents/defaults dosyasından okunup oturuma yazılan anahtarlar.
+APPLY_KEYS = (
+    ("kdeglobals", "[General]", "ColorScheme"),
+    ("kdeglobals", "[KDE]", "LookAndFeelPackage"),
+    ("kdeglobals", "[Icons]", "Theme"),
+    ("plasmarc", "[Theme]", "name"),
+    ("ksplashrc", "[KSplash]", "Theme"),
+    ("kscreenlockerrc", "[Greeter]", "WallpaperPlugin"),
+    ("kscreenlockerrc", "[Greeter][Wallpaper][org.kde.image][General]", "Image"),
+    ("kscreenlockerrc", "[Greeter][Wallpaper][org.kde.image][General]", "PreviewImage"),
+    ("kscreenlockerrc", "[Greeter][Wallpaper][org.kde.image][General]", "Blur"),
+    ("kwinrc", "[org.kde.kdecoration2]", "library"),
+    ("kwinrc", "[org.kde.kdecoration2]", "theme"),
+)
+# apply ön uçuşunda zorunlu anahtarlar (eksikse oturum değiştirilmez).
+APPLY_REQUIRED = (
+    ("kdeglobals", "[General]", "ColorScheme"),
+    ("kwinrc", "[org.kde.kdecoration2]", "library"),
+    ("kwinrc", "[org.kde.kdecoration2]", "theme"),
+)
+
