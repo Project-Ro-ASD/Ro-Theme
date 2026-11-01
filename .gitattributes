@@ -1,0 +1,5 @@
+# Kaynak tarball'ına (git archive) girmeyecek yollar
+/.github export-ignore
+/tests export-ignore
+/docs export-ignore
+/.gitattributes export-ignore
