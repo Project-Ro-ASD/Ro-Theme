@@ -27,7 +27,6 @@ Requires:       plymouth
 Requires:       plymouth-plugin-two-step
 Requires:       python3
 Requires:       rsms-inter-fonts
-Requires:       util-linux
 
 Recommends:     ro-widgets
 Recommends:     ro-style
@@ -53,33 +52,11 @@ rm -rf %{buildroot}
 %post
 set +e
 
-ro_theme_warn() {
-  echo "ro-theme post: warning: $*" >&2
-}
-
-ro_theme_try() {
-  label="$1"
-  shift
-  output="$("$@" 2>&1)"
-  status=$?
-  if [ "$status" -ne 0 ]; then
-    ro_theme_warn "$label failed with status $status"
-    [ -n "$output" ] && echo "$output" >&2
-    return 1
+# Plymouth teması yalnız ilk kurulumda seçilir; sonraki seçimler korunur.
+if [ "${1:-}" = 1 ] && command -v plymouth-set-default-theme >/dev/null 2>&1; then
+  if ! plymouth-set-default-theme ro-theme >/dev/null 2>&1; then
+    echo "ro-theme: could not select the Plymouth theme" >&2
   fi
-  return 0
-}
-
-if command -v kbuildsycoca6 >/dev/null 2>&1; then
-  ro_theme_try "KDE service cache refresh" kbuildsycoca6 --noincremental || true
-elif command -v kbuildsycoca5 >/dev/null 2>&1; then
-  ro_theme_try "KDE service cache refresh" kbuildsycoca5 --noincremental || true
-fi
-
-# Plymouth teması yalnız ilk kurulumda seçilir; kullanıcının sonraki seçimi ezilmez.
-# initramfs burada değil, %posttrans içinde ve yalnız gerekiyorsa üretilir.
-if [ "$1" -eq 1 ]; then
-  ro_theme_try "plymouth theme selection" plymouth-set-default-theme ro-theme || true
 fi
 
 exit 0
@@ -87,23 +64,26 @@ exit 0
 %posttrans
 set +e
 
-# Ro teması seçiliyse ve tema dosyaları değiştiyse initramfs bir kez yenilenir.
-# Installroot, konteyner ve imaj derlemesinde çalışan çekirdeğin modülleri bu kökte
-# yoktur; dracut orada denenmez ve damga yazılmaz.
-if command -v plymouth-set-default-theme >/dev/null 2>&1 \
-   && [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
-  stampdir=/var/lib/ro-theme
-  stamp="$stampdir/plymouth.sha256"
-  sum="$(cat /usr/share/plymouth/themes/ro-theme/* 2>/dev/null | sha256sum | cut -d' ' -f1)"
-  kver="$(uname -r)"
-  if [ "$sum" = "$(cat "$stamp" 2>/dev/null)" ]; then
-    :
-  elif [ ! -d "/lib/modules/$kver" ]; then
-    echo "ro-theme posttrans: initramfs not rebuilt here: modules of the running kernel ($kver) are not in this root (installroot, container or image build)" >&2
+theme_root=/usr/share/plymouth/themes/ro-theme
+stamp_dir=/var/lib/ro-theme
+stamp_file=$stamp_dir/plymouth.sha256
+
+# Yalnız etkin tema Ro ise ve tema dosyaları yerindeyse çalış.
+if [ -d "$theme_root" ] && command -v plymouth-set-default-theme >/dev/null 2>&1 \
+   && [ "$(plymouth-set-default-theme 2>/dev/null)" = ro-theme ]; then
+  digest=$(find "$theme_root" -type f -print0 2>/dev/null \
+    | LC_ALL=C sort -z \
+    | xargs -0 -r cat 2>/dev/null \
+    | sha256sum | cut -d' ' -f1)
+
+  if [ -f "$stamp_file" ] && [ "$(cat "$stamp_file" 2>/dev/null)" = "$digest" ]; then
+    :  # Tema değişmedi; initramfs zaten güncel.
+  elif [ ! -d "/lib/modules/$(uname -r)" ]; then
+    echo "ro-theme: initramfs not rebuilt here (installroot, container or image build)" >&2
   elif plymouth-set-default-theme -R ro-theme >/dev/null 2>&1; then
-    mkdir -p "$stampdir" && echo "$sum" > "$stamp"
+    mkdir -p "$stamp_dir" && printf '%s\n' "$digest" > "$stamp_file"
   else
-    echo "ro-theme posttrans: warning: initramfs rebuild for the Plymouth theme failed; it is retried on the next ro-theme update" >&2
+    echo "ro-theme: initramfs rebuild failed, will retry on next update" >&2
   fi
 fi
 
@@ -112,15 +92,15 @@ exit 0
 %preun
 set +e
 
-# Tam kaldırmada tema sıfırlanır. Modül dizini yoksa (konteyner/installroot)
-# yalnız tema seçimi sıfırlanır; initramfs yeniden üretilmez.
-if [ "$1" -eq 0 ] && command -v plymouth-set-default-theme >/dev/null 2>&1 \
-   && [ "$(plymouth-set-default-theme 2>/dev/null)" = "ro-theme" ]; then
+# Tam kaldırmada varsayılan temaya dönülür.
+if [ "${1:-}" = 0 ] && command -v plymouth-set-default-theme >/dev/null 2>&1 \
+   && [ "$(plymouth-set-default-theme 2>/dev/null)" = ro-theme ]; then
   if [ -d "/lib/modules/$(uname -r)" ]; then
-    plymouth-set-default-theme --reset --rebuild-initrd >/dev/null 2>&1 || true
+    plymouth-set-default-theme --reset --rebuild-initrd >/dev/null 2>&1 \
+      || echo "ro-theme: could not reset the Plymouth theme" >&2
   else
-    echo "ro-theme preun: initramfs not rebuilt here: modules of the running kernel are not in this root" >&2
-    plymouth-set-default-theme --reset >/dev/null 2>&1 || true
+    plymouth-set-default-theme --reset >/dev/null 2>&1 \
+      || echo "ro-theme: could not reset the Plymouth theme" >&2
   fi
 fi
 
@@ -129,14 +109,8 @@ exit 0
 %postun
 set +e
 
-if [ "$1" -eq 0 ]; then
+if [ "${1:-}" = 0 ]; then
   rm -rf /var/lib/ro-theme
-fi
-
-if command -v kbuildsycoca6 >/dev/null 2>&1; then
-  kbuildsycoca6 --noincremental >/dev/null 2>&1 || true
-elif command -v kbuildsycoca5 >/dev/null 2>&1; then
-  kbuildsycoca5 --noincremental >/dev/null 2>&1 || true
 fi
 
 exit 0
