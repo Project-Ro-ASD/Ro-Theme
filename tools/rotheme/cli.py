@@ -58,14 +58,19 @@ def build_parser() -> argparse.ArgumentParser:
     mode.add_argument("--local", dest="system", action="store_false", help="kullanıcı kurulumu (varsayılan)")
     mode.add_argument("--system", dest="system", action="store_true", help="RPM ile sistem kurulumu")
     d.add_argument("--json", action="store_true")
+    d.add_argument("--root", type=Path, help="--system için sanal kök (paket/test)")
     d.set_defaults(func=_module("diagnose"), system=False)
 
     r = sub.add_parser("check-runtime", help="panel ve tepsi için gereken Plasma applet'leri kurulu mu")
     r.add_argument("mode", choices=("layout", "popups"), nargs="?", default="layout")
+    r.add_argument("--json", action="store_true", help="sonuçları JSON olarak yaz")
     r.set_defaults(func=_module("runtime"))
 
     rs = sub.add_parser("reset-defaults", help="kullanıcının Ro ayarlarını sistem varsayılanına döndür")
     rs.add_argument("--dry-run", action="store_true")
+    rs.add_argument("--current-user", action="store_true", help="varsayılan davranış (uyumluluk)")
+    rs.add_argument("--all-users", action="store_true", help="desteklenmez; 2 ile çıkar")
+    rs.add_argument("--force", action="store_true", help="desteklenmez; 2 ile çıkar")
     rs.set_defaults(func=_module("reset"))
 
     sm = sub.add_parser("smoke", help="canlı oturumda uçtan uca deneme (panel yedeği alır)")
