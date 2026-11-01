@@ -1,0 +1,4 @@
+[Icon Theme]
+Name=Ro Cursor
+Comment=Ro masaüstü imleç teması (şimdilik Breeze imleçlerini kullanır)
+Inherits=breeze_cursors
