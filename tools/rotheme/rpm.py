@@ -122,15 +122,19 @@ def expected_paths(root: Path = ROOT) -> tuple[set[str], set[str]]:
         else:
             files.add(dest)
 
-    # Kurulumda ro-icons ağacından sentezlenen açık simge teması.
+    # Açık simge teması kurulumda sentezlenir: index.theme + ro-icons alt dizinlerine göreli bağlar.
     light = manifest.LIGHT_ICONS["dest"].format(**manifest.DIRS)
-    _walk(root / "platform/icons" / manifest.LIGHT_ICONS["base"], light, files, dirs)
+    dirs.add(light)
+    files.add(f"{light}/index.theme")
+    base = root / "platform/icons" / manifest.LIGHT_ICONS["base"]
+    files.update(f"{light}/{d.name}" for d in base.iterdir() if d.is_dir())
 
     for name in manifest.LICENSE_FILES:
         files.add(f"/usr/share/licenses/{manifest.PACKAGE}/{Path(name).name}")
     for name in manifest.DOC_FILES:
         files.add(f"/usr/share/doc/{manifest.PACKAGE}/{name}")
     dirs.add(manifest.STAMP_DIR)
+    files.add(f"{manifest.STAMP_DIR}/plymouth.sha256")   # %ghost
     return files, dirs
 
 
