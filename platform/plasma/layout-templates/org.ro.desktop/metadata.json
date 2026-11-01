@@ -1,0 +1,24 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Name": "Project Ro-ASD"
+      }
+    ],
+    "Category": "Plasma Desktop Panel",
+    "Description": "Ro Desktop floating bottom panel layout",
+    "Description[tr]": "Ro masaüstü yüzen alt panel düzeni",
+    "EnabledByDefault": true,
+    "Id": "org.ro.desktop",
+    "License": "GPL-3.0-or-later",
+    "Name": "Ro Desktop Panel",
+    "Name[tr]": "Ro Masaüstü Paneli",
+    "Version": "1.1.16",
+    "Website": "https://github.com/Project-Ro-ASD/Ro-Theme"
+  },
+  "KPackageStructure": "Plasma/LayoutTemplate",
+  "X-Plasma-ContainmentCategories": [
+    "panel"
+  ],
+  "X-Plasma-Shell": "plasmashell"
+}

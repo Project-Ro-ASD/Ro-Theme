@@ -1,0 +1,35 @@
+# Ro Light Global Theme defaults. Font roles generated from core/tokens/fonts.json.
+
+[kdeglobals][KDE]
+widgetStyle=Ro
+
+[kdeglobals][General]
+ColorScheme=RoLight
+font=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+fixed=Noto Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+smallestReadableFont=Noto Sans,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+toolBarFont=Noto Sans,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+menuFont=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0
+
+[kdeglobals][WM]
+activeFont=Inter,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,SemiBold,0,0
+
+[kdeglobals][Icons]
+Theme=ro-icons-light
+
+[plasmarc][Theme]
+name=RoLight
+
+[kwinrc][org.kde.kdecoration2]
+library=org.kde.kwin.aurorae.v2
+theme=__aurorae__svg__RoLight
+
+[ksplashrc][KSplash]
+Engine=KSplashQML
+Theme=org.ro.light
+
+[kcminputrc][Mouse]
+cursorTheme=breeze_cursors
+
+[Wallpaper]
+Image=RoLight

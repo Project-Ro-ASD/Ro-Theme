@@ -1,0 +1,19 @@
+{
+  "KPlugin": {
+    "Id": "org.ro.light",
+    "Name": "Ro Light",
+    "Name[tr]": "Ro Açık",
+    "Description": "Ro Desktop light global theme",
+    "Description[tr]": "Ro masaüstü açık global teması",
+    "Icon": "preferences-desktop-theme-global",
+    "Version": "1.1.16",
+    "License": "GPL-3.0-or-later",
+    "Website": "https://github.com/Project-Ro-ASD/Ro-Theme",
+    "Authors": [
+      {
+        "Name": "Project Ro-ASD"
+      }
+    ]
+  },
+  "KPackageStructure": "Plasma/LookAndFeel"
+}
