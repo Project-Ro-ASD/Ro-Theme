@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+"""Kurulu araç: /usr/... altındaki ro-theme-diagnose. Asıl iş rotheme.diagnose içinde."""
+import sys
+
+sys.path.insert(0, "/usr/share/ro-theme/lib")
+
+from rotheme.cli import main  # noqa: E402
+
+sys.exit(main(["diagnose", *sys.argv[1:]]))
