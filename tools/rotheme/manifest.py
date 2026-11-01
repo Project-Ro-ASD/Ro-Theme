@@ -141,5 +141,157 @@ RUNTIME_APPLETS = {
                "optional": ("org.kde.plasma.battery", "org.kde.plasma.brightness")},
 }
 
-# --- Masaüstü teması SVG sözleşmeleri (G1 dolduracak: dosya -> zorunlu element kimlikleri) ---
-SVG_CONTRACTS: dict[str, tuple[str, ...]] = {}
+# --- Kaynak ağacı yolları (denetim ve üreteçler buradan okur) ---
+TOKEN_DIR = "core/tokens"
+COLOR_SCHEMES = "platform/plasma/color-schemes"
+DESKTOPTHEME = "platform/plasma/desktoptheme"
+LOOKANDFEEL = "platform/plasma/look-and-feel"
+LAYOUT_TEMPLATES = "platform/plasma/layout-templates"
+XDG_DIR = "platform/plasma/defaults/xdg"
+AURORAE_DIR = "platform/kwin/aurorae"
+KWIN_EFFECTS_DIR = "platform/kwin/effects"
+PLYMOUTH_DIR = "platform/plymouth/ro-theme"
+GRUB_DIR = "platform/grub/ro"
+ICONS_DIR = "platform/icons/ro-icons"
+CURSOR_DIR = "platform/cursor/ro-cursor"
+FIREFOX_FILE = "platform/firefox/ro-theme.js"
+PLASMALOGIN_FILE = "platform/plasmalogin/20-ro-theme.conf"
+WALLPAPERS = "assets/wallpapers"
+ASSETS = "assets"
+DIST = "dist"
+
+
+def theme_dir(mode: str) -> str:
+    return f"{DESKTOPTHEME}/{THEMES[mode][0]}"
+
+
+def look_dir(mode: str) -> str:
+    return f"{LOOKANDFEEL}/{THEMES[mode][1]}"
+
+
+def aurorae_dir(mode: str) -> str:
+    return f"{AURORAE_DIR}/{THEMES[mode][0]}"
+
+
+# --- Kurulu ağaçta bulunması zorunlu temel yollar (gereksinimler/01-manifest.md §7) ---
+INSTALLED_REQUIRED: tuple[str, ...] = (
+    "usr/share/color-schemes/RoLight.colors",
+    "usr/share/color-schemes/RoDark.colors",
+    "usr/share/plasma/desktoptheme/RoLight/metadata.json",
+    "usr/share/plasma/desktoptheme/RoLight/colors",
+    "usr/share/plasma/desktoptheme/RoLight/plasmarc",
+    "usr/share/plasma/desktoptheme/RoDark/metadata.json",
+    "usr/share/plasma/desktoptheme/RoDark/colors",
+    "usr/share/plasma/desktoptheme/RoDark/plasmarc",
+    "usr/share/plasma/look-and-feel/org.ro.light/metadata.json",
+    "usr/share/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js",
+    "usr/share/plasma/look-and-feel/org.ro.light/contents/lockscreen/assets/login.jpg",
+    "usr/share/plasma/look-and-feel/org.ro.dark/metadata.json",
+    "usr/share/plasma/look-and-feel/org.ro.dark/contents/layouts/org.kde.plasma.desktop-layout.js",
+    "usr/share/plasma/look-and-feel/org.ro.dark/contents/lockscreen/assets/login.jpg",
+    "usr/share/ro-theme/wallpapers/light.jpg",
+    "usr/share/ro-theme/wallpapers/dark.jpg",
+    "usr/share/ro-theme/wallpapers/login.jpg",
+    "usr/share/wallpapers/RoLight/metadata.json",
+    "usr/share/wallpapers/RoLight/contents/images/1920x1080.jpg",
+    "usr/share/wallpapers/RoLight/contents/images/3840x2160.jpg",
+    "usr/share/wallpapers/RoDark/metadata.json",
+    "usr/share/wallpapers/RoDark/contents/images/1920x1080.jpg",
+    "usr/share/wallpapers/RoDark/contents/images/3840x2160.jpg",
+    "usr/share/plymouth/themes/ro-theme/ro-theme.plymouth",
+    "usr/lib/plasmalogin/plasmalogin.conf.d/20-ro-theme.conf",
+    "usr/bin/ro-theme-diagnose",
+    "usr/libexec/ro-theme/apply-dark-defaults",
+    "usr/libexec/ro-theme/check-plasma-runtime",
+    "usr/share/ro-theme/qml/RoTokens.qml",
+    "etc/xdg/kdeglobals",
+    "etc/xdg/kcmfonts",
+    "etc/xdg/breezerc",
+    "etc/xdg/plasmarc",
+    "etc/xdg/ksplashrc",
+    "etc/xdg/kscreenlockerrc",
+    "etc/xdg/kwinrc",
+)
+
+# --- Masaüstü teması SVG sözleşmeleri: dosya -> zorunlu element kimlikleri ---
+# Kaynak: gereksinimler/11-uretec-svg.md §7-8. Yollar tema dizinine görelidir.
+_PARTS = ("topleft", "top", "topright", "left", "center", "right", "bottomleft", "bottom", "bottomright")
+_HINTS = ("top", "bottom", "left", "right")
+
+
+def _nine(prefix: str, hints: bool = True) -> tuple[str, ...]:
+    ids = [f"{prefix}-{part}" for part in _PARTS]
+    if hints:
+        ids += [f"{prefix}-hint-{side}-margin" for side in _HINTS]
+    return tuple(ids)
+
+
+def _states(prefixes, hints: bool = True) -> tuple[str, ...]:
+    return tuple(i for prefix in prefixes for i in _nine(prefix, hints))
+
+
+_FRAME_IDS = (
+    tuple(_PARTS)
+    + tuple(f"hint-{side}-margin" for side in _HINTS)
+    + ("hint-stretch-borders",)
+    + tuple(f"shadow-{part}" for part in _PARTS if part != "center")
+    + tuple(f"shadow-hint-{side}-margin" for side in _HINTS)
+)
+
+_FRAME_FILES = (
+    "dialogs/background.svg",
+    "translucent/dialogs/background.svg",
+    "solid/dialogs/background.svg",
+    "widgets/background.svg",
+    "widgets/translucentbackground.svg",
+    "widgets/panel-background.svg",
+    "translucent/widgets/panel-background.svg",
+    "solid/widgets/panel-background.svg",
+    "widgets/tooltip.svg",
+    "translucent/widgets/tooltip.svg",
+    "solid/widgets/tooltip.svg",
+)
+
+_TASKS_IDS = (
+    tuple(i for prefix in ("", "north-", "west-", "east-")
+          for state in ("normal", "focus", "hover", "minimized", "attention", "progress")
+          for i in _nine(f"{prefix}{state}", hints=False))
+    + tuple(f"{prefix}normal-hint-{side}-margin" for prefix in ("", "north-", "west-", "east-") for side in _HINTS)
+    + tuple(f"group-expander-{side}" for side in ("top", "bottom", "left", "right"))
+)
+
+SVG_CONTRACTS: dict[str, tuple[str, ...]] = {
+    **{path: _FRAME_IDS for path in _FRAME_FILES},
+    "widgets/lineedit.svg": _states(("base", "hover", "focus", "focusframe"))
+                             + ("hint-focus-over-base", "hint-tile-center"),
+    "widgets/button.svg": _states(("normal", "hover", "pressed", "focus",
+                                   "toolbutton-hover", "toolbutton-pressed", "toolbutton-focus", "mask-normal")),
+    "widgets/viewitem.svg": _states(("normal", "hover", "selected", "selected+hover")),
+    "widgets/scrollbar.svg": _states(("slider", "mouseover-slider",
+                                      "background-vertical", "background-horizontal"), hints=False)
+                             + ("hint-scrollbar-size",),
+    "widgets/checkmarks.svg": ("checkbox", "radiobutton"),
+    "widgets/radiobutton.svg": ("hint-size", "normal", "shadow", "checked", "symbol", "hover", "focus"),
+    "widgets/switch.svg": _states(("inactive", "active"))
+                           + ("hint-bar-size", "handle", "handle-hover", "handle-pressed", "handle-focus",
+                              "handle-shadow"),
+    "widgets/slider.svg": _states(("groove", "groove-highlight"))
+                           + ("hint-handle-size",)
+                           + tuple(f"{direction}-slider-{part}" for direction in ("horizontal", "vertical")
+                                   for part in ("handle", "hover", "focus", "shadow")),
+    "widgets/plasmoidheading.svg": _states(("header", "footer"), hints=False),
+    "widgets/tabbar.svg": _states(tuple(f"{side}-active-tab" for side in ("north", "south", "west", "east"))),
+    "widgets/busywidget.svg": ("busywidget", "22-22-busywidget", "16-16-busywidget"),
+    "widgets/tasks.svg": _TASKS_IDS,
+    "widgets/bar_meter_horizontal.svg": _states(("bar-inactive", "bar-active")) + ("hint-bar-size",),
+    "widgets/bar_meter_vertical.svg": _states(("bar-inactive", "bar-active")) + ("hint-bar-size",),
+    "widgets/line.svg": ("horizontal-line", "vertical-line"),
+    "widgets/frame.svg": _states(("plain", "raised", "sunken")),
+    "widgets/listitem.svg": _states(("normal", "hover", "pressed", "section")) + ("separator",),
+    "widgets/arrows.svg": ("down-arrow", "up-arrow", "left-arrow", "right-arrow"),
+}
+
+# Denetimde `stroke` ve hex `fill` yasağı uygulanan kontrol/gösterge dosyaları.
+SVG_CONTROL_FILES: tuple[str, ...] = tuple(
+    path for path in SVG_CONTRACTS if path.startswith("widgets/") and path not in _FRAME_FILES
+)
