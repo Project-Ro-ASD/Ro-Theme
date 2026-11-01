@@ -42,6 +42,10 @@ class ManifestTest(unittest.TestCase):
                             or e.src.startswith(("platform/plasma/color-schemes/", "platform/cursor/")),
                             e.src)
 
+    def test_svg_contracts_are_filled(self):
+        # Boş bir yeniden tanım SVG kimlik denetimlerini sessizce kapatır
+        self.assertGreater(len(manifest.SVG_CONTRACTS), 20)
+
     def test_destinations_are_unique(self):
         dests = [e.dest for e in manifest.INSTALL]
         self.assertEqual(len(dests), len(set(dests)))
