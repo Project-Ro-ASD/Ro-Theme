@@ -887,7 +887,7 @@ def _(ctx):
             xdg[name] = None
         else:
             xdg[name] = cfg
-    exceptions = {"kdeglobals": {"ColorScheme"}, "kwinrc": {"theme"},
+    exceptions = {"kdeglobals": {"ColorScheme", "Theme"}, "kwinrc": {"theme"},
                   "plasmarc": {"name"}, "ksplashrc": {"Theme"}}
     errors = []
     for mode in ("light", "dark"):
