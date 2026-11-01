@@ -1,0 +1,32 @@
+{
+  "name": "Ro Stone Dark",
+  "brand": {
+    "navy": "#263B66",
+    "ink": "#2B2B2C",
+    "grayLight": "#B8B9BB",
+    "gray": "#A3A4A7",
+    "grayDark": "#707174"
+  },
+  "palette": [
+    "#263B66",
+    "#2B2B2C",
+    "#B8B9BB",
+    "#A3A4A7",
+    "#707174"
+  ],
+  "bg": "#1F1D1B",
+  "bgAlt": "#2B2825",
+  "surface": "#2B2825",
+  "surfaceAlt": "#36322E",
+  "glass": "rgba(43,40,37,0.72)",
+  "text": "#EFEAE4",
+  "textSecondary": "#AFA69C",
+  "accent": "#9CB1DD",
+  "border": "#4D4741",
+  "link": "#9CB1DD",
+  "visited": "#B9AEDF",
+  "negative": "#EE9488",
+  "neutral": "#E2B56A",
+  "positive": "#8CC6A0",
+  "selectionText": "#18223A"
+}

@@ -1,0 +1,17 @@
+{
+    "KPackageStructure": "KWin/Effect",
+    "KPlugin": {
+        "Id": "ro-login-reveal",
+        "Name": "Ro Login Reveal",
+        "Name[tr]": "Ro Giriş Açılışı",
+        "Description": "After login the Ro splash dissolves while the desktop floats up and the panel slides in from its edge (short and light)",
+        "Description[tr]": "Girişten sonra Ro açılış ekranı solar, masaüstü yukarı süzülür, panel kendi kenarından kayarak gelir (kısa ve hafif)",
+        "Category": "Appearance",
+        "EnabledByDefault": false,
+        "License": "GPL-3.0-or-later",
+        "Authors": [{"Name": "Project Ro-ASD"}],
+        "Version": "1.0"
+    },
+    "X-KDE-ConfigModule": "",
+    "X-Plasma-API": "javascript"
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Ro Cool Dark",
+  "brand": {
+    "navy": "#263B66",
+    "ink": "#2B2B2C",
+    "grayLight": "#B8B9BB",
+    "gray": "#A3A4A7",
+    "grayDark": "#707174"
+  },
+  "palette": [
+    "#263B66",
+    "#2B2B2C",
+    "#B8B9BB",
+    "#A3A4A7",
+    "#707174"
+  ],
+  "bg": "#1D1E20",
+  "bgAlt": "#2B2B2C",
+  "surface": "#2B2B2C",
+  "surfaceAlt": "#363739",
+  "glass": "rgba(43,43,44,0.84)",
+  "text": "#E7E8EA",
+  "textSecondary": "#A3A4A7",
+  "accent": "#8EA6D9",
+  "border": "#4A4B4F",
+  "link": "#8EA6D9",
+  "visited": "#B3A6DE",
+  "negative": "#F2918A",
+  "neutral": "#E3B566",
+  "positive": "#86C79F",
+  "selectionText": "#16213A"
+}

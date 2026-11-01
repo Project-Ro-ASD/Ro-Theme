@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="106" height="224" viewBox="0 0 106 224">
+  <!-- Ro control: radius 7. Generated from core/tokens by scripts/generate-theme.sh. -->
+  <defs>
+  <style id="current-color-scheme" type="text/css">
+    .ColorScheme-Text { color:#2b2d2f; }
+    .ColorScheme-ViewBackground { color:#ffffff; }
+    .ColorScheme-ButtonBackground { color:#e7e8eb; }
+    .ColorScheme-ButtonText { color:#2b2d2f; }
+    .ColorScheme-ViewFocus { color:#3059a6; }
+    .ColorScheme-ButtonFocus { color:#3059a6; }
+    .ColorScheme-Highlight { color:#3059a6; }
+  </style>
+  </defs>
+  <g id="slider-topleft">
+    <rect x="0" y="0" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,7 L 3,7 A 4,4 0 0 1 7,3 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-topright">
+    <rect x="39" y="0" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,7 L 43,7 A 4,4 0 0 0 39,3 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-bottomleft">
+    <rect x="0" y="39" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,39 L 3,39 A 4,4 0 0 0 7,43 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-bottomright">
+    <rect x="39" y="39" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,39 L 43,39 A 4,4 0 0 1 39,43 Z" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-left">
+    <rect x="0" y="7" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="3" y="7" width="4" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-right">
+    <rect x="39" y="7" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="39" y="7" width="4" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-top">
+    <rect x="7" y="0" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="3" width="32" height="4" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-bottom">
+    <rect x="7" y="39" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="39" width="32" height="4" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="slider-center">
+    <rect x="7" y="7" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="7" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor" fill-opacity="0.85"/>
+  </g>
+  <g id="mouseover-slider-topleft">
+    <rect x="0" y="54" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,61 L 3,61 A 4,4 0 0 1 7,57 Z" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-topright">
+    <rect x="39" y="54" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,61 L 43,61 A 4,4 0 0 0 39,57 Z" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-bottomleft">
+    <rect x="0" y="93" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,93 L 3,93 A 4,4 0 0 0 7,97 Z" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-bottomright">
+    <rect x="39" y="93" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,93 L 43,93 A 4,4 0 0 1 39,97 Z" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-left">
+    <rect x="0" y="61" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="3" y="61" width="4" height="32" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-right">
+    <rect x="39" y="61" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="39" y="61" width="4" height="32" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-top">
+    <rect x="7" y="54" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="57" width="32" height="4" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-bottom">
+    <rect x="7" y="93" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="93" width="32" height="4" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="mouseover-slider-center">
+    <rect x="7" y="61" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="61" width="32" height="32" class="ColorScheme-Highlight" fill="currentColor"/>
+  </g>
+  <g id="background-vertical-topleft">
+    <rect x="0" y="108" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,115 L 3,115 A 4,4 0 0 1 7,111 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-topright">
+    <rect x="39" y="108" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,115 L 43,115 A 4,4 0 0 0 39,111 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-bottomleft">
+    <rect x="0" y="147" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,147 L 3,147 A 4,4 0 0 0 7,151 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-bottomright">
+    <rect x="39" y="147" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,147 L 43,147 A 4,4 0 0 1 39,151 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-left">
+    <rect x="0" y="115" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="3" y="115" width="4" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-right">
+    <rect x="39" y="115" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="39" y="115" width="4" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-top">
+    <rect x="7" y="108" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="111" width="32" height="4" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-bottom">
+    <rect x="7" y="147" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="147" width="32" height="4" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-vertical-center">
+    <rect x="7" y="115" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="115" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-topleft">
+    <rect x="0" y="162" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,169 L 3,169 A 4,4 0 0 1 7,165 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-topright">
+    <rect x="39" y="162" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,169 L 43,169 A 4,4 0 0 0 39,165 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-bottomleft">
+    <rect x="0" y="201" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 7,201 L 3,201 A 4,4 0 0 0 7,205 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-bottomright">
+    <rect x="39" y="201" width="7" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <path d="M 39,201 L 43,201 A 4,4 0 0 1 39,205 Z" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-left">
+    <rect x="0" y="169" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="3" y="169" width="4" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-right">
+    <rect x="39" y="169" width="7" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="39" y="169" width="4" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-top">
+    <rect x="7" y="162" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="165" width="32" height="4" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-bottom">
+    <rect x="7" y="201" width="32" height="7" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="201" width="32" height="4" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <g id="background-horizontal-center">
+    <rect x="7" y="169" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0"/>
+    <rect x="7" y="169" width="32" height="32" class="ColorScheme-Text" fill="currentColor" fill-opacity="0.08"/>
+  </g>
+  <rect id="hint-scrollbar-size" x="66" y="0" width="14" height="14" fill-opacity="0"/>
+</svg>
