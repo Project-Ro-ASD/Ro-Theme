@@ -1,0 +1,68 @@
+name: Ro-Theme CI
+
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ro-theme-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fedora44-rpm:
+    name: Fedora 44 RPM CI
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:44
+    timeout-minutes: 45
+
+    steps:
+      - name: Install git
+        run: dnf install -y --setopt=install_weak_deps=False git-core
+
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Verify git metadata
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          [[ "$(git rev-parse HEAD)" == "${GITHUB_SHA}" ]]
+
+      - name: Install build dependencies
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            bash coreutils diffutils dracut findutils gzip grep sed tar util-linux \
+            git-core python3 rpm-build rpmlint \
+            aurorae breeze-cursor-theme \
+            google-noto-sans-fonts google-noto-sans-mono-fonts rsms-inter-fonts \
+            kf6-kconfig \
+            papirus-icon-theme papirus-icon-theme-dark papirus-icon-theme-light \
+            plasma-desktop plasma-login-manager plasma-workspace \
+            plymouth plymouth-plugin-two-step
+
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -t .
+
+      - name: Generated files are current
+        run: ./ro generate --check
+
+      - name: Validate source tree
+        run: ./ro validate
+
+      - name: Build RPMs
+        run: ./ro rpm-build
+
+      - name: Check RPMs
+        run: ./ro rpm-check
+
+      - name: rpmlint (informational)
+        continue-on-error: true
+        run: rpmlint build/rpmbuild/RPMS/noarch/*.rpm build/rpmbuild/SRPMS/*.src.rpm

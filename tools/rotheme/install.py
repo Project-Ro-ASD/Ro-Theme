@@ -156,8 +156,8 @@ def _write_record(path: Path, files: set[Path], dirs: set[Path], config: set[Pat
         if directory == destroot:
             continue
         rel = "/" + directory.relative_to(destroot).as_posix()
-        if rel in RECORD_IGNORE:
-            continue
+        if rel in RECORD_IGNORE or (not local and rel == manifest.STAMP_DIR):
+            continue   # damga dizini aşağıda bir kez eklenir
         rows.append((rel, f"%dir {rel}" if not local else rel))
     for item in files:
         rel = "/" + item.relative_to(destroot).as_posix()
