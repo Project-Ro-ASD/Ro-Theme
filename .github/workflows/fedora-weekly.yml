@@ -35,7 +35,7 @@ jobs:
       - name: Build and validate RPM
         id: build
         continue-on-error: true
-        run: ./tools/dev/build-rpm.sh
+        run: ./ro rpm-build
 
       - name: Compare package versions with the baseline
         id: versions
