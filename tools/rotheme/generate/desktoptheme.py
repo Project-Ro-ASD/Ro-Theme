@@ -79,7 +79,7 @@ manifest.SVG_CONTRACTS.update(SVG_CONTRACTS)
 
 def _control_doc(colors: Group, r: float, rows: int, body: list[str], *, extra_tasks: bool = False) -> str:
     box = 2 * r + svg.EDGE
-    comment = f"Ro control: radius {num(r)}. Generated from core/tokens by scripts/generate-theme.sh."
+    comment = f"Ro control: radius {num(r)}. Generated from core/tokens by ./ro generate."
     return svg.document(box + 60, rows * (box + 8) + 8, comment, body, defs=svg.color_scheme_style(colors, extra_tasks=extra_tasks))
 
 
@@ -169,7 +169,7 @@ def _frame_svg(fill: str, opacity: float, r: float, padding: float, shadow: floa
         svg.rect(sx + 8, 8, shadow, 1, id="shadow-hint-left-margin", opacity=0, indent="  "),
         svg.rect(sx + 8, 12, shadow, 1, id="shadow-hint-right-margin", opacity=0, indent="  "),
     ]
-    comment = f"Ro surface: radius {num(r)}, padding {num(padding)}. Generated from core/tokens by scripts/generate-theme.sh."
+    comment = f"Ro surface: radius {num(r)}, padding {num(padding)}. Generated from core/tokens by ./ro generate."
     return svg.document(sx + 2 * sr + e + 8, sy + 2 * sr + e + 8, comment, body, defs=defs)
 
 
@@ -423,7 +423,7 @@ def _busywidget_svg(t: Tokens, c: Group) -> str:
     sweep = t.spacing.busySweep
     specs = (("busywidget", 0, 32, t.spacing.busyArc), ("22-22-busywidget", 40, 22, t.spacing.busyArc22), ("16-16-busywidget", 70, 16, t.spacing.busyArc16))
     body = [svg.group(gid, [svg.rect(x0, 0, size, size, opacity=0), svg.path(_busy_arc_d(x0, size, arc, sweep), cls="Highlight")]) for gid, x0, size, arc in specs]
-    return svg.document(94, 32, "Ro busy indicator. Generated from core/tokens by scripts/generate-theme.sh.", body, defs=svg.color_scheme_style(c))
+    return svg.document(94, 32, "Ro busy indicator. Generated from core/tokens by ./ro generate.", body, defs=svg.color_scheme_style(c))
 
 
 def _tasks_svg(t: Tokens, c: Group) -> str:

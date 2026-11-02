@@ -21,6 +21,10 @@ jobs:
       image: fedora:44
     timeout-minutes: 45
     steps:
+      # ./ro rpm-build kaynak tarball'ı git archive ile üretir; checkout'un gerçek bir .git bırakması gerekir
+      - name: Install git
+        run: dnf install -y --setopt=install_weak_deps=False git-core
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -35,7 +39,9 @@ jobs:
       - name: Build and validate RPM
         id: build
         continue-on-error: true
-        run: ./ro rpm-build
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          ./ro rpm-build
 
       - name: Compare package versions with the baseline
         id: versions

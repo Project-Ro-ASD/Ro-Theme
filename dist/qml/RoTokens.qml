@@ -3,7 +3,7 @@
 pragma Singleton
 import QtQuick
 
-// Ro tasarım token'ları (QML). scripts/generate-theme.sh tarafından core/tokens'tan ÜRETİLİR, elle düzenlenmez.
+// Ro tasarım token'ları (QML). ./ro generate tarafından core/tokens'tan ÜRETİLİR, elle düzenlenmez.
 // WGT-02: ro-theme paketi bu dosyayı /usr/share/ro-theme/qml/RoTokens.qml olarak kurar. ro-widgets derlenirken
 // oradan alır (elle kopyalama yok, TOK-16); widget qmldir: singleton RoTokens 1.0 RoTokens.qml
 // Renkler bu dosyada yok: Kirigami.Theme kullan, böylece her renk şemasıyla uyumlu kalır.

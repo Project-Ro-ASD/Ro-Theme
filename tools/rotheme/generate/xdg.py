@@ -7,7 +7,7 @@ from ..tokens import font_string
 from .colors import scheme
 
 HEADER = [
-    "# Ro-ASD system defaults. Generated from core/tokens by scripts/generate-theme.sh.",
+    "# Ro-ASD system defaults. Generated from core/tokens by ./ro generate.",
     "# Packaged as %config(noreplace); user settings in ~/.config always take precedence.",
 ]
 

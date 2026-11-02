@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="110" height="182" viewBox="0 0 110 182">
-  <!-- Ro control: radius 9. Generated from core/tokens by scripts/generate-theme.sh. -->
+  <!-- Ro control: radius 9. Generated from core/tokens by ./ro generate. -->
   <defs>
   <style id="current-color-scheme" type="text/css">
     .ColorScheme-Text { color:#edeef0; }

@@ -1,7 +1,7 @@
 """GRUB önyükleme teması `theme.txt` (gereksinimler/14 §6)."""
 from __future__ import annotations
 
-HEADER = """# Ro GRUB teması. scripts/generate-theme.sh tarafından üretilir (24 · GRUB-01..04); renkler core/tokens'dan.
+HEADER = """# Ro GRUB teması. ./ro generate tarafından üretilir (24 · GRUB-01..04); renkler core/tokens'dan.
 # Arka plan: yapay zekâ üretimi, tepeler ve ay (bg.jpg). Menüde panel yok; seçili satır yarı saydam vurgu hapı.
 """
 
