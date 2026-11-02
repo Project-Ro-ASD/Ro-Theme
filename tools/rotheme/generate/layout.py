@@ -25,6 +25,7 @@ def _panel(t) -> str:
     tray = ",".join(p["tray_items"])
     clock = t.fonts.panelClock
     height = t.spacing.panelHeight
+    peek, peek_icon = p["peek"], p["peek_icon"]
     return f"""
 var bar = new Panel();
 bar.location = "{p['location']}";
@@ -73,6 +74,14 @@ if (clock) {{
     clock.writeConfig("autoFontAndSize", "false");
     clock.writeConfig("fontFamily", "{clock.family} {clock.styleName}");
     clock.writeConfig("fontSize", "{clock.pointSize}");
+}}
+
+// Masaüstüne göz at: saatin sağında. Simgesi açıkça verilir; ro-icons'taki klasör biçimli
+// user-desktop simgesine düşmesin diye Papirus'un show-desktop simgesi kullanılır.
+var peek = safeAdd(bar, "{peek}");
+if (peek) {{
+    peek.currentConfigGroup = ["General"];
+    peek.writeConfig("icon", "{peek_icon}");
 }}
 """
 

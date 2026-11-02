@@ -130,12 +130,15 @@ PANEL = {
                        "org.mozilla.firefox.desktop", "systemsettings.desktop"),
     "tray_items": ("org.kde.plasma.networkmanagement", "org.kde.plasma.bluetooth", "org.kde.plasma.volume",
                    "org.kde.plasma.notifications", "org.kde.plasma.battery"),
+    "peek": "org.kde.plasma.showdesktop",          # saatin sağında
+    "peek_icon": "show-desktop",
 }
 
 # --- check-plasma-runtime ---
 RUNTIME_APPLETS = {
     "layout": {"required": ("org.kde.plasma.kickoff", "org.kde.plasma.panelspacer", "org.kde.plasma.digitalclock",
-                            "org.kde.plasma.systemtray", "org.kde.plasma.icontasks"),
+                            "org.kde.plasma.systemtray", "org.kde.plasma.icontasks",
+                            "org.kde.plasma.showdesktop"),
                "optional": ()},
     "popups": {"required": ("org.kde.plasma.systemtray",),
                "optional": ("org.kde.plasma.battery", "org.kde.plasma.brightness")},
