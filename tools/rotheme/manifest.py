@@ -64,6 +64,8 @@ INSTALL: tuple[Entry, ...] = (
     Entry("platform/plasma/look-and-feel/org.ro.light", "{datadir}/plasma/look-and-feel/org.ro.light"),
     Entry("platform/plasma/look-and-feel/org.ro.dark", "{datadir}/plasma/look-and-feel/org.ro.dark"),
     Entry("platform/plasma/layout-templates/org.ro.desktop", "{datadir}/plasma/layout-templates/org.ro.desktop"),
+    Entry("platform/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js",
+          "{datadir}/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js", local=False),
     Entry("dist/qml/RoTokens.qml", "{datadir}/ro-theme/qml/RoTokens.qml"),
     Entry("assets/wallpapers/light.jpg", "{datadir}/ro-theme/wallpapers/light.jpg"),
     Entry("assets/wallpapers/dark.jpg", "{datadir}/ro-theme/wallpapers/dark.jpg"),

@@ -85,6 +85,7 @@ def make_source(root: Path) -> Path:
     write(root / "assets/wallpapers/loginv2.jpg", b"giris")
     write(root / "dist/qml/RoTokens.qml", "pragma Singleton\n")
     write(root / "platform/plasma/layout-templates/org.ro.desktop/contents/layout.js", "// panel\n")
+    write(root / "platform/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js", "// güncelleme\n")
     write(root / "platform/icons/ro-icons/index.theme",
           "[Icon Theme]\nName=Ro Icons\nInherits=Papirus-Dark\n")
     write(root / "platform/icons/ro-icons/actions/16/a.svg", "<svg/>\n")

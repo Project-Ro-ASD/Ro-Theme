@@ -123,6 +123,7 @@ def outputs(ctx) -> dict[str, str]:
         style, look, _, _ = manifest.THEMES[theme]
         out[f"platform/plasma/look-and-feel/{look}/contents/layouts/org.kde.plasma.desktop-layout.js"] = \
             _script(t, theme)
+    out[UPDATE_SCRIPT] = _update_script()
     out[f"platform/plasma/layout-templates/{manifest.LAYOUT_TEMPLATE}/metadata.json"] = json.dumps({
         "KPlugin": {
             "Authors": [{"Name": manifest.VENDOR}],
@@ -142,3 +143,36 @@ def outputs(ctx) -> dict[str, str]:
         "X-Plasma-Shell": "plasmashell",
     }, indent=2, ensure_ascii=False) + "\n"
     return out
+
+
+UPDATE_SCRIPT = "platform/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js"
+
+
+def _update_script() -> str:
+    """Mevcut kullanıcılar için: Plasma bu betiği her kullanıcıda bir kez çalıştırır."""
+    p = manifest.PANEL
+    return f"""// Ro: mevcut panellere 'Masaüstüne göz at' ekler (her kullanıcıda bir kez çalışır).
+// Otomatik üretilir (manifest.PANEL); elle düzenlenmez.
+var ps = panels();
+for (var i = 0; i < ps.length; i++) {{
+    var panel = ps[i];
+    var types = panel.widgetIds.map(function (id) {{ return panel.widgetById(id).type; }});
+    if (types.indexOf("org.kde.plasma.digitalclock") === -1) {{
+        continue;
+    }}
+    var peek = null;
+    var found = panel.widgets("{p['peek']}");
+    if (found.length > 0) {{
+        peek = found[0];
+    }} else {{
+        try {{ peek = panel.addWidget("{p['peek']}"); }} catch (e) {{ print("Ro: eklenemedi: " + e); }}
+    }}
+    if (peek) {{
+        peek.currentConfigGroup = ["General"];
+        var icon = peek.readConfig("icon", "");
+        if (icon === "" || icon === "user-desktop-symbolic" || icon === "user-desktop") {{
+            peek.writeConfig("icon", "{p['peek_icon']}");
+        }}
+    }}
+}}
+"""

@@ -19,7 +19,11 @@ class LayoutTest(unittest.TestCase):
         ]
 
     def test_uc_js_dosyasi_uretilir(self):
-        self.assertEqual(len([p for p in self.files if p.endswith(".js")]), 3)
+        self.assertEqual(len([p for p in self.files if p.endswith(".js")]), 4)
+        upd = self.files["platform/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js"]
+        upd = upd.decode() if isinstance(upd, bytes) else upd
+        self.assertIn("org.kde.plasma.showdesktop", upd)
+        self.assertNotIn(".remove()", upd)   # mevcut panellere dokunur, silmez
         self.assertIn(self.template, self.files)
         for path in self.global_layouts:
             self.assertIn(path, self.files)
