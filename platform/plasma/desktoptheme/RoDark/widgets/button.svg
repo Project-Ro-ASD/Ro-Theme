@@ -232,30 +232,39 @@
   <rect id="toolbutton-pressed-hint-left-margin" x="64" y="280" width="12" height="1" fill-opacity="0"/>
   <rect id="toolbutton-pressed-hint-right-margin" x="64" y="284" width="12" height="1" fill-opacity="0"/>
   <g id="toolbutton-focus-topleft">
+    <path d="M 8,344 L 0,344 A 8,8 0 0 1 8,336 Z" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,344 A 8,8 0 0 1 8,336 L 8,338 A 6,6 0 0 0 2,344 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-topright">
+    <path d="M 40,344 L 48,344 A 8,8 0 0 0 40,336 Z" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,344 A 8,8 0 0 0 40,336 L 40,338 A 6,6 0 0 1 46,344 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-bottomleft">
+    <path d="M 8,376 L 0,376 A 8,8 0 0 0 8,384 Z" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 0,376 A 8,8 0 0 0 8,384 L 8,382 A 6,6 0 0 1 2,376 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-bottomright">
+    <path d="M 40,376 L 48,376 A 8,8 0 0 1 40,384 Z" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <path d="M 48,376 A 8,8 0 0 1 40,384 L 40,382 A 6,6 0 0 0 46,376 Z" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-top">
+    <rect x="8" y="336" width="32" height="8" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="336" width="32" height="2" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-bottom">
+    <rect x="8" y="376" width="32" height="8" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="8" y="382" width="32" height="2" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-left">
+    <rect x="0" y="344" width="8" height="32" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="0" y="344" width="2" height="32" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-right">
+    <rect x="40" y="344" width="8" height="32" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
     <rect x="46" y="344" width="2" height="32" class="ColorScheme-ButtonFocus" fill="currentColor"/>
   </g>
   <g id="toolbutton-focus-center">
+    <rect x="8" y="344" width="32" height="32" class="ColorScheme-ButtonBackground" fill="currentColor" fill-opacity="0"/>
   </g>
   <rect id="toolbutton-focus-hint-top-margin" x="56" y="336" width="1" height="4" fill-opacity="0"/>
   <rect id="toolbutton-focus-hint-bottom-margin" x="60" y="336" width="1" height="4" fill-opacity="0"/>

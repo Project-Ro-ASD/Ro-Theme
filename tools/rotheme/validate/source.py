@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 from .. import manifest
 from .. import tokens as tok
 from ..kconfig import bare_key
-from . import check, fail, ok, warn
+from . import check, fail, ok
 from .common import (ARC, arc_radii, by_id, channels, child_shapes, contrast, has_hex_fill, has_stroke,
                      hue, ids, local, number_attr, parse_rgb, read_json, read_kconfig, read_svg, read_text)
 
@@ -662,8 +662,7 @@ def _(ctx):
         transparent = any(_float(el.get("fill-opacity")) == 0
                           for el in group.iter() if el is not group)
         if not transparent:
-            # 1.1.16'dan kalan bilinen hata; düzeltme görsel karşılaştırmayla ayrı PR'da gelecek
-            yield warn(f"{label}: toolbutton-focus-center boş (bilinen hata, KSvg odak çerçevesini atlayabilir)")
+            errors.append(f"{label}: toolbutton-focus-center saydam dolgu içermeli")
     yield from _emit(errors, "buton odak kafesi dolu")
 
 
