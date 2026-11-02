@@ -10,9 +10,10 @@ from pathlib import Path
 from . import manifest, sysutil
 from .kconfig import KConfig
 
-TOOLS = ("kreadconfig6", "kreadconfig5", "rpm", "coredumpctl", "lookandfeeltool",
-         "plasma-apply-colorscheme", "plasma-apply-wallpaperimage",
-         "plymouth-set-default-theme", "qdbus6", "qdbus", "gdbus")
+TOOLS = ("rpm", "coredumpctl", "lookandfeeltool", "plasma-apply-colorscheme", "plasma-apply-wallpaperimage",
+         "plymouth-set-default-theme")
+# Bu gruplardan birinin bulunması yeterli
+TOOL_GROUPS = (("kreadconfig6", "kreadconfig5"), ("qdbus6", "qdbus", "gdbus"))
 CRASH_NAMES = ("plasmashell", "kwin", "kwin_wayland", "kioworker")
 NO_READER = "KDE yapılandırma okuyucusu bulunamadı, ayar denetimleri atlanıyor"
 
@@ -118,8 +119,11 @@ def _kde_results(system: bool, env) -> list[Result]:
         actual = _read_config(reader, file, group, key, env)
         label = f"{file} {group} {key}"
         if want is None:
-            out.append(Result("WARN", f"{label}: beklenen değer contents/defaults içinde yok "
-                                     f"(okunan: {actual or 'boş'})", "KDE"))
+            # Tema bu anahtarı belirlemiyor; yalnız eski sürümden kalan [KDE] ColorScheme sorun
+            if file == "kdeglobals" and group == "[KDE]" and key == "ColorScheme" and actual:
+                out.append(Result("WARN", f"{label}={actual}: eski sürümden kalma anahtar; "
+                                         "/usr/libexec/ro-theme/apply-dark-defaults ile temizlenebilir", "KDE"))
+            continue
         elif actual != want:
             out.append(Result("WARN", f"{label}: beklenen {want}, okunan {actual or 'boş'}", "KDE"))
         else:
@@ -157,18 +161,27 @@ def _rpm_results(env) -> list[Result]:
     verify = sysutil.run(["rpm", "-V", "ro-theme"], env)
     if verify is None:
         out.append(Result("WARN", "rpm -V çalıştırılamadı", "RPM"))
-    elif verify.returncode != 0 or verify.stdout.strip() or verify.stderr.strip():
-        detail = (verify.stdout + verify.stderr).strip()
+    elif _verify_detail(verify):
+        detail = _verify_detail(verify)
         out.append(Result("WARN", "ro-theme dosyaları değişmiş ya da eksik:\n" + detail, "RPM"))
     else:
         out.append(Result("OK", "rpm -V: değişiklik yok", "RPM"))
     return out
 
 
+def _verify_detail(verify) -> str:
+    """rpm -V çıktısı; %ghost dosyalar (ör. Plymouth damgası) beklenen şekilde değişir, sayılmaz."""
+    lines = [l for l in (verify.stdout + verify.stderr).splitlines()
+             if l.strip() and not l.split()[1:2] == ["g"]]
+    return "\n".join(lines)
+
+
 def _crash_results(env) -> list[Result]:
     if not sysutil.which("coredumpctl", env):
         return [Result("WARN", "coredumpctl bulunamadı; çökme günlüğü denetlenemedi", "ÇÖKME")]
     proc = sysutil.run(["coredumpctl", "list", "--since", "30 minutes ago"], env)
+    if proc is not None and proc.returncode != 0 and "No coredumps found" in (proc.stdout + proc.stderr):
+        return [Result("OK", "son 30 dakikada çökme yok", "ÇÖKME")]
     if proc is None or proc.returncode != 0:
         return [Result("WARN", "coredumpctl çalıştırılamadı; çökme günlüğü denetlenemedi", "ÇÖKME")]
     lines = [line for line in proc.stdout.splitlines() if any(n in line for n in CRASH_NAMES)]
@@ -179,6 +192,7 @@ def _crash_results(env) -> list[Result]:
 
 def _tool_results(env) -> list[Result]:
     missing = [name for name in TOOLS if not sysutil.which(name, env)]
+    missing += ["/".join(g) for g in TOOL_GROUPS if not any(sysutil.which(n, env) for n in g)]
     if missing:
         return [Result("WARN", "eksik harici komutlar: " + ", ".join(missing), "ARAÇ")]
     return [Result("OK", "harici komutlar tam", "ARAÇ")]
