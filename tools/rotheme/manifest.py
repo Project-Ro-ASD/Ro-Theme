@@ -194,10 +194,8 @@ INSTALLED_REQUIRED: tuple[str, ...] = (
     "usr/share/color-schemes/RoLight.colors",
     "usr/share/color-schemes/RoDark.colors",
     "usr/share/plasma/desktoptheme/RoLight/metadata.json",
-    "usr/share/plasma/desktoptheme/RoLight/colors",
     "usr/share/plasma/desktoptheme/RoLight/plasmarc",
     "usr/share/plasma/desktoptheme/RoDark/metadata.json",
-    "usr/share/plasma/desktoptheme/RoDark/colors",
     "usr/share/plasma/desktoptheme/RoDark/plasmarc",
     "usr/share/plasma/look-and-feel/org.ro.light/metadata.json",
     "usr/share/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js",
@@ -318,10 +316,8 @@ REQUIRED_FILES = (
     "{datadir}/color-schemes/RoLight.colors",
     "{datadir}/color-schemes/RoDark.colors",
     "{datadir}/plasma/desktoptheme/RoLight/metadata.json",
-    "{datadir}/plasma/desktoptheme/RoLight/colors",
     "{datadir}/plasma/desktoptheme/RoLight/plasmarc",
     "{datadir}/plasma/desktoptheme/RoDark/metadata.json",
-    "{datadir}/plasma/desktoptheme/RoDark/colors",
     "{datadir}/plasma/desktoptheme/RoDark/plasmarc",
     "{datadir}/plasma/look-and-feel/org.ro.light/metadata.json",
     "{datadir}/plasma/look-and-feel/org.ro.light/contents/layouts/org.kde.plasma.desktop-layout.js",
@@ -363,6 +359,9 @@ ABSENT_FILES = (
     "{datadir}/plasma/look-and-feel/org.ro.dark/contents/lockscreen/LockScreen.qml",
     "{datadir}/plasma/desktoptheme/Ro",
     "{datadir}/plasma/look-and-feel/org.ro.global",
+    # RGA-01 C: Plasma temaları kendi colors dosyasını taşımaz (sistem şeması ve vurgu rengi kullanılır)
+    "{datadir}/plasma/desktoptheme/RoLight/colors",
+    "{datadir}/plasma/desktoptheme/RoDark/colors",
 )
 
 # diagnose: etkin KDE yapılandırmasında karşılaştırılan anahtarlar (dosya, grup, anahtar).
@@ -399,4 +398,3 @@ APPLY_REQUIRED = (
     ("kwinrc", "[org.kde.kdecoration2]", "library"),
     ("kwinrc", "[org.kde.kdecoration2]", "theme"),
 )
-

@@ -17,12 +17,11 @@ class ColorsTest(unittest.TestCase):
         name = manifest.THEMES[theme][0]
         return KConfig.parse(self.files[f"platform/plasma/color-schemes/{name}.colors"].decode())
 
-    def test_dort_dosya_uretilir(self):
-        self.assertEqual(len(self.files), 4)
+    def test_iki_dosya_uretilir(self):
+        self.assertEqual(len(self.files), 2)
         for theme in ("light", "dark"):
             name = manifest.THEMES[theme][0]
             self.assertIn(f"platform/plasma/color-schemes/{name}.colors", self.files)
-            self.assertIn(f"platform/plasma/desktoptheme/{name}/colors", self.files)
 
     def test_koyu_sema_gorunum_ve_secim(self):
         cfg = self.cfg("dark")
@@ -35,11 +34,12 @@ class ColorsTest(unittest.TestCase):
         self.assertEqual(cfg.get("[Colors:Complementary]", "BackgroundAlternate"), rgb(self.t.dark.surfaceAlt))
         self.assertEqual(cfg.get("[Colors:Complementary]", "ForegroundNormal"), rgb(self.t.dark.text))
 
-    def test_masaustu_temasi_renk_dosyasi_semayla_ayni(self):
+    def test_masaustu_temasi_renk_dosyasi_uretilmez(self):
+        # RGA-01 C: Plasma temaları kendi colors dosyasını taşımaz
         for theme in ("light", "dark"):
             name = manifest.THEMES[theme][0]
-            self.assertEqual(self.files[f"platform/plasma/desktoptheme/{name}/colors"],
-                             self.files[f"platform/plasma/color-schemes/{name}.colors"])
+            self.assertNotIn(f"platform/plasma/desktoptheme/{name}/colors", self.files)
+        self.assertFalse([rel for rel in self.files if "/desktoptheme/" in rel])
 
 
 if __name__ == "__main__":

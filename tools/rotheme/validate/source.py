@@ -404,15 +404,11 @@ def _(ctx):
 def _(ctx):
     errors = []
     for mode in ("light", "dark"):
-        theme = manifest.THEMES[mode][0]
         theme_path = ctx.root / manifest.theme_dir(mode)
-        scheme = ctx.root / manifest.COLOR_SCHEMES / f"{theme}.colors"
+        # RGA-01 C: Plasma teması kendi colors dosyasını taşımaz; sistem şeması ve vurgu rengi kullanılır
         colors = theme_path / "colors"
-        try:
-            if scheme.read_bytes() != colors.read_bytes():
-                errors.append(f"{colors}: renk şemasıyla birebir aynı olmalı")
-        except OSError as e:
-            errors.append(f"{colors}: okunamadı ({e})")
+        if colors.exists() or colors.is_symlink():
+            errors.append(f"{colors}: eski dosya, kaldırılmalı (Plasma teması colors taşımaz)")
         cfg, error = read_kconfig(theme_path / "plasmarc")
         if error:
             errors.append(error)

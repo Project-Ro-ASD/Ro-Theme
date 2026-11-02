@@ -150,7 +150,6 @@ def build_source(root: Path):
         write(theme_dir / "metadata.json", json.dumps({
             "KPlugin": {"Id": theme, "Version": (ROOT / "VERSION").read_text().strip(),
                         "License": "GPL-3.0-or-later"}}, indent=2) + "\n")
-        write(theme_dir / "colors", scheme(mode))
         write(theme_dir / "plasmarc", "[ContrastEffect]\nenabled=true\n\n[AdaptiveTransparency]\nenabled=true\n")
         for rel in manifest.SVG_CONTRACTS:
             source = ROOT / manifest.theme_dir(mode) / rel
@@ -286,6 +285,11 @@ class SourceChecksTest(unittest.TestCase):
     def test_desktoptheme_failure(self):
         (self.root / manifest.theme_dir("light") / "metadata.json").unlink()
         self.assert_fails("VAL-DT-01")
+
+    def test_desktoptheme_legacy_colors_failure(self):
+        # RGA-01 C: kaynak ağaçta desktoptheme colors dosyası "eski dosya" olarak FAIL vermeli
+        write(self.root / manifest.theme_dir("dark") / "colors", scheme("dark"))
+        self.assert_fails("VAL-DT-02")
 
     def test_svg_failure(self):
         (self.root / manifest.theme_dir("dark") / "widgets/arrows.svg").unlink()
