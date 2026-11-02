@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        2.0.2
+Version:        2.0.3
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 Summary(tr):    Ro Masaüstü KDE Plasma tema paketi
@@ -120,6 +120,13 @@ exit 0
 %doc README.md
 
 %changelog
+* Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.3-1
+- Plasma themes follow the system accent colour: RoDark and RoLight no longer
+  ship their own colors file; the logo, Plymouth and GRUB stay Ro blue
+- New org.ro.theme QML module in /usr/share/ro-theme/qml/org/ro/theme
+  (RoTokens, RoBrand, DawnScene) for Ro-Plasma-Setup and ro-widgets
+- Install the Ro-ASD logo to /usr/share/ro-theme/brand
+
 * Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.2-1
 - Firefox: install the accent colour preference to /etc/firefox/pref, where
   Fedora's Firefox reads it (the old location was never read)
