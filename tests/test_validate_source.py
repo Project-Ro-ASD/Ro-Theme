@@ -141,6 +141,8 @@ def build_source(root: Path):
     for name in TOKEN_FILES:
         copy(root, f"core/tokens/{name}")
     copy(root, "dist/qml/RoTokens.qml")
+    for name in ("qmldir", "RoTokens.qml", "RoBrand.qml", "DawnScene.qml"):
+        copy(root, f"platform/qml/org/ro/theme/{name}")
 
     fonts = tok.load(ROOT).fonts
     for mode in ("light", "dark"):
@@ -275,6 +277,14 @@ class SourceChecksTest(unittest.TestCase):
     def test_dist_failure(self):
         (self.root / "dist/qml/RoTokens.qml").unlink()
         self.assert_fails("VAL-DST-01")
+
+    def test_qml_module_failure(self):
+        (self.root / "platform/qml/org/ro/theme/RoBrand.qml").unlink()
+        self.assert_fails("VAL-QML-01")
+
+    def test_qml_module_tokens_farkli(self):
+        write(self.root / "platform/qml/org/ro/theme/RoTokens.qml", "pragma Singleton\n// farkli\n")
+        self.assert_fails("VAL-QML-01")
 
     def test_scheme_failure(self):
         path = self.root / manifest.COLOR_SCHEMES / "RoLight.colors"
