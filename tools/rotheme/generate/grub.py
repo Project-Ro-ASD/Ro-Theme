@@ -1,7 +1,54 @@
-"""Gereksinim: gereksinimler/14-uretec-plymouth-grub.md (uygulanacak)."""
+"""GRUB önyükleme teması `theme.txt` (gereksinimler/14 §6)."""
 from __future__ import annotations
 
+HEADER = """# Ro GRUB teması. scripts/generate-theme.sh tarafından üretilir (24 · GRUB-01..04); renkler core/tokens'dan.
+# Arka plan: yapay zekâ üretimi, tepeler ve ay (bg.jpg). Menüde panel yok; seçili satır yarı saydam vurgu hapı.
+"""
 
-def outputs(ctx) -> dict[str, str | bytes]:
-    """Depo köküne göre yol -> içerik. Henüz uygulanmadı."""
-    return {}
+
+def outputs(ctx) -> dict[str, str]:
+    d = ctx.tokens.dark
+    text = f'''title-text: ""
+desktop-color: "{d.bootBackground}"
+desktop-image: "bg.jpg"
+desktop-image-scale-method: "stretch"
+terminal-font: "Noto Sans Regular 16"
+# Enter'dan sonra GRUB metin terminaline geçer; alan tanımlı değilse ekranın ortasında siyah bir dikdörtgen çizer.
+# Tam ekran ve çerçevesiz: sessiz açılışta ekran siyaha döner (varsayılan GRUB gibi), Plymouth'a kesintisiz geçilir.
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+terminal-border: "0"
+
++ boot_menu {{
+    left = 5%
+    top = 28%
+    width = 740
+    height = 270
+    item_font = "Noto Sans Regular 16"
+    selected_item_font = "Noto Sans Regular 16"
+    item_color = "{d.textSecondary}"
+    selected_item_color = "{d.text}"
+    item_height = 32
+    item_padding = 0
+    item_spacing = 20
+    item_icon_space = 14
+    icon_width = 32
+    icon_height = 32
+    item_pixmap_style = "item_*.png"
+    selected_item_pixmap_style = "select_*.png"
+    scrollbar = false
+}}
+
++ label {{
+    left = 5%
+    top = 100%-60
+    width = 60%
+    height = 24
+    font = "Noto Sans Regular 16"
+    color = "{d.textSecondary}"
+    text = "Enter: boot     E: edit     C: command line"
+}}
+'''
+    return {"platform/grub/ro/theme.txt": HEADER + text}

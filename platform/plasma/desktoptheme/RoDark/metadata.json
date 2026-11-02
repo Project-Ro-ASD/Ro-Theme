@@ -1,0 +1,20 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Name": "Project Ro-ASD"
+      }
+    ],
+    "Description": "Ro Desktop dark Plasma theme",
+    "Description[tr]": "Ro masaüstü koyu Plasma teması",
+    "EnabledByDefault": true,
+    "Id": "RoDark",
+    "License": "GPL-3.0-or-later",
+    "Name": "Ro Dark",
+    "Name[tr]": "Ro Koyu",
+    "Version": "1.1.16",
+    "Website": "https://github.com/Project-Ro-ASD/Ro-Theme"
+  },
+  "KPackageStructure": "Plasma/Theme",
+  "X-Plasma-API": "5.0"
+}

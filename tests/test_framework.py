@@ -32,7 +32,6 @@ class GenerateFrameworkTest(unittest.TestCase):
 
 
 class ManifestTest(unittest.TestCase):
-    @unittest.skip("üreteçler tamamlanınca açılacak (feat/uretec)")
     def test_sources_exist_or_are_generated(self):
         generated = set(generate.collect(generate.Context(__import__("rotheme.tokens").tokens.load(ROOT), ROOT)))
         for e in manifest.INSTALL:

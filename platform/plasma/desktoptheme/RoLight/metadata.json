@@ -1,0 +1,20 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Name": "Project Ro-ASD"
+      }
+    ],
+    "Description": "Ro Desktop light Plasma theme",
+    "Description[tr]": "Ro masaüstü açık Plasma teması",
+    "EnabledByDefault": true,
+    "Id": "RoLight",
+    "License": "GPL-3.0-or-later",
+    "Name": "Ro Light",
+    "Name[tr]": "Ro Açık",
+    "Version": "1.1.16",
+    "Website": "https://github.com/Project-Ro-ASD/Ro-Theme"
+  },
+  "KPackageStructure": "Plasma/Theme",
+  "X-Plasma-API": "5.0"
+}
