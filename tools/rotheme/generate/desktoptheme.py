@@ -198,7 +198,7 @@ def _button_svg(t: Tokens, c: Group) -> str:
         *_nine_patch_state("focus", 3 * step, r, fill_cls="ButtonBackground", fill_op=1, border_cls="ButtonFocus", border_op=1, bw=2 * b, margins=m),
         *_nine_patch_state("toolbutton-hover", 4 * step, r, fill_cls="ButtonText", fill_op=t.opacity.hover, margins=m),
         *_nine_patch_state("toolbutton-pressed", 5 * step, r, fill_cls="ButtonText", fill_op=t.opacity.mixPressed, margins=m),
-        *_nine_patch_state("toolbutton-focus", 6 * step, r, border_cls="ButtonFocus", border_op=1, bw=2 * b, margins=m),
+        *_nine_patch_state("toolbutton-focus", 6 * step, r, fill_cls="ButtonBackground", fill_op=0, border_cls="ButtonFocus", border_op=1, bw=2 * b, margins=m),
         *_nine_patch_state("mask-normal", 7 * step, r, fill_cls="ButtonBackground", fill_op=1, margins=(0, 0, 0, 0)),
     ]
     return _control_doc(c, r, 8, body)
