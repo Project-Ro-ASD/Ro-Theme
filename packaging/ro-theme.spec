@@ -120,5 +120,12 @@ exit 0
 %doc README.md
 
 %changelog
-* Sun Nov 01 2026 Project Ro-ASD <contact@roasd.org> - 2.0.0-1
-- New build infrastructure; repository moved to a fresh history.
+* Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.0-1
+- New build infrastructure: ./ro tool (generate, validate, install, diagnose, rpm-build)
+- Repository moved to a fresh history
+- Add "Peek at Desktop" to the panel, right of the clock; existing users get it once
+  through a Plasma update script
+- Fix keyboard focus frame of tool buttons not being drawn
+- Remove the unused Ro-GTK placeholder theme
+- Scriptlets: drop the root-only kbuildsycoca call; skip initramfs rebuild on removal
+  inside containers and installroots
