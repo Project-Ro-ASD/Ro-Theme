@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        2.0.0
+Version:        2.0.1
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 Summary(tr):    Ro Masaüstü KDE Plasma tema paketi
@@ -120,6 +120,9 @@ exit 0
 %doc README.md
 
 %changelog
+* Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.1-1
+- Republish 2.0.0 as an immutable release; no content changes
+
 * Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.0-1
 - New build infrastructure: ./ro tool (generate, validate, install, diagnose, rpm-build)
 - Repository moved to a fresh history
