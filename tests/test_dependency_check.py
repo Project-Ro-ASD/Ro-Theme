@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 import unittest
 
-CHECK = Path(__file__).with_name("check-rpm-dependencies.sh").resolve()
+CHECK = Path(__file__).resolve().parents[1] / "tools/dev/check-rpm-dependencies.sh"
 RESOLVED = " ro-theme noarch 1.1.2 @commandline\nTransaction Summary:\n Installing: 1 package\nOperation aborted by the user.\n"
 
 

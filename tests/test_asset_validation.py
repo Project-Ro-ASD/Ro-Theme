@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-source = Path(__file__).resolve().parents[2] / "scripts/validate-assets.py"
+source = Path(__file__).resolve().parents[1] / "scripts/validate-assets.py"
 spec = importlib.util.spec_from_file_location("asset_validator", source)
 validator = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(validator)

@@ -16,4 +16,6 @@
 | `rpm.py` | `ro rpm-build`, `ro rpm-check` | RPM derleme ve denetim |
 | `release_manifest.py` | `ro release-manifest` | Sürüm paketi için `SHA256SUMS` ve bileşen manifesti |
 
-`tools/dev/` eski yardımcıları barındırır; yeni altyapıya taşınanlar zamanla kaldırılacak.
+`tools/dev/` kalan yardımcıları barındırır: `check-rpm-dependencies.sh` (RPM bağımlılık denetimi),
+`fedora-baseline.txt` (haftalık paket sürüm tabanı), `resize-plymouth-frames.py` (Plymouth karelerini
+yeniden boyutlandırır) ve `test-system-defaults.sh` (sistem varsayılanlarını sınar).
