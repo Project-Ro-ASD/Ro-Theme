@@ -139,7 +139,7 @@ case "$1" in
     fail_initrd
     err="$(rpm -Uvh --replacepkgs --nodeps /work/new.rpm 2>&1 >/dev/null)"
     [[ "$(rebuilds)" == "2" ]] && pass "changed theme files trigger a rebuild" || fail "rebuild attempts: $(rebuilds) (want 2)"
-    grep -q "initramfs rebuild for the Plymouth theme failed" <<<"$err" && pass "failed rebuild warns" || fail "no warning on failed rebuild: $err"
+    grep -q "initramfs rebuild failed" <<<"$err" && pass "failed rebuild warns" || fail "no warning on failed rebuild: $err"
     [[ "$(cat "$STAMP")" == "stale" ]] && pass "failed rebuild does not write the stamp" || fail "stamp written after a failed rebuild"
     ok_initrd
     rpm -Uvh --replacepkgs --nodeps /work/new.rpm >/dev/null 2>&1 || fail "reinstall new package"

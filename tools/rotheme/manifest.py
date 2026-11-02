@@ -94,6 +94,13 @@ INSTALL: tuple[Entry, ...] = (
       for name in ("kdeglobals", "kcmfonts", "breezerc", "plasmarc", "ksplashrc", "kscreenlockerrc", "kwinrc")),
 )
 
+# system-preview: yalnız bu üç bileşen sistem önizlemesi olarak kurulur (/etc/xdg'ye dokunulmaz).
+PREVIEW_ENTRIES = tuple(e for e in INSTALL if e.src in (
+    "assets/wallpapers/loginv2.jpg",
+    "platform/plasmalogin/20-ro-theme.conf",
+    "platform/plymouth/ro-theme",
+))
+
 # Kurulumda sentezlenen açık simge teması: ro-icons'a göreli bağlar + değiştirilmiş index.theme
 LIGHT_ICONS = {
     "dest": "{datadir}/icons/ro-icons-light",
@@ -110,6 +117,9 @@ DOC_FILES = ("README.md",)
 
 # --- /etc/xdg: dosyalar ve sıfırlama aracının kullanıcıdan sileceği anahtarlar ---
 XDG_FILES = ("kdeglobals", "kcmfonts", "breezerc", "plasmarc", "ksplashrc", "kscreenlockerrc", "kwinrc")
+
+# smoke: canlı oturum denemesinden önce yedeklenen kullanıcı ayarları.
+SMOKE_CONFIG_FILES = ("plasma-org.kde.plasma.desktop-appletsrc", *XDG_FILES)
 
 # Eski sürümlerden kalan, sıfırlamada ayrıca silinen anahtarlar: dosya -> grup -> anahtarlar
 LEGACY_KEYS = {
