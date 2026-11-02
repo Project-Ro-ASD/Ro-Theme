@@ -6,6 +6,9 @@ import QtQuick
 // Ro tasarım token'ları (QML). ./ro generate tarafından core/tokens'tan ÜRETİLİR, elle düzenlenmez.
 // WGT-02: ro-theme paketi bu dosyayı /usr/share/ro-theme/qml/RoTokens.qml olarak kurar. ro-widgets derlenirken
 // oradan alır (elle kopyalama yok, TOK-16); widget qmldir: singleton RoTokens 1.0 RoTokens.qml
+// PSU-05: aynı içerik org.ro.theme modülünde de kurulur (/usr/share/ro-theme/qml/org/ro/theme/RoTokens.qml);
+// paket mimariden bağımsız olduğu için dizin içe aktarımı kullanılır:
+//   import "file:///usr/share/ro-theme/qml/org/ro/theme"   ya da QML_IMPORT_PATH=/usr/share/ro-theme/qml ile import org.ro.theme
 // Renkler bu dosyada yok: Kirigami.Theme kullan, böylece her renk şemasıyla uyumlu kalır.
 // Süreler taban değerdir (ms); Plasma animasyon hızı çarpanını (AnimationDurationFactor) uygulamak widget'ın işidir.
 QtObject {

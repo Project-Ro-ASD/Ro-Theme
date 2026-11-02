@@ -273,6 +273,31 @@ def _(ctx):
     yield from _emit(errors, "QML singleton geçerli")
 
 
+@check("VAL-QML-01", "dist", "org.ro.theme modülü (qmldir) bütünlüğü")
+def _(ctx):
+    module = ctx.root / "platform/qml/org/ro/theme"
+    text, error = read_text(module / "qmldir")
+    if error:
+        yield fail(error)
+        return
+    errors = []
+    if not re.search(r"^module\s+org\.ro\.theme\s*$", text, re.M):
+        errors.append("qmldir: 'module org.ro.theme' yok")
+    for line in text.splitlines():
+        parts = line.split()
+        # "[singleton] Tür Sürüm Dosya" biçimi; modül ve yorum satırları atlanır
+        if not parts or parts[0] in ("module", "#"):
+            continue
+        name = parts[-1]
+        if not (module / name).is_file():
+            errors.append(f"qmldir: {name} modül dizininde yok")
+    tokens_qml, _ = read_text(module / "RoTokens.qml")
+    dist_qml, _ = read_text(ctx.root / "dist/qml/RoTokens.qml")
+    if tokens_qml != dist_qml:
+        errors.append("modül RoTokens.qml dist/qml/RoTokens.qml ile aynı değil (./ro generate çalıştır)")
+    yield from _emit(errors, "org.ro.theme modülü geçerli")
+
+
 @check("VAL-SCH-01", "plasma", "şema başlık ve dosya bütünlüğü")
 def _(ctx):
     errors = []
