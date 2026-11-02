@@ -1,5 +1,5 @@
 Name:           ro-theme
-Version:        2.0.1
+Version:        2.0.2
 Release:        1%{?dist}
 Summary:        Ro Desktop KDE Plasma theme package
 Summary(tr):    Ro Masaüstü KDE Plasma tema paketi
@@ -120,6 +120,12 @@ exit 0
 %doc README.md
 
 %changelog
+* Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.2-1
+- Firefox: install the accent colour preference to /etc/firefox/pref, where
+  Fedora's Firefox reads it (the old location was never read)
+- ro-theme-diagnose: report only real problems
+- Verified with Plasma 6.8.2
+
 * Mon Nov 02 2026 Project Ro-ASD <contact@roasd.org> - 2.0.1-1
 - Republish 2.0.0 as an immutable release; no content changes
 
