@@ -20,7 +20,7 @@ from .. import tokens as tok
 
 # Sıra önemsiz; her modül kendi dosya ailesinden sorumludur.
 MODULES = (
-    "colors",        # renk şemaları + desktoptheme colors (gereksinimler/10)
+    "colors",        # yalnız renk şemaları; desktoptheme colors üretilmez (RGA-01 C, gereksinimler/10)
     "xdg",           # /etc/xdg varsayılanları (10)
     "lookandfeel",   # global tema defaults + metadata, desktoptheme metadata/plasmarc (10)
     "desktoptheme",  # 29 SVG x 2 tema (11)

@@ -70,7 +70,6 @@ def make_source(root: Path) -> Path:
         write(base / "contents/lockscreen/assets/login.jpg", b"login")
         for dtheme in (f"platform/plasma/desktoptheme/{theme}",):
             write(root / dtheme / "metadata.json", "{}\n")
-            write(root / dtheme / "colors", "[Colors:Window]\nBackgroundNormal=0,0,0\n")
             write(root / dtheme / "plasmarc", "[Theme]\nname=default\n")
             write(root / dtheme / "widgets/background.svg", "<svg/>\n")
         write(root / "platform/plasma/color-schemes" / f"{theme}.colors", "[General]\nName=" + theme + "\n")

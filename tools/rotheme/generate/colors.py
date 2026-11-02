@@ -1,4 +1,4 @@
-"""Renk şemaları ve Plasma masaüstü teması renk dosyaları (gereksinimler/10 §6.1-6.2)."""
+"""Renk şemaları (gereksinimler/10 §6.1). Plasma masaüstü temaları kendi `colors` dosyasını taşımaz (RGA-01 C)."""
 from __future__ import annotations
 
 from .. import manifest
@@ -98,16 +98,11 @@ def scheme(t: Tokens, theme: str) -> KConfig:
     return cfg
 
 
-def _paths(theme: str) -> tuple[str, str]:
-    name = manifest.THEMES[theme][0]
-    return (f"platform/plasma/color-schemes/{name}.colors",
-            f"platform/plasma/desktoptheme/{name}/colors")
+def _path(theme: str) -> str:
+    # Yalnız color-schemes altına yazılır; desktoptheme/<ad>/colors bilerek üretilmez (RGA-01 C):
+    # panel ve Plasma bileşenleri sistemdeki renk şemasını ve kullanıcının vurgu rengini kullanır.
+    return f"platform/plasma/color-schemes/{manifest.THEMES[theme][0]}.colors"
 
 
 def outputs(ctx) -> dict[str, str]:
-    out = {}
-    for theme in ("light", "dark"):
-        text = scheme(ctx.tokens, theme).dump()
-        for path in _paths(theme):
-            out[path] = text
-    return out
+    return {_path(theme): scheme(ctx.tokens, theme).dump() for theme in ("light", "dark")}
