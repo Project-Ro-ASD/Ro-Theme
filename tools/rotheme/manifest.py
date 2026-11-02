@@ -64,6 +64,8 @@ INSTALL: tuple[Entry, ...] = (
     Entry("platform/plasma/look-and-feel/org.ro.light", "{datadir}/plasma/look-and-feel/org.ro.light"),
     Entry("platform/plasma/look-and-feel/org.ro.dark", "{datadir}/plasma/look-and-feel/org.ro.dark"),
     Entry("platform/plasma/layout-templates/org.ro.desktop", "{datadir}/plasma/layout-templates/org.ro.desktop"),
+    Entry("platform/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js",
+          "{datadir}/plasma/shells/org.kde.plasma.desktop/contents/updates/ro-peek-desktop.js", local=False),
     Entry("dist/qml/RoTokens.qml", "{datadir}/ro-theme/qml/RoTokens.qml"),
     Entry("assets/wallpapers/light.jpg", "{datadir}/ro-theme/wallpapers/light.jpg"),
     Entry("assets/wallpapers/dark.jpg", "{datadir}/ro-theme/wallpapers/dark.jpg"),
@@ -130,12 +132,15 @@ PANEL = {
                        "org.mozilla.firefox.desktop", "systemsettings.desktop"),
     "tray_items": ("org.kde.plasma.networkmanagement", "org.kde.plasma.bluetooth", "org.kde.plasma.volume",
                    "org.kde.plasma.notifications", "org.kde.plasma.battery"),
+    "peek": "org.kde.plasma.showdesktop",          # saatin sağında
+    "peek_icon": "show-desktop",
 }
 
 # --- check-plasma-runtime ---
 RUNTIME_APPLETS = {
     "layout": {"required": ("org.kde.plasma.kickoff", "org.kde.plasma.panelspacer", "org.kde.plasma.digitalclock",
-                            "org.kde.plasma.systemtray", "org.kde.plasma.icontasks"),
+                            "org.kde.plasma.systemtray", "org.kde.plasma.icontasks",
+                            "org.kde.plasma.showdesktop"),
                "optional": ()},
     "popups": {"required": ("org.kde.plasma.systemtray",),
                "optional": ("org.kde.plasma.battery", "org.kde.plasma.brightness")},

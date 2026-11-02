@@ -76,3 +76,11 @@ if (clock) {
     clock.writeConfig("fontFamily", "Noto Sans SemiBold");
     clock.writeConfig("fontSize", "13");
 }
+
+// Masaüstüne göz at: saatin sağında. Simgesi açıkça verilir; ro-icons'taki klasör biçimli
+// user-desktop simgesine düşmesin diye Papirus'un show-desktop simgesi kullanılır.
+var peek = safeAdd(bar, "org.kde.plasma.showdesktop");
+if (peek) {
+    peek.currentConfigGroup = ["General"];
+    peek.writeConfig("icon", "show-desktop");
+}
