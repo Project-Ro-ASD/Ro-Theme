@@ -67,7 +67,7 @@ class RpmCheckTest(unittest.TestCase):
             d = Path(d)
             fixture = d / "fixture"
             fixture.mkdir()
-            (fixture / "meta").write_text("ro-theme\t2.0.0\t1.fc44\tnoarch\n")
+            (fixture / "meta").write_text(f"ro-theme\t{(ROOT / 'VERSION').read_text().strip()}\t1.fc44\tnoarch\n")
             (fixture / "requires").write_text(
                 "google-noto-sans-fonts\ngoogle-noto-sans-mono-fonts\nrsms-inter-fonts\n"
                 "papirus-icon-theme\npapirus-icon-theme-dark\npapirus-icon-theme-light\n")
