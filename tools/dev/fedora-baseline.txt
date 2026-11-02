@@ -1,9 +1,9 @@
 # Ro-Theme'in son doğrulandığı Fedora 44 paket sürümleri (Ro-Theme-Docs 00 §10.3, 23 · PKG-16).
 # Haftalık iş akışı (fedora-weekly.yml) güncel fedora:44 ile karşılaştırır; fark varsa issue açar.
 # Bir Plasma/Qt güncellemesinden sonra tema doğrulanınca bu dosya PR ile güncellenir.
-plasma-workspace 6.7.5
-plasma-desktop 6.7.5
-kwin 6.7.5
-aurorae 6.7.5
+plasma-workspace 6.8.2
+plasma-desktop 6.8.2
+kwin 6.8.2
+aurorae 6.8.2
 qt6-qtbase 6.11.2
 kf6-kconfig 6.31.0
