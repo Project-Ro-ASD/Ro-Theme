@@ -191,14 +191,16 @@ def _button_svg(t: Tokens, c: Group) -> str:
     r, b = t.radius.sm, t.spacing.borderWidth
     step = 2 * r + svg.EDGE + 8
     m = (t.spacing.xs, t.spacing.xs, t.spacing.sm + t.spacing.xs, t.spacing.sm + t.spacing.xs)
+    # Araç düğmeleri (tepsi başlığı, liste satırı okları) yatayda daha dar: TEP-08 B.
+    tm = (t.spacing.xs, t.spacing.xs, t.spacing.sm, t.spacing.sm)
     body = [
         *_nine_patch_state("normal", 0, r, fill_cls="ButtonBackground", fill_op=1, border_cls="ButtonText", border_op=t.opacity.buttonEdge, bw=b, margins=m),
         *_nine_patch_state("hover", step, r, fill_cls="ButtonBackground", fill_op=1, overlay_cls="ButtonText", overlay_op=t.opacity.hover, margins=m),
         *_nine_patch_state("pressed", 2 * step, r, fill_cls="ButtonBackground", fill_op=1, overlay_cls="ButtonText", overlay_op=t.opacity.mixPressed, margins=m),
         *_nine_patch_state("focus", 3 * step, r, fill_cls="ButtonBackground", fill_op=1, border_cls="ButtonFocus", border_op=1, bw=2 * b, margins=m),
-        *_nine_patch_state("toolbutton-hover", 4 * step, r, fill_cls="ButtonText", fill_op=t.opacity.hover, margins=m),
-        *_nine_patch_state("toolbutton-pressed", 5 * step, r, fill_cls="ButtonText", fill_op=t.opacity.mixPressed, margins=m),
-        *_nine_patch_state("toolbutton-focus", 6 * step, r, fill_cls="ButtonBackground", fill_op=0, border_cls="ButtonFocus", border_op=1, bw=2 * b, margins=m),
+        *_nine_patch_state("toolbutton-hover", 4 * step, r, fill_cls="ButtonText", fill_op=t.opacity.hover, margins=tm),
+        *_nine_patch_state("toolbutton-pressed", 5 * step, r, fill_cls="ButtonText", fill_op=t.opacity.mixPressed, margins=tm),
+        *_nine_patch_state("toolbutton-focus", 6 * step, r, fill_cls="ButtonBackground", fill_op=0, border_cls="ButtonFocus", border_op=1, bw=2 * b, margins=tm),
         *_nine_patch_state("mask-normal", 7 * step, r, fill_cls="ButtonBackground", fill_op=1, margins=(0, 0, 0, 0)),
     ]
     return _control_doc(c, r, 8, body)
