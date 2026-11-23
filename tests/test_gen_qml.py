@@ -23,6 +23,8 @@ class QmlTest(unittest.TestCase):
             "singleton RoTokens 1.0 RoTokens.qml",
             "singleton RoBrand 1.0 RoBrand.qml",
             "DawnScene 1.0 DawnScene.qml",
+            "RoGreeting 1.0 RoGreeting.qml",
+            "RoNavButton 1.0 RoNavButton.qml",
         ])
 
     def test_robrand_logo_ve_surum(self):
