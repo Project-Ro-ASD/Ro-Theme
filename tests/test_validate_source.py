@@ -141,7 +141,7 @@ def build_source(root: Path):
     for name in TOKEN_FILES:
         copy(root, f"core/tokens/{name}")
     copy(root, "dist/qml/RoTokens.qml")
-    for name in ("qmldir", "RoTokens.qml", "RoBrand.qml", "DawnScene.qml"):
+    for name in ("qmldir", "RoTokens.qml", "RoBrand.qml", "DawnScene.qml", "RoGreeting.qml", "RoNavButton.qml"):
         copy(root, f"platform/qml/org/ro/theme/{name}")
 
     fonts = tok.load(ROOT).fonts
